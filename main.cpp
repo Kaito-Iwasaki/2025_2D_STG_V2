@@ -4,6 +4,8 @@
 // Author : KAITO IWASAKI
 //
 //=====================================================================
+#include <crtdbg.h>
+
 #include "main.h"
 #include "input.h"
 #include "sound.h"
@@ -45,6 +47,10 @@ LPDIRECT3DDEVICE9 g_pD3DDevice = NULL;		// Direct3Dデバイスへのポインタ
 //==============================================
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine, int nCmdShow)
 {
+#ifdef _DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF);			// メモリリーク検知用のフラグ
+#endif // _DEBUG
+
 	// ウィンドウクラスの設定
 	WNDCLASSEX wcex = {
 		sizeof(WNDCLASSEX),					// WNDCLASSのメモリサイズ
