@@ -206,6 +206,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 
 		break;
+
+	case WM_MOVE:
+		Draw();
+		break;
+
+	case WM_SIZE:
+		Draw();
+		break;
 	}
 
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);	// Šù’è‚Ìˆ—‚ğ•Ô‚·
