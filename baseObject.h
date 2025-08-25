@@ -24,7 +24,6 @@
 //*******************************************
 typedef struct
 {
-	char aTextureFileName[MAX_PATH];
 	LPDIRECT3DVERTEXBUFFER9 pVtxBuff;
 	LPDIRECT3DTEXTURE9	pTexBuff;
 	D3DXVECTOR3 pos;
