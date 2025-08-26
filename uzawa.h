@@ -35,7 +35,6 @@ void InitUzawa(void);
 void UninitUzawa(void);
 void UpdateUzawa(void);
 void DrawUzawa(void);
-UZAWA* GetUzawa(void)
+UZAWA* GetUzawa(void);
 
 #endif
-
