@@ -137,11 +137,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="another.h" />
     <ClInclude Include="baseObject.h" />
+    <ClInclude Include="baseScene.h" />
     <ClInclude Include="collision.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="player.h" />
@@ -150,10 +153,13 @@
     <ClInclude Include="uzawa.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="another.cpp" />
+    <ClCompile Include="baseScene.cpp" />
     <ClCompile Include="collision.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />

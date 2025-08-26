@@ -14,8 +14,8 @@
 #include "main.h"
 #include "input.h"
 #include "sound.h"
-#include "player.h"
-#include "uzawa.h"
+
+#include "baseScene.h"
 
 //*********************************************************************
 // 
@@ -324,8 +324,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindowed)
 		return E_FAIL;
 	}
 
-	InitPlayer();
-	InitUzawa();
+	// シーンの初期化処理
+	InitScene();
 
 	return S_OK;
 }
@@ -335,8 +335,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindowed)
 //=====================================================================
 void Uninit(void)
 {
-	UninitPlayer();
-	UninitUzawa();
+	// シーンの終了処理
+	UninitScene();
 
 	// キーボードの終了処理
 	UninitKeyboard();
@@ -370,9 +370,8 @@ void Update(void)
 	// ジョイパッドの更新処理
 	UpdateJoypad();
 
-	// 描画オブジェクトの更新処理
-	UpdatePlayer();
-	UpdateUzawa();
+	// シーンの更新処理
+	UpdateScene();
 }
 
 //=====================================================================
@@ -390,10 +389,8 @@ void Draw(void)
 	// 描画開始
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{// オブジェクトの描画
-
-		// 描画オブジェクトの更新処理
-		DrawPlayer();
-		DrawUzawa();
+		// シーンを描画
+		DrawScene();
 
 		// 描画終了
 		g_pD3DDevice->EndScene();

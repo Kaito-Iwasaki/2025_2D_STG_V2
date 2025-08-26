@@ -1,40 +1,40 @@
 //=====================================================================
 //
-// player.cppのヘッダファイル [player.h]
+// baseScene.cppのヘッダファイル [baseScene.h]
 // Author : Kaito Iwasaki
 // 
 //=====================================================================
-#ifndef _PLAYER_H_
-#define _PLAYER_H_
+#ifndef _BASESCENE_H_
+#define _BASESCENE_H_
 
 //*********************************************************************
 // 
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
-#include "baseObject.h"
 #include "main.h"
 
 //*********************************************************************
 // 
-// ***** 構造体 *****
+// ***** 列挙型 *****
 // 
 //*********************************************************************
-typedef struct
+typedef enum
 {
-	BASEOBJECT obj;
-	float fSpeed;
-}PLAYER;
+	SCENE_GAME = 0,
+	SCENE_ANOTHER,
+	SCENE_MAX
+}SCENE;		// シーン列挙型
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitPlayer(void);
-void UninitPlayer(void);
-void UpdatePlayer(void);
-void DrawPlayer(void);
-PLAYER* GetPlayer(void);
+void InitScene(void);
+void UninitScene(void);
+void UpdateScene(void);
+void DrawScene(void);
+SCENE SetScene(SCENE nextScene);
 
 #endif

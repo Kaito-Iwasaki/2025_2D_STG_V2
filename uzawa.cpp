@@ -10,9 +10,10 @@
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
-#include "uzawa.h"
 #include "input.h"
+#include "sound.h"
 
+#include "uzawa.h"
 #include "player.h"
 #include "collision.h"
 

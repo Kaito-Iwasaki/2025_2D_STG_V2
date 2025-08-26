@@ -1,6 +1,6 @@
 //=====================================================================
 //
-// 宇沢オブジェクト [player.cpp]
+// プレイヤーオブジェクト [player.cpp]
 // Author : Kaito Iwasaki
 // 
 //=====================================================================
@@ -10,8 +10,11 @@
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
-#include "player.h"
 #include "input.h"
+#include "sound.h"
+#include "util.h"
+
+#include "player.h"
 
 //*********************************************************************
 // 
@@ -118,6 +121,10 @@ void UpdatePlayer(void)
 
 	// 位置を更新
 	g_player.obj.pos += D3DXVECTOR3(direction.x / fMagnitude, direction.y / fMagnitude, 0.0f) * g_player.fSpeed;
+
+	// 位置制限
+	Clampf(&g_player.obj.pos.x, 0 + g_player.obj.size.x / 2, SCREEN_WIDTH - g_player.obj.size.x / 2);
+	Clampf(&g_player.obj.pos.y, 0 + g_player.obj.size.y / 2, SCREEN_HEIGHT - g_player.obj.size.y / 2);
 }
 
 //=====================================================================

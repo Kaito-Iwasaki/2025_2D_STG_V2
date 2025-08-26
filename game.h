@@ -1,40 +1,27 @@
 //=====================================================================
 //
-// player.cppのヘッダファイル [player.h]
+// game.cppのヘッダファイル [game.h]
 // Author : Kaito Iwasaki
 // 
 //=====================================================================
-#ifndef _PLAYER_H_
-#define _PLAYER_H_
+#ifndef _GAME_H_
+#define _GAME_H_
 
 //*********************************************************************
 // 
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
-#include "baseObject.h"
 #include "main.h"
-
-//*********************************************************************
-// 
-// ***** 構造体 *****
-// 
-//*********************************************************************
-typedef struct
-{
-	BASEOBJECT obj;
-	float fSpeed;
-}PLAYER;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitPlayer(void);
-void UninitPlayer(void);
-void UpdatePlayer(void);
-void DrawPlayer(void);
-PLAYER* GetPlayer(void);
+void InitGame(void);
+void UninitGame(void);
+void UpdateGame(void);
+void DrawGame(void);
 
 #endif
