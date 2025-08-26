@@ -144,6 +144,7 @@
     </ClInclude>
     <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="uzawa.h" />
@@ -155,6 +156,7 @@
     </ClCompile>
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="baseObject.cpp" />
     <ClCompile Include="util.cpp" />

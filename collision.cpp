@@ -34,15 +34,15 @@
 
 
 //=====================================================================
-// 衝突判定処理
+// 衝突判定処理｜矩形
 //=====================================================================
-bool Collision(BASEOBJECT objA, BASEOBJECT objB)
+bool BoxCollision(BASEOBJECT objA, BASEOBJECT objB)
 {
 	if (
-		objA.pos.x >= (objB.pos.x - objB.size.x / 2)
-		&& objA.pos.x <= (objB.pos.x + objB.size.x / 2)
-		&& objA.pos.y >= (objB.pos.y - objB.size.y / 2)
-		&& objA.pos.y <= (objB.pos.y + objB.size.y / 2)
+		objA.pos.x >= (objB.pos.x - objB.size.x / 2 - objA.size.x / 2)
+		&& objA.pos.x <= (objB.pos.x + objB.size.x / 2 + objA.size.x / 2)
+		&& objA.pos.y >= (objB.pos.y - objB.size.y / 2 - objA.size.y / 2)
+		&& objA.pos.y <= (objB.pos.y + objB.size.y / 2 + objA.size.y / 2)
 		)
 	{
 		return true;
@@ -52,15 +52,15 @@ bool Collision(BASEOBJECT objA, BASEOBJECT objB)
 }
 
 //=====================================================================
-// 衝突判定処理（位置、サイズ指定）
+// 衝突判定処理｜矩形（位置、サイズ指定）
 //=====================================================================
-bool Collision(D3DXVECTOR3 posA, D3DXVECTOR3 sizeA, D3DXVECTOR3 posB, D3DXVECTOR3 sizeB)
+bool BoxCollision(D3DXVECTOR3 posA, D3DXVECTOR3 sizeA, D3DXVECTOR3 posB, D3DXVECTOR3 sizeB)
 {
 	if (
-		posA.x >= (posB.x - sizeB.x / 2)
-		&& posA.x <= (posB.x + sizeB.x / 2)
-		&& posA.y >= (posB.y - sizeB.y / 2)
-		&& posA.y <= (posB.y + sizeB.y / 2)
+		posA.x >= (posB.x - sizeB.x / 2 - sizeA.x)
+		&& posA.x <= (posB.x + sizeB.x / 2 + sizeA.x)
+		&& posA.y >= (posB.y - sizeB.y / 2 - sizeA.y)
+		&& posA.y <= (posB.y + sizeB.y / 2 + sizeA.y)
 		)
 	{
 		return true;

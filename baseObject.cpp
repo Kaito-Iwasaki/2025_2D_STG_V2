@@ -80,3 +80,14 @@ void SetVertexTexturePos(VERTEX_2D* pVtx, D3DXVECTOR2 leftTop, D3DXVECTOR2 right
 	pVtx[2].tex = leftBottom;
 	pVtx[3].tex = rightBottom;
 }
+
+//=====================================================================
+// テクスチャ位置の設定処理（テクスチャアニメーション）
+//=====================================================================
+void SetVertexTexturePos(VERTEX_2D* pVtx, int nTexture, int nMaxTexture)
+{
+	pVtx[0].tex = D3DXVECTOR2((1.0f / nMaxTexture) * nTexture, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2((1.0f / nMaxTexture) * (nTexture + 1), 0.0f);
+	pVtx[2].tex = D3DXVECTOR2((1.0f / nMaxTexture) * nTexture, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2((1.0f / nMaxTexture) * (nTexture + 1), 1.0f);
+}

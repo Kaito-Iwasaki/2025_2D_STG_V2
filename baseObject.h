@@ -31,6 +31,7 @@ typedef struct
 	D3DXVECTOR3 size;
 	D3DXCOLOR	color;
 	bool bVisible;
+	bool bInversed;
 }BASEOBJECT;
 
 //*********************************************************************
@@ -43,5 +44,6 @@ void SetVertexRHW(VERTEX_2D* pVtx, float rhw);
 void SetVertexColor(VERTEX_2D* pVtx, D3DXCOLOR col);
 void SetVertexTexturePos(VERTEX_2D* pVtx);
 void SetVertexTexturePos(VERTEX_2D* pVtx, D3DXVECTOR2 leftTop, D3DXVECTOR2 rightTop, D3DXVECTOR2 leftBottom, D3DXVECTOR2 rightBottom);
+void SetVertexTexturePos(VERTEX_2D* pVtx, int nTexture, int nMaxTexture);
 
 #endif

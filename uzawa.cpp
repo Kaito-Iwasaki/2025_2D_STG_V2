@@ -13,12 +13,16 @@
 #include "uzawa.h"
 #include "input.h"
 
+#include "player.h"
+#include "collision.h"
+
 //*********************************************************************
 // 
 // ***** ƒ}ƒNƒ’è‹` *****
 // 
 //*********************************************************************
 #define TEXTURE_FILENAME		"data\\TEXTURE\\uzawa.png"
+
 #define INIT_POS_X				(SCREEN_WIDTH / 2)
 #define INIT_POS_Y				(SCREEN_HEIGHT/ 2)
 #define INIT_SIZE_X				(300.0f)
@@ -90,30 +94,14 @@ void UninitUzawa(void)
 //=====================================================================
 void UpdateUzawa(void)
 {
-	D3DXVECTOR3 direction = D3DXVECTOR3_ZERO;
-	float fMagnitude;
-
-	if (GetKeyboardPress(DIK_A))
+	if (BoxCollision(g_uzawa.obj, GetPlayer()->obj))
 	{
-		direction.x -= 1;
+		g_uzawa.obj.color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 	}
-	if (GetKeyboardPress(DIK_D))
+	else
 	{
-		direction.x += 1;
+		g_uzawa.obj.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	}
-	if (GetKeyboardPress(DIK_W))
-	{
-		direction.y -= 1;
-	}
-	if (GetKeyboardPress(DIK_S))
-	{
-		direction.y += 1;
-	}
-
-	fMagnitude = sqrtf(direction.x * direction.x + direction.y * direction.y);
-	if (fMagnitude == 0) fMagnitude = 1;
-
-	g_uzawa.obj.pos += D3DXVECTOR3(direction.x / fMagnitude, direction.y / fMagnitude, 0.0f) * g_uzawa.fSpeed;
 }
 
 //=====================================================================

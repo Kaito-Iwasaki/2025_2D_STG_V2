@@ -14,6 +14,7 @@
 #include "main.h"
 #include "input.h"
 #include "sound.h"
+#include "player.h"
 #include "uzawa.h"
 
 //*********************************************************************
@@ -323,6 +324,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindowed)
 		return E_FAIL;
 	}
 
+	InitPlayer();
 	InitUzawa();
 
 	return S_OK;
@@ -333,6 +335,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindowed)
 //=====================================================================
 void Uninit(void)
 {
+	UninitPlayer();
 	UninitUzawa();
 
 	// キーボードの終了処理
@@ -368,6 +371,7 @@ void Update(void)
 	UpdateJoypad();
 
 	// 描画オブジェクトの更新処理
+	UpdatePlayer();
 	UpdateUzawa();
 }
 
@@ -388,6 +392,7 @@ void Draw(void)
 	{// オブジェクトの描画
 
 		// 描画オブジェクトの更新処理
+		DrawPlayer();
 		DrawUzawa();
 
 		// 描画終了
