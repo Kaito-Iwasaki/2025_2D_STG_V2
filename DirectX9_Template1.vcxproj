@@ -145,6 +145,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="sound.h" />
+    <ClInclude Include="util.h" />
     <ClInclude Include="uzawa.h" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +157,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="baseObject.cpp" />
+    <ClCompile Include="util.cpp" />
     <ClCompile Include="uzawa.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

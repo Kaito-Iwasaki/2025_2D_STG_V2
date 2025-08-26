@@ -1,11 +1,11 @@
 //=====================================================================
-//
-// uzawa.cppのヘッダファイル [uzawa.h]
-// Author : Kaito Iwasaki
 // 
+// 汎用関数 [util.h]
+// Author : Kaito Iwasaki
+//
 //=====================================================================
-#ifndef _UZAWA_H_
-#define _UZAWA_H_
+#ifndef _UTIL_H_
+#define _UTIL_H_
 
 //*********************************************************************
 // 
@@ -13,29 +13,17 @@
 // 
 //*********************************************************************
 #include "main.h"
-#include "baseObject.h"
-
-//*********************************************************************
-// 
-// ***** 構造体 *****
-// 
-//*********************************************************************
-typedef struct
-{
-	BASEOBJECT obj;
-	float fSpeed;
-}UZAWA;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitUzawa(void);
-void UninitUzawa(void);
-void UpdateUzawa(void);
-void DrawUzawa(void);
-UZAWA* GetUzawa(void)
+int Clamp(int nNum, int nMin, int nMax);
+int RandRange(int nMin, int nMax);
+float Magnitude(D3DXVECTOR3 from, D3DXVECTOR3 to);
+float Direction(D3DXVECTOR3 from, D3DXVECTOR3 to);
+bool LoadBin(const char* pFilePath, void* pBuffer, size_t ElementSize, size_t ElementCount);
+bool SaveBin(const char* pFilePath, void* pBuffer, size_t ElementSize, size_t ElementCount);
 
 #endif
-

@@ -1,13 +1,19 @@
 //=====================================================================
 // 
-// Collision.cppのヘッダファイル [Collision.h]
-// Author:
+// Collision.cppのヘッダファイル [collision.h]
+// Author : Kaito Iwasaki
 //
 //=====================================================================
 #ifndef _COLLISION_H_
 #define _COLLISION_H_		// 二重インクルード防止のマクロ
 
+//*********************************************************************
+// 
+// ***** インクルードファイル *****
+// 
+//*********************************************************************
 #include "main.h"
+#include "baseObject.h"
 
 //*********************************************************************
 // 
@@ -28,19 +34,14 @@
 // ***** 構造体 *****
 // 
 //*********************************************************************
-typedef struct
-{
 
-}Collision;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitCollision(void);
-void UninitCollision(void);
-void UpdateCollision(void);
-void DrawCollision(void);
+bool Collision(BASEOBJECT objA, BASEOBJECT objB);
+bool Collision(D3DXVECTOR3 posA, D3DXVECTOR3 sizeA, D3DXVECTOR3 posB, D3DXVECTOR3 sizeB);
 
 #endif
