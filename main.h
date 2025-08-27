@@ -45,6 +45,10 @@
 #define FVF_VERTEX_2D		(D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)	// 頂点フォーマット[2D]
 #define D3DXVECTOR3_ZERO	D3DXVECTOR3(0.0f, 0.0f, 0.0f)					// ベクトル初期値
 
+#define BIT_CHECK(a,b)   (a >> b) & 1
+#define BIT_SET(a,b)     a |= (1 << b)
+#define BIT_UNSET(a,b)   a &= ~(1 << b)
+
 //*********************************************************************
 // 
 // ***** 構造体 *****

@@ -91,3 +91,27 @@ void SetVertexTexturePos(VERTEX_2D* pVtx, int nTexture, int nMaxTexture)
 	pVtx[2].tex = D3DXVECTOR2((1.0f / nMaxTexture) * nTexture, 1.0f);
 	pVtx[3].tex = D3DXVECTOR2((1.0f / nMaxTexture) * (nTexture + 1), 1.0f);
 }
+
+bool IsObjectOutOfScreen(BASEOBJECT obj, DWORD flags)
+{
+	bool bOutofScreen = false;
+
+	if ((flags & OOS_TOP) == 0x0001)
+	{
+		bOutofScreen = bOutofScreen || obj.pos.y < 0 - obj.size.y;
+	}
+	if ((flags & OOS_BOTTOM) == 0x0010)
+	{
+		bOutofScreen = bOutofScreen || obj.pos.y < SCREEN_HEIGHT + obj.size.y;
+	}
+	if ((flags & OOS_LEFT) == 0x0100)
+	{
+		bOutofScreen = bOutofScreen || obj.pos.x < 0 - obj.size.x;
+	}
+	if ((flags & OOS_RIGHT) == 0x1000)
+	{
+		bOutofScreen = bOutofScreen || obj.pos.x < SCREEN_WIDTH + obj.size.x;
+	}
+
+	return bOutofScreen;
+}

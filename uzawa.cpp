@@ -12,10 +12,10 @@
 //*********************************************************************
 #include "input.h"
 #include "sound.h"
+#include "collision.h"
 
 #include "uzawa.h"
 #include "player.h"
-#include "collision.h"
 
 //*********************************************************************
 // 
@@ -35,6 +35,8 @@
 // ***** グローバル変数 *****
 // 
 //*********************************************************************
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffUzawa;
+LPDIRECT3DTEXTURE9 g_pTexBuffUzawa;
 UZAWA g_uzawa;
 
 //=====================================================================
@@ -55,11 +57,14 @@ void InitUzawa(void)
 	g_uzawa.fSpeed = 10.0f;
 
 	// テクスチャの読み込み
-	D3DXCreateTextureFromFile(
-		pDevice,
-		TEXTURE_FILENAME,
-		&g_uzawa.obj.pTexBuff
-	);
+	if (TEXTURE_FILENAME)
+	{// テクスチャ作成
+		D3DXCreateTextureFromFile(
+			pDevice,
+			TEXTURE_FILENAME,
+			&g_pTexBuffUzawa
+		);
+	}
 
 	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(
@@ -67,7 +72,7 @@ void InitUzawa(void)
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_2D,
 		D3DPOOL_MANAGED,
-		&g_uzawa.obj.pVtxBuff,
+		&g_pVtxBuffUzawa,
 		NULL
 	);
 }
@@ -77,16 +82,16 @@ void InitUzawa(void)
 //=====================================================================
 void UninitUzawa(void)
 {
-	if (g_uzawa.obj.pVtxBuff != NULL)
+	if (g_pVtxBuffUzawa != NULL)
 	{// 頂点バッファの破棄
-		g_uzawa.obj.pVtxBuff->Release();
-		g_uzawa.obj.pVtxBuff = NULL;
+		g_pVtxBuffUzawa->Release();
+		g_pVtxBuffUzawa = NULL;
 	}
 
-	if (g_uzawa.obj.pTexBuff != NULL)
+	if (g_pTexBuffUzawa != NULL)
 	{// テクスチャバッファの破棄
-		g_uzawa.obj.pTexBuff->Release();
-		g_uzawa.obj.pTexBuff = NULL;
+		g_pTexBuffUzawa->Release();
+		g_pTexBuffUzawa = NULL;
 	}
 }
 
@@ -95,7 +100,7 @@ void UninitUzawa(void)
 //=====================================================================
 void UpdateUzawa(void)
 {
-	if (BoxCollision(g_uzawa.obj, GetPlayer()->obj))
+	if (GetPlayer()->obj.bVisible && BoxCollision(g_uzawa.obj, GetPlayer()->obj))
 	{
 		g_uzawa.obj.color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 	}
@@ -103,6 +108,7 @@ void UpdateUzawa(void)
 	{
 		g_uzawa.obj.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	}
+
 }
 
 //=====================================================================
@@ -116,28 +122,28 @@ void DrawUzawa(void)
 	// デバイスの取得
 	pDevice = GetDevice();
 
+	// 頂点バッファをロックして頂点情報へのポインタを取得
+	g_pVtxBuffUzawa->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点情報を設定
+	SetVertexPos(pVtx, g_uzawa.obj);
+	SetVertexRHW(pVtx, 1.0f);
+	SetVertexColor(pVtx, g_uzawa.obj.color);
+	SetVertexTexturePos(pVtx);
+
+	// 頂点バッファをアンロック
+	g_pVtxBuffUzawa->Unlock();
+
+	// 頂点バッファをデータストリームに設定
+	pDevice->SetStreamSource(0, g_pVtxBuffUzawa, 0, sizeof(VERTEX_2D));
+
+	// 頂点フォーマットの設定
+	pDevice->SetFVF(FVF_VERTEX_2D);
+
 	if (g_uzawa.obj.bVisible == true)
-	{// 表示状態
-		// 頂点バッファをロックして頂点情報へのポインタを取得
-		g_uzawa.obj.pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-		// 頂点情報を設定
-		SetVertexPos(pVtx, g_uzawa.obj);
-		SetVertexRHW(pVtx, 1.0f);
-		SetVertexColor(pVtx, g_uzawa.obj.color);
-		SetVertexTexturePos(pVtx);
-
-		// 頂点バッファをアンロック
-		g_uzawa.obj.pVtxBuff->Unlock();
-
-		// 頂点バッファをデータストリームに設定
-		pDevice->SetStreamSource(0, g_uzawa.obj.pVtxBuff, 0, sizeof(VERTEX_2D));
-
-		// 頂点フォーマットの設定
-		pDevice->SetFVF(FVF_VERTEX_2D);
-
+	{// ポリゴン描画
 		// テクスチャの設定
-		pDevice->SetTexture(0, g_uzawa.obj.pTexBuff);
+		pDevice->SetTexture(0, g_pTexBuffUzawa);
 
 		// ポリゴンの描画
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);

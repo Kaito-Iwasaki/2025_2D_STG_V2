@@ -17,6 +17,8 @@
 
 #include "uzawa.h"
 #include "player.h"
+#include "bullet.h"
+#include "decal.h"
 
 #include "util.h"
 
@@ -41,6 +43,14 @@ void InitGame(void)
 {
 	InitUzawa();
 	InitPlayer();
+	InitBullet();
+	InitDecal();
+
+	SetDecal(DECAL_LABEL_TITLE,
+		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
+		D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f),
+		D3DXVECTOR3_ZERO
+	);
 }
 
 //=====================================================================
@@ -50,6 +60,8 @@ void UninitGame(void)
 {
 	UninitUzawa();
 	UninitPlayer();
+	UninitBullet();
+	UninitDecal();
 }
 
 //=====================================================================
@@ -59,6 +71,7 @@ void UpdateGame(void)
 {
 	UpdateUzawa();
 	UpdatePlayer();
+	UpdateBullet();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -71,6 +84,8 @@ void UpdateGame(void)
 //=====================================================================
 void DrawGame(void)
 {
+	DrawDecal();
 	DrawUzawa();
 	DrawPlayer();
+	DrawBullet();
 }

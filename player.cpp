@@ -14,7 +14,9 @@
 #include "sound.h"
 #include "util.h"
 
+#include "collision.h"
 #include "player.h"
+#include "bullet.h"
 
 //*********************************************************************
 // 
@@ -34,6 +36,8 @@
 // ***** グローバル変数 *****
 // 
 //*********************************************************************
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPlayer;
+LPDIRECT3DTEXTURE9 g_pTexBuffPlayer;
 PLAYER g_player;
 
 //=====================================================================
@@ -54,11 +58,14 @@ void InitPlayer(void)
 	g_player.fSpeed = 10.0f;
 
 	// テクスチャの読み込み
-	D3DXCreateTextureFromFile(
-		pDevice,
-		TEXTURE_FILENAME,
-		&g_player.obj.pTexBuff
-	);
+	if (TEXTURE_FILENAME)
+	{// テクスチャ作成
+		D3DXCreateTextureFromFile(
+			pDevice,
+			TEXTURE_FILENAME,
+			&g_pTexBuffPlayer
+		);
+	}
 
 	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(
@@ -66,7 +73,7 @@ void InitPlayer(void)
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_2D,
 		D3DPOOL_MANAGED,
-		&g_player.obj.pVtxBuff,
+		&g_pVtxBuffPlayer,
 		NULL
 	);
 }
@@ -76,16 +83,16 @@ void InitPlayer(void)
 //=====================================================================
 void UninitPlayer(void)
 {
-	if (g_player.obj.pVtxBuff != NULL)
+	if (g_pVtxBuffPlayer != NULL)
 	{// 頂点バッファの破棄
-		g_player.obj.pVtxBuff->Release();
-		g_player.obj.pVtxBuff = NULL;
+		g_pVtxBuffPlayer->Release();
+		g_pVtxBuffPlayer = NULL;
 	}
 
-	if (g_player.obj.pTexBuff != NULL)
+	if (g_pTexBuffPlayer != NULL)
 	{// テクスチャバッファの破棄
-		g_player.obj.pTexBuff->Release();
-		g_player.obj.pTexBuff = NULL;
+		g_pTexBuffPlayer->Release();
+		g_pTexBuffPlayer = NULL;
 	}
 }
 
@@ -114,13 +121,18 @@ void UpdatePlayer(void)
 	{// 下
 		direction.y += 1;
 	}
+	if (GetKeyboardPress(DIK_SPACE))
+	{// 下
+		SetBullet(g_player.obj.pos, 5.0f, D3DX_PI);
+	}
 
 	// 方向の大きさを求める
 	fMagnitude = sqrtf(direction.x * direction.x + direction.y * direction.y);
-	if (fMagnitude == 0) fMagnitude = 1;	// 0なら1に補正
 
-	// 位置を更新
-	g_player.obj.pos += D3DXVECTOR3(direction.x / fMagnitude, direction.y / fMagnitude, 0.0f) * g_player.fSpeed;
+	if (fMagnitude != 0)
+	{// 位置を更新
+		g_player.obj.pos += D3DXVECTOR3(direction.x / fMagnitude, direction.y / fMagnitude, 0.0f) * g_player.fSpeed;
+	}
 
 	// 位置制限
 	Clampf(&g_player.obj.pos.x, 0 + g_player.obj.size.x / 2, SCREEN_WIDTH - g_player.obj.size.x / 2);
@@ -138,28 +150,28 @@ void DrawPlayer(void)
 	// デバイスの取得
 	pDevice = GetDevice();
 
+	// 頂点バッファをロックして頂点情報へのポインタを取得
+	g_pVtxBuffPlayer->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点情報を設定
+	SetVertexPos(pVtx, g_player.obj);
+	SetVertexRHW(pVtx, 1.0f);
+	SetVertexColor(pVtx, g_player.obj.color);
+	SetVertexTexturePos(pVtx);
+
+	// 頂点バッファをアンロック
+	g_pVtxBuffPlayer->Unlock();
+
+	// 頂点バッファをデータストリームに設定
+	pDevice->SetStreamSource(0, g_pVtxBuffPlayer, 0, sizeof(VERTEX_2D));
+
+	// 頂点フォーマットの設定
+	pDevice->SetFVF(FVF_VERTEX_2D);
+
 	if (g_player.obj.bVisible == true)
-	{// 表示状態
-		// 頂点バッファをロックして頂点情報へのポインタを取得
-		g_player.obj.pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-		// 頂点情報を設定
-		SetVertexPos(pVtx, g_player.obj);
-		SetVertexRHW(pVtx, 1.0f);
-		SetVertexColor(pVtx, g_player.obj.color);
-		SetVertexTexturePos(pVtx);
-
-		// 頂点バッファをアンロック
-		g_player.obj.pVtxBuff->Unlock();
-
-		// 頂点バッファをデータストリームに設定
-		pDevice->SetStreamSource(0, g_player.obj.pVtxBuff, 0, sizeof(VERTEX_2D));
-
-		// 頂点フォーマットの設定
-		pDevice->SetFVF(FVF_VERTEX_2D);
-
+	{// ポリゴン描画
 		// テクスチャの設定
-		pDevice->SetTexture(0, g_player.obj.pTexBuff);
+		pDevice->SetTexture(0, g_pTexBuffPlayer);
 
 		// ポリゴンの描画
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);

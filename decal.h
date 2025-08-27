@@ -1,17 +1,18 @@
 //=====================================================================
 //
-// baseObject.cppのヘッダファイル [baseObject.h]
+// decal.cppのヘッダファイル [decal.h]
 // Author : Kaito Iwasaki
 // 
 //=====================================================================
-#ifndef _BASEOBJECT_H_
-#define _BASEOBJECT_H_
+#ifndef _DECAL_H_
+#define _DECAL_H_
 
 //*********************************************************************
 // 
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
+#include "baseObject.h"
 #include "main.h"
 
 //*********************************************************************
@@ -19,40 +20,48 @@
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-#define OOS_TOP			(0x0001)	// 画面外判定（上）
-#define OOS_BOTTOM		(0x0002)	// 画面外判定（下）
-#define OOS_LEFT		(0x0004)	// 画面外判定（左）
-#define OOS_RIGHT		(0x0008)	// 画面外判定（右）
+#define MAX_DECAL		(256)
+
+//*********************************************************************
+// 
+// ***** マクロ定義 *****
+// 
+//*********************************************************************
+typedef enum
+{
+	DECAL_LABEL_TITLE = 0,
+	DECAL_LABEL_TUTORIAL,
+	DECAL_LABEL_BG000,
+	DECAL_LABEL_BG001,
+	DECAL_LABEL_BG002,
+	DECAL_LABEL_MAX
+}DECAL_LABEL;
 
 //*********************************************************************
 // 
 // ***** 構造体 *****
 // 
 //*********************************************************************
-//*********************************************************************
-// 描画オブジェクト
-//*********************************************************************
 typedef struct
 {
-	D3DXVECTOR3 pos;
-	D3DXVECTOR3 rot;
-	D3DXVECTOR3 size;
-	D3DXCOLOR	color;
-	bool bVisible;
-	bool bInversed;
-}BASEOBJECT;
+	BASEOBJECT obj;
+	bool bUsed;
+	DECAL_LABEL label;
+	int nID;
+}DECAL;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void SetVertexPos(VERTEX_2D* pVtx, BASEOBJECT obj);
-void SetVertexRHW(VERTEX_2D* pVtx, float rhw);
-void SetVertexColor(VERTEX_2D* pVtx, D3DXCOLOR col);
-void SetVertexTexturePos(VERTEX_2D* pVtx);
-void SetVertexTexturePos(VERTEX_2D* pVtx, D3DXVECTOR2 leftTop, D3DXVECTOR2 rightTop, D3DXVECTOR2 leftBottom, D3DXVECTOR2 rightBottom);
-void SetVertexTexturePos(VERTEX_2D* pVtx, int nTexture, int nMaxTexture);
-bool IsObjectOutOfScreen(BASEOBJECT obj, DWORD flags);
+void InitDecal(void);
+void UninitDecal(void);
+void UpdateDecal(void);
+void DrawDecal(void);
+DECAL* GetDecal(void);
+int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot);
+void DeleteDecal(int nID);
+void DeleteDecal(void);
 
 #endif

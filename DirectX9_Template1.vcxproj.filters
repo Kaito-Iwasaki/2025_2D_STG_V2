@@ -34,14 +34,14 @@
     <Filter Include="ソース ファイル\Scene">
       <UniqueIdentifier>{5978e465-732c-4d85-a465-58e8ab0bb99c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Scene">
-      <UniqueIdentifier>{7a295e78-8057-4076-b39a-ee125cd4e3cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Component">
       <UniqueIdentifier>{cf0995fd-0f88-467d-b44b-f7011c5b57cd}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Component">
       <UniqueIdentifier>{f6fefcea-8f4c-4739-9e94-7495742d6490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Scene">
+      <UniqueIdentifier>{7a295e78-8057-4076-b39a-ee125cd4e3cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +78,12 @@
     <ClCompile Include="another.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="bullet.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="decal.cpp">
+      <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sound.h">
@@ -112,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="another.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet.h">
+      <Filter>ヘッダー ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="decal.h">
+      <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
