@@ -13,7 +13,7 @@
 #include "input.h"
 #include "sound.h"
 #include "util.h"
-
+	
 #include "collision.h"
 #include "player.h"
 #include "bullet.h"
@@ -36,8 +36,8 @@
 // ***** ÉOÉçÅ[ÉoÉãïœêî *****
 // 
 //*********************************************************************
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPlayer;
-LPDIRECT3DTEXTURE9 g_pTexBuffPlayer;
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffPlayer = NULL;
+LPDIRECT3DTEXTURE9 g_pTexBuffPlayer = NULL;
 PLAYER g_player;
 
 //=====================================================================

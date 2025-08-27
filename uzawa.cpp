@@ -35,8 +35,8 @@
 // ***** ÉOÉçÅ[ÉoÉãïœêî *****
 // 
 //*********************************************************************
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffUzawa;
-LPDIRECT3DTEXTURE9 g_pTexBuffUzawa;
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffUzawa = NULL;
+LPDIRECT3DTEXTURE9 g_pTexBuffUzawa = NULL;
 UZAWA g_uzawa;
 
 //=====================================================================

@@ -36,9 +36,9 @@
 // ***** グローバル変数 *****
 // 
 //*********************************************************************
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBullet;
-LPDIRECT3DTEXTURE9 g_pTexBuffBullet;
-BULLET g_aBullet[MAX_BULLET];
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffBullet = NULL;
+LPDIRECT3DTEXTURE9 g_pTexBuffBullet = NULL;
+BULLET g_aBullet[MAX_BULLET] = {};
 
 //=====================================================================
 // 初期化処理
@@ -83,7 +83,7 @@ void InitBullet(void)
 //=====================================================================
 void UninitBullet(void)
 {
-	if (&g_pVtxBuffBullet != NULL)
+	if (g_pVtxBuffBullet != NULL)
 	{// 頂点バッファの破棄
 		g_pVtxBuffBullet->Release();
 		g_pVtxBuffBullet = NULL;

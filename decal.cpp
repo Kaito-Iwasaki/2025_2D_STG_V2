@@ -32,9 +32,9 @@
 // ***** グローバル変数 *****
 // 
 //*********************************************************************
-LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffDecal;
-LPDIRECT3DTEXTURE9 g_pTexBuffDecal[DECAL_LABEL_MAX];
-DECAL g_aDecal[MAX_DECAL];
+LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffDecal = NULL;
+LPDIRECT3DTEXTURE9 g_pTexBuffDecal[DECAL_LABEL_MAX] = {};
+DECAL g_aDecal[MAX_DECAL] = {};
 
 char g_aDecalFileName[DECAL_LABEL_MAX][MAX_PATH] = {
 	"data\\TEXTURE\\title000.png",
@@ -82,17 +82,19 @@ void InitDecal(void)
 //=====================================================================
 void UninitDecal(void)
 {
-	if (&g_pVtxBuffDecal != NULL)
+	if (g_pVtxBuffDecal != NULL)
 	{// 頂点バッファの破棄
 		g_pVtxBuffDecal->Release();
 		g_pVtxBuffDecal = NULL;
 	}
 
 	for (int nCount = 0; nCount < DECAL_LABEL_MAX; nCount++)
-	if (g_pTexBuffDecal[nCount] != NULL)
-	{// テクスチャバッファの破棄
-		g_pTexBuffDecal[nCount]->Release();
-		g_pTexBuffDecal[nCount] = NULL;
+	{
+		if (g_pTexBuffDecal[nCount] != NULL)
+		{// テクスチャバッファの破棄
+			g_pTexBuffDecal[nCount]->Release();
+			g_pTexBuffDecal[nCount] = NULL;
+		}
 	}
 }
 
@@ -172,7 +174,7 @@ int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 r
 			memset(pDecal, 0, sizeof(DECAL));
 			pDecal->bUsed = true;
 			pDecal->obj.pos = pos;
-			pDecal->obj.size = { INIT_SIZE_X, INIT_SIZE_Y, 0.0f };
+			pDecal->obj.size = size;
 			pDecal->obj.color = INIT_COLOR;
 			pDecal->label = label;
 			pDecal->nID = nCount;

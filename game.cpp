@@ -46,7 +46,7 @@ void InitGame(void)
 	InitBullet();
 	InitDecal();
 
-	SetDecal(DECAL_LABEL_TITLE,
+	int nDecal_Title = SetDecal(DECAL_LABEL_TITLE,
 		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f),
 		D3DXVECTOR3_ZERO
