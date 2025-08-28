@@ -24,12 +24,15 @@
 // 
 //*********************************************************************
 #define TEXTURE_FILENAME		"data\\TEXTURE\\player000.png"
+#define NUM_TEXTURE				(2)
 
-#define INIT_POS_X				(SCREEN_WIDTH / 2)
-#define INIT_POS_Y				(SCREEN_HEIGHT/ 2)
-#define INIT_SIZE_X				(64.0f)
-#define INIT_SIZE_Y				(64.0f)
+#define INIT_POS				{SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2, 0.0f}
+#define INIT_SIZE				{64.0f, 64.0f, 0.0f}
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+
+#define INIT_PLAYER_SPEED		(5.0f)
+#define INIT_SHOOT_SPEED		(17.0f)
+#define INIT_SHOOT_INTERVAL		(5)
 
 //*********************************************************************
 // 
@@ -50,12 +53,13 @@ void InitPlayer(void)
 
 	// 構造体の初期化
 	memset(&g_player, 0, sizeof(PLAYER));
-	g_player.obj.pos = { INIT_POS_X, INIT_POS_Y, 0.0f };
-	g_player.obj.size = { INIT_SIZE_X, INIT_SIZE_Y, 0.0f };
+	g_player.obj.pos = INIT_POS;
+	g_player.obj.size = INIT_SIZE;
 	g_player.obj.color = INIT_COLOR;
 	g_player.obj.bVisible = true;
 
-	g_player.fSpeed = 10.0f;
+	g_player.fSpeed = INIT_PLAYER_SPEED;
+	g_player.fShootSpeed = INIT_SHOOT_SPEED;
 
 	// テクスチャの読み込み
 	if (TEXTURE_FILENAME)
@@ -83,6 +87,8 @@ void InitPlayer(void)
 //=====================================================================
 void UninitPlayer(void)
 {
+	memset(&g_player, 0, sizeof(PLAYER));
+
 	if (g_pVtxBuffPlayer != NULL)
 	{// 頂点バッファの破棄
 		g_pVtxBuffPlayer->Release();
@@ -104,14 +110,38 @@ void UpdatePlayer(void)
 	D3DXVECTOR3 direction = D3DXVECTOR3_ZERO;
 	float fMagnitude;
 
-	// キーボード操作
+	// ***** 状態別処理 *****
+	switch (g_player.state)
+	{
+	case PLAYERSTATE_NORMAL:
+
+		break;
+
+	case PLAYERSTATE_APPEAR:
+
+		break;
+
+	case PLAYERSTATE_DAMAGED:
+
+		break;
+
+	case PLAYERSTATE_DIED:
+
+		break;
+	}
+	g_player.nCounterState++;
+
+	// ***** 移動 *****
 	if (GetKeyboardPress(DIK_A))
 	{// 左
 		direction.x -= 1;
+		g_player.obj.bInversed = true;
 	}
 	if (GetKeyboardPress(DIK_D))
 	{// 右
 		direction.x += 1;
+		g_player.nTexPattern = 1;
+		g_player.obj.bInversed = false;
 	}
 	if (GetKeyboardPress(DIK_W))
 	{// 上
@@ -121,10 +151,8 @@ void UpdatePlayer(void)
 	{// 下
 		direction.y += 1;
 	}
-	if (GetKeyboardPress(DIK_SPACE))
-	{// 下
-		SetBullet(g_player.obj.pos, 5.0f, D3DX_PI);
-	}
+
+	g_player.nTexPattern = direction.x;
 
 	// 方向の大きさを求める
 	fMagnitude = sqrtf(direction.x * direction.x + direction.y * direction.y);
@@ -137,6 +165,14 @@ void UpdatePlayer(void)
 	// 位置制限
 	Clampf(&g_player.obj.pos.x, 0 + g_player.obj.size.x / 2, SCREEN_WIDTH - g_player.obj.size.x / 2);
 	Clampf(&g_player.obj.pos.y, 0 + g_player.obj.size.y / 2, SCREEN_HEIGHT - g_player.obj.size.y / 2);
+
+	// ***** ショット *****
+	g_player.nCounterShoot++;
+	if (GetKeyboardPress(DIK_SPACE) && g_player.nCounterShoot % INIT_SHOOT_INTERVAL == 0)
+	{// 弾撃ち
+		g_player.nCounterShoot = 0;
+		SetBullet(g_player.obj.pos, g_player.fShootSpeed, D3DX_PI);
+	}
 }
 
 //=====================================================================
@@ -157,7 +193,7 @@ void DrawPlayer(void)
 	SetVertexPos(pVtx, g_player.obj);
 	SetVertexRHW(pVtx, 1.0f);
 	SetVertexColor(pVtx, g_player.obj.color);
-	SetVertexTexturePos(pVtx);
+	SetVertexTexturePos(pVtx, g_player.nTexPattern, NUM_TEXTURE, g_player.obj.bInversed);
 
 	// 頂点バッファをアンロック
 	g_pVtxBuffPlayer->Unlock();
@@ -184,4 +220,25 @@ void DrawPlayer(void)
 PLAYER* GetPlayer(void)
 {
 	return &g_player;
+}
+
+void HitPlayer(void)
+{
+	if (PLAYERSTATE_APPEAR)		return;
+	if (PLAYERSTATE_DAMAGED)	return;
+	if (PLAYERSTATE_DIED)		return;
+	if (PLAYERSTATE_END)		return;
+
+	g_player.fLife -= 1;
+
+	if (g_player.fLife <= 0)
+	{
+		g_player.state = PLAYERSTATE_DIED;
+	}
+	else
+	{
+		PLAYERSTATE_DAMAGED;
+	}
+
+	g_player.nCounterState = 0;
 }

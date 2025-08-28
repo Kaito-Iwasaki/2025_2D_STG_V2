@@ -32,7 +32,11 @@ BYTE *g_apDataAudio[SOUND_LABEL_MAX] = {};					// オーディオデータ
 DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 
 // サウンドの情報
-SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] = {};
+SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] = {
+	{"data\\BGM\\bgm003.wav", -1},
+	{"data\\BGM\\stage01.wav", -1},
+	{"data\\BGM\\stage02.wav", -1},
+};
 
 //=============================================================================
 // 初期化処理
@@ -40,7 +44,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] = {};
 HRESULT InitSound(HWND hWnd)
 {
 	HRESULT hr;
-
+	
 	// COMライブラリの初期化
 	hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
 	if(FAILED(hr))

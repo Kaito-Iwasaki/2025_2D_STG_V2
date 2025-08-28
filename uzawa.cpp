@@ -82,6 +82,8 @@ void InitUzawa(void)
 //=====================================================================
 void UninitUzawa(void)
 {
+	memset(&g_uzawa, 0, sizeof(UZAWA));
+
 	if (g_pVtxBuffUzawa != NULL)
 	{// 頂点バッファの破棄
 		g_pVtxBuffUzawa->Release();

@@ -17,6 +17,8 @@
 #include "fade.h"
 
 #include "uzawa.h"
+#include "player.h"
+#include "bullet.h"
 
 //*********************************************************************
 // 
@@ -38,6 +40,8 @@
 void InitAnother(void)
 {
 	InitUzawa();
+	InitPlayer();
+	InitBullet();
 
 	GetUzawa()->obj.size *= 0.5;
 }
@@ -47,7 +51,9 @@ void InitAnother(void)
 //=====================================================================
 void UninitAnother(void)
 {
+	UninitBullet();
 	UninitUzawa();
+	UninitPlayer();
 }
 
 //=====================================================================
@@ -58,6 +64,8 @@ void UpdateAnother(void)
 	GetUzawa()->obj.rot.z += 0.1f;
 
 	UpdateUzawa();
+	UpdatePlayer();
+	UpdateBullet();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -71,4 +79,6 @@ void UpdateAnother(void)
 void DrawAnother(void)
 {
 	DrawUzawa();
+	DrawBullet();
+	DrawPlayer();
 }

@@ -324,6 +324,9 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindowed)
 		return E_FAIL;
 	}
 
+	// サウンドの初期化処理
+	InitSound(hWnd);
+
 	// シーンの初期化処理
 	InitScene();
 
@@ -337,6 +340,9 @@ void Uninit(void)
 {
 	// シーンの終了処理
 	UninitScene();
+
+	// サウンドの終了処理
+	UninitSound();
 
 	// キーボードの終了処理
 	UninitKeyboard();

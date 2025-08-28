@@ -17,13 +17,39 @@
 
 //*********************************************************************
 // 
+// ***** óÒãìå^ *****
+// 
+//*********************************************************************
+typedef enum
+{
+	PLAYERSTATE_NORMAL = 0,
+	PLAYERSTATE_APPEAR,
+	PLAYERSTATE_DAMAGED,
+	PLAYERSTATE_DIED,
+	PLAYERSTATE_END,
+	PLAYERSTATE_MAX
+}PLAYERSTATE;
+
+//*********************************************************************
+// 
 // ***** ç\ë¢ëÃ *****
 // 
 //*********************************************************************
 typedef struct
 {
 	BASEOBJECT obj;
+	int nTexPattern;
+	int nCounterPattern;
+	
+	PLAYERSTATE state;
 	float fSpeed;
+	float fShootSpeed;
+	float fLife;
+	float fCharge;
+
+	int nCounterState;
+	int nCounterShoot;
+
 }PLAYER;
 
 //*********************************************************************
@@ -36,5 +62,6 @@ void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
 PLAYER* GetPlayer(void);
+void HitPlayer(void);
 
 #endif

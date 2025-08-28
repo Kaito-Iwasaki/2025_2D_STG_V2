@@ -34,12 +34,12 @@
 //*********************************************************************
 typedef struct
 {
-	D3DXVECTOR3 pos;
-	D3DXVECTOR3 rot;
-	D3DXVECTOR3 size;
-	D3DXCOLOR	color;
-	bool bVisible;
-	bool bInversed;
+	D3DXVECTOR3 pos;		// 位置
+	D3DXVECTOR3 rot;		// 回転
+	D3DXVECTOR3 size;		// サイズ
+	D3DXCOLOR	color;		// 色
+	bool bVisible;			// 表示状態
+	bool bInversed;			// テクスチャ反転
 }BASEOBJECT;
 
 //*********************************************************************
@@ -50,9 +50,9 @@ typedef struct
 void SetVertexPos(VERTEX_2D* pVtx, BASEOBJECT obj);
 void SetVertexRHW(VERTEX_2D* pVtx, float rhw);
 void SetVertexColor(VERTEX_2D* pVtx, D3DXCOLOR col);
-void SetVertexTexturePos(VERTEX_2D* pVtx);
-void SetVertexTexturePos(VERTEX_2D* pVtx, D3DXVECTOR2 leftTop, D3DXVECTOR2 rightTop, D3DXVECTOR2 leftBottom, D3DXVECTOR2 rightBottom);
-void SetVertexTexturePos(VERTEX_2D* pVtx, int nTexture, int nMaxTexture);
+void SetVertexTexturePos(VERTEX_2D* pVtx, bool bInversed = false);
+void SetVertexTexturePos(VERTEX_2D* pVtx, D3DXVECTOR2 leftTop, D3DXVECTOR2 rightTop, D3DXVECTOR2 leftBottom, D3DXVECTOR2 rightBottom, bool bInversed = false);
+void SetVertexTexturePos(VERTEX_2D* pVtx, int nTexture, int nMaxTexture, bool bInversed = false);
 bool IsObjectOutOfScreen(BASEOBJECT obj, DWORD flags);
 
 #endif

@@ -62,34 +62,65 @@ void SetVertexColor(VERTEX_2D* pVtx, D3DXCOLOR col)
 //=====================================================================
 // テクスチャ位置の設定処理（自動）
 //=====================================================================
-void SetVertexTexturePos(VERTEX_2D* pVtx)
+void SetVertexTexturePos(VERTEX_2D* pVtx, bool bInversed)
 {
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+	if (bInversed)
+	{// 反転
+		pVtx[0].tex = D3DXVECTOR2(1.0f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2(0.0f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(1.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(0.0f, 1.0f);
+	}
+	else
+	{// 通常
+		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+	}
+
 }
 
 //=====================================================================
 // テクスチャ位置の設定処理（手動）
 //=====================================================================
-void SetVertexTexturePos(VERTEX_2D* pVtx, D3DXVECTOR2 leftTop, D3DXVECTOR2 rightTop, D3DXVECTOR2 leftBottom, D3DXVECTOR2 rightBottom)
+void SetVertexTexturePos(VERTEX_2D* pVtx, D3DXVECTOR2 leftTop, D3DXVECTOR2 rightTop, D3DXVECTOR2 leftBottom, D3DXVECTOR2 rightBottom, bool bInversed)
 {
-	pVtx[0].tex = leftTop;
-	pVtx[1].tex = rightTop;
-	pVtx[2].tex = leftBottom;
-	pVtx[3].tex = rightBottom;
+	if (bInversed)
+	{// 反転
+		pVtx[0].tex = rightTop;
+		pVtx[1].tex = leftTop;
+		pVtx[2].tex = rightBottom;
+		pVtx[3].tex = leftBottom;
+	}
+	else
+	{// 通常
+		pVtx[0].tex = leftTop;
+		pVtx[1].tex = rightTop;
+		pVtx[2].tex = leftBottom;
+		pVtx[3].tex = rightBottom;
+	}
 }
 
 //=====================================================================
 // テクスチャ位置の設定処理（テクスチャアニメーション）
 //=====================================================================
-void SetVertexTexturePos(VERTEX_2D* pVtx, int nTexture, int nMaxTexture)
+void SetVertexTexturePos(VERTEX_2D* pVtx, int nTexture, int nMaxTexture, bool bInversed)
 {
-	pVtx[0].tex = D3DXVECTOR2((1.0f / nMaxTexture) * nTexture, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2((1.0f / nMaxTexture) * (nTexture + 1), 0.0f);
-	pVtx[2].tex = D3DXVECTOR2((1.0f / nMaxTexture) * nTexture, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2((1.0f / nMaxTexture) * (nTexture + 1), 1.0f);
+	if (bInversed)
+	{// 反転
+		pVtx[0].tex = D3DXVECTOR2((1.0f / nMaxTexture) * (nTexture + 1), 0.0f);
+		pVtx[1].tex = D3DXVECTOR2((1.0f / nMaxTexture) * nTexture, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2((1.0f / nMaxTexture) * (nTexture + 1), 1.0f);
+		pVtx[3].tex = D3DXVECTOR2((1.0f / nMaxTexture) * nTexture, 1.0f);
+	}
+	else
+	{// 通常
+		pVtx[0].tex = D3DXVECTOR2((1.0f / nMaxTexture) * nTexture, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2((1.0f / nMaxTexture) * (nTexture + 1), 0.0f);
+		pVtx[2].tex = D3DXVECTOR2((1.0f / nMaxTexture) * nTexture, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2((1.0f / nMaxTexture) * (nTexture + 1), 1.0f);
+	}
 }
 
 bool IsObjectOutOfScreen(BASEOBJECT obj, DWORD flags)

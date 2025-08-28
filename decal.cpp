@@ -181,7 +181,7 @@ int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 r
 			pDecal->nID = nCount;
 			pDecal->obj.bVisible = true;
 
-			return pDecal->nID;
+			return nCount;
 		}
 	}
 
@@ -193,7 +193,7 @@ int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 r
 //=====================================================================
 void DeleteDecal(int nID)
 {
-	g_aDecal[nID].bUsed = false;
+	memset(&g_aDecal[nID], 0, sizeof(DECAL));
 }
 
 //=====================================================================
@@ -201,9 +201,5 @@ void DeleteDecal(int nID)
 //=====================================================================
 void DeleteDecal(void)
 {
-	DECAL* pDecal = &g_aDecal[0];
-	for (int nCount = 0; nCount < MAX_DECAL; nCount++, pDecal++)
-	{
-		pDecal->bUsed = false;
-	}
+	memset(&g_aDecal[0], 0, sizeof(DECAL) * MAX_DECAL);
 }

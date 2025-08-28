@@ -14,6 +14,7 @@
 #include "game.h"
 #include "input.h"
 #include "sound.h"
+#include "fade.h"
 
 #include "uzawa.h"
 #include "player.h"
@@ -35,22 +36,23 @@
 // 
 //*********************************************************************
 
-
 //=====================================================================
 // èâä˙âªèàóù
 //=====================================================================
 void InitGame(void)
 {
-	InitUzawa();
 	InitPlayer();
 	InitBullet();
 	InitDecal();
 
-	int nDecal_Title = SetDecal(DECAL_LABEL_TITLE,
+	SetDecal(
+		DECAL_LABEL_TITLE,
 		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
 		D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f),
 		D3DXVECTOR3_ZERO
 	);
+
+	PlaySound(SOUND_LABEL_STAGE01);
 }
 
 //=====================================================================
@@ -58,7 +60,6 @@ void InitGame(void)
 //=====================================================================
 void UninitGame(void)
 {
-	UninitUzawa();
 	UninitPlayer();
 	UninitBullet();
 	UninitDecal();
@@ -69,13 +70,12 @@ void UninitGame(void)
 //=====================================================================
 void UpdateGame(void)
 {
-	UpdateUzawa();
 	UpdatePlayer();
 	UpdateBullet();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
-		SetScene(SCENE_ANOTHER);
+		SetFade(SCENE_ANOTHER);
 	}
 }
 
@@ -85,7 +85,6 @@ void UpdateGame(void)
 void DrawGame(void)
 {
 	DrawDecal();
-	DrawUzawa();
 	DrawPlayer();
 	DrawBullet();
 }

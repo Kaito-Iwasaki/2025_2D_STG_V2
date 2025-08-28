@@ -27,7 +27,7 @@
 
 #define INIT_POS_X				(SCREEN_WIDTH / 2)
 #define INIT_POS_Y				(SCREEN_HEIGHT/ 2)
-#define INIT_SIZE_X				(8.0f)
+#define INIT_SIZE_X				(4.0f)
 #define INIT_SIZE_Y				(32.0f)
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 
@@ -108,12 +108,6 @@ void UpdateBullet(void)
 
 		if (IsObjectOutOfScreen(pBullet->obj, OOS_TOP))
 		{// ‰æ–ÊŠO‚Éo‚½‚çíœ
-			pBullet->bUsed = false;
-			continue;
-		}
-
-		if (BoxCollision(pBullet->obj, GetUzawa()->obj))
-		{// Õ“Ë”»’è
 			pBullet->bUsed = false;
 			continue;
 		}
