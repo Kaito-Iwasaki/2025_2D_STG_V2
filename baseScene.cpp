@@ -11,6 +11,7 @@
 // 
 //*********************************************************************
 #include "baseScene.h"
+#include "fade.h"
 #include "game.h"
 #include "another.h"
 
@@ -26,7 +27,8 @@ SCENE g_currentScene = SCENE_GAME;
 //=====================================================================
 void InitScene(void)
 {
-	SetScene(g_currentScene);
+	InitFade(g_currentScene);
+	//SetScene(g_currentScene);
 }
 
 //=====================================================================
@@ -36,6 +38,7 @@ void UninitScene(void)
 {
 	UninitGame();
 	UninitAnother();
+	UninitFade();
 }
 
 //=====================================================================
@@ -43,6 +46,7 @@ void UninitScene(void)
 //=====================================================================
 void UpdateScene(void)
 {
+
 	switch (g_currentScene)
 	{
 	case SCENE_GAME:
@@ -54,6 +58,8 @@ void UpdateScene(void)
 		break;
 
 	}
+
+	UpdateFade();
 }
 
 //=====================================================================
@@ -71,6 +77,8 @@ void DrawScene(void)
 		DrawAnother();
 		break;
 	}
+
+	DrawFade();
 }
 
 //=====================================================================

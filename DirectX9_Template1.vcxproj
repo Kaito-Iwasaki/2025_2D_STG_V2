@@ -145,6 +145,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />
@@ -163,6 +164,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="decal.cpp" />
+    <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />

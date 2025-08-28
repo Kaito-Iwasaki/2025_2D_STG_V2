@@ -14,6 +14,7 @@
 #include "another.h"
 #include "input.h"
 #include "sound.h"
+#include "fade.h"
 
 #include "uzawa.h"
 
@@ -60,7 +61,7 @@ void UpdateAnother(void)
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
-		SetScene(SCENE_GAME);
+		SetFade(SCENE_GAME);
 	}
 }
 

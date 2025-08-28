@@ -56,16 +56,6 @@ void InitDecal(void)
 	// 構造体の初期化
 	memset(pDecal, 0, sizeof(DECAL) * MAX_DECAL);
 
-	// テクスチャの読み込み
-	for (int nCount = 0; nCount < DECAL_LABEL_MAX; nCount++)
-	{
-		D3DXCreateTextureFromFile(
-			pDevice,
-			g_aDecalFileName[nCount],
-			&g_pTexBuffDecal[nCount]
-		);
-	}
-
 	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(
 		sizeof(VERTEX_2D) * 4 * MAX_DECAL,
@@ -142,7 +132,7 @@ void DrawDecal(void)
 	pDecal = &g_aDecal[0];
 	for (int nCount = 0; nCount < MAX_DECAL; nCount++, pDecal++)
 	{
-		if (pDecal->obj.bVisible == true)
+		if (pDecal->obj.bVisible == true && pDecal->bUsed == true)
 		{// ポリゴン描画
 			// テクスチャの設定
 			pDevice->SetTexture(0, g_pTexBuffDecal[pDecal->label]);
@@ -166,11 +156,22 @@ DECAL* GetDecal(void)
 //=====================================================================
 int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot)
 {
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
 	DECAL* pDecal = &g_aDecal[0];
 	for (int nCount = 0; nCount < MAX_DECAL; nCount++, pDecal++)
 	{
 		if (pDecal->bUsed == false)
 		{
+			if (g_pTexBuffDecal[label] == NULL)
+			{
+				D3DXCreateTextureFromFile(
+					pDevice,
+					g_aDecalFileName[label],
+					&g_pTexBuffDecal[label]
+				);
+			}
+
 			memset(pDecal, 0, sizeof(DECAL));
 			pDecal->bUsed = true;
 			pDecal->obj.pos = pos;
