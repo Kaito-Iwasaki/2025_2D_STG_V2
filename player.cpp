@@ -14,6 +14,7 @@
 #include "sound.h"
 #include "util.h"
 	
+#include "baseScene.h"
 #include "collision.h"
 #include "player.h"
 #include "bullet.h"
@@ -30,9 +31,9 @@
 #define INIT_SIZE				{64.0f, 64.0f, 0.0f}
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 
-#define INIT_PLAYER_SPEED		(10.0f)
-#define INIT_SHOOT_SPEED		(49.0f)
-#define INIT_SHOOT_INTERVAL		(3)
+#define INIT_PLAYER_SPEED		(8.0f)
+#define INIT_SHOOT_SPEED		(35.0f)
+#define INIT_SHOOT_INTERVAL		(5)
 #define INIT_PLAYER_LIFE		(3)
 #define INIT_PLAYER_CHARGE		(0)
 
@@ -121,6 +122,7 @@ void UninitPlayer(void)
 //=====================================================================
 void UpdatePlayer(void)
 {
+	RECT rectScreen = GAME_SCREEN_RECT;
 	D3DXVECTOR3 direction = D3DXVECTOR3_ZERO;
 	float fMagnitude;
 
@@ -196,8 +198,8 @@ void UpdatePlayer(void)
 	}
 
 	// 位置制限
-	Clampf(&g_player.obj.pos.x, 0 + g_player.obj.size.x / 2, SCREEN_WIDTH - g_player.obj.size.x / 2);
-	Clampf(&g_player.obj.pos.y, 0 + g_player.obj.size.y / 2, SCREEN_HEIGHT - g_player.obj.size.y / 2);
+	Clampf(&g_player.obj.pos.x, rectScreen.left + g_player.obj.size.x / 2, rectScreen.right - g_player.obj.size.x / 2);
+	Clampf(&g_player.obj.pos.y, rectScreen.top + g_player.obj.size.y / 2, rectScreen.bottom - g_player.obj.size.y / 2);
 
 	// ***** ショット *****
 	g_player.nCounterShoot++;

@@ -17,6 +17,7 @@
 #include "fade.h"
 #include "font.h"
 
+#include "decal.h"
 #include "player.h"
 #include "enemy.h"
 #include "bullet.h"
@@ -42,12 +43,21 @@
 void InitGame(void)
 {
 	InitFont();
+	InitDecal();
 	InitPlayer();
 	InitBullet();
 	InitEnemy();
 	InitEnemyBullet();
 
-	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f));
+	SetDecal(
+		DECAL_LABEL_NULL,
+		D3DXVECTOR3(SCREEN_CENTER, SCREEN_VCENTER, 0.0f),
+		D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f),
+		D3DXVECTOR3_ZERO,
+		D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f)
+	);
+
+	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 200, 0.0f));
 }
 
 //=====================================================================
@@ -56,6 +66,7 @@ void InitGame(void)
 void UninitGame(void)
 {
 	UninitFont();
+	UninitDecal();
 	UninitPlayer();
 	UninitBullet();
 	UninitEnemy();
@@ -68,6 +79,7 @@ void UninitGame(void)
 void UpdateGame(void)
 {
 	UpdateFont();
+	UpdateDecal();
 	UpdatePlayer();
 	UpdateBullet();
 	UpdateEnemy();
@@ -84,6 +96,7 @@ void UpdateGame(void)
 //=====================================================================
 void DrawGame(void)
 {
+	DrawDecal();
 	DrawEnemy();
 	DrawEnemyBullet();
 	DrawBullet();

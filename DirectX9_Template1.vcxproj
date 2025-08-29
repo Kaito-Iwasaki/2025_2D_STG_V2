@@ -157,6 +157,7 @@
     <ClInclude Include="util.h" />
     <ClInclude Include="uzawa.h" />
     <ClInclude Include="bullet.h" />
+    <ClInclude Include="wallpaper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="enemy.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="baseObject.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="uzawa.cpp" />
+    <ClCompile Include="wallpaper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

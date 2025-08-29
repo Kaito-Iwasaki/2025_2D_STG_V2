@@ -102,6 +102,9 @@
     <ClCompile Include="enemy.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="wallpaper.cpp">
+      <Filter>ソース ファイル\GameObject\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sound.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="enemy.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="wallpaper.h">
+      <Filter>ヘッダー ファイル\GameObject\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

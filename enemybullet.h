@@ -47,6 +47,8 @@ typedef struct
 	float fDirection;
 	float fDamage;
 	ENEMYBULLET_TYPE type;
+
+	int nCounterState;
 }ENEMYBULLET;
 
 //*********************************************************************

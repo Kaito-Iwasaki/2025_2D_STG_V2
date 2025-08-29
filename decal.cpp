@@ -36,7 +36,7 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffDecal = NULL;
 LPDIRECT3DTEXTURE9 g_pTexBuffDecal[DECAL_LABEL_MAX] = {};
 DECAL g_aDecal[MAX_DECAL] = {};
 
-char g_aDecalFileName[DECAL_LABEL_MAX][MAX_PATH] = {
+const char* g_aDecalFileName[DECAL_LABEL_MAX] = {
 	"data\\TEXTURE\\title000.png",
 	"data\\TEXTURE\\title000.png",
 	"data\\TEXTURE\\bg100.png",
@@ -135,7 +135,14 @@ void DrawDecal(void)
 		if (pDecal->obj.bVisible == true && pDecal->bUsed == true)
 		{// ƒ|ƒŠƒSƒ“•`‰æ
 			// ƒeƒNƒXƒ`ƒƒ‚ÌÝ’è
-			pDevice->SetTexture(0, g_pTexBuffDecal[pDecal->label]);
+			if (pDecal->label != DECAL_LABEL_NULL)
+			{
+				pDevice->SetTexture(0, g_pTexBuffDecal[pDecal->label]);
+			}
+			else
+			{
+				pDevice->SetTexture(0, NULL);
+			}
 
 			// ƒ|ƒŠƒSƒ“‚Ì•`‰æ
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCount * 4, 2);
@@ -154,7 +161,7 @@ DECAL* GetDecal(void)
 //=====================================================================
 // ‰æ‘œ‚ÌÝ’èˆ—
 //=====================================================================
-int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot)
+int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -163,7 +170,7 @@ int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 r
 	{
 		if (pDecal->bUsed == false)
 		{
-			if (g_pTexBuffDecal[label] == NULL)
+			if (label != DECAL_LABEL_NULL && g_pTexBuffDecal[label] == NULL)
 			{
 				D3DXCreateTextureFromFile(
 					pDevice,
@@ -176,7 +183,7 @@ int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 r
 			pDecal->bUsed = true;
 			pDecal->obj.pos = pos;
 			pDecal->obj.size = size;
-			pDecal->obj.color = INIT_COLOR;
+			pDecal->obj.color = col;
 			pDecal->label = label;
 			pDecal->nID = nCount;
 			pDecal->obj.bVisible = true;

@@ -29,7 +29,8 @@
 //*********************************************************************
 typedef enum
 {
-	DECAL_LABEL_TITLE = 0,
+	DECAL_LABEL_NULL = -1,
+	DECAL_LABEL_TITLE,
 	DECAL_LABEL_TUTORIAL,
 	DECAL_LABEL_BG000,
 	DECAL_LABEL_BG001,
@@ -60,7 +61,7 @@ void UninitDecal(void);
 void UpdateDecal(void);
 void DrawDecal(void);
 DECAL* GetDecal(void);
-int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot);
+int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col);
 void DeleteDecal(int nID);
 void DeleteDecal(void);
 

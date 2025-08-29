@@ -105,6 +105,20 @@ void UpdateEnemyBullet(void)
 	{
 		if (pEnemyBullet->bUsed == false) continue;		// 未使用の敵ならスキップ
 
+		switch (pEnemyBullet->type)
+		{
+		case ENEMYBULLET_TYPE_001:
+			if (pEnemyBullet->nCounterState % 3 == 0)
+			{
+				pEnemyBullet->obj.bInversed ^= 1;
+			}
+			break;
+
+		default:
+			break;
+		}
+		pEnemyBullet->nCounterState++;
+
 		if (IsObjectOutOfScreen(pEnemyBullet->obj, OOS_TOP))
 		{// 画面外に出たら削除
 			pEnemyBullet->bUsed = false;
@@ -112,7 +126,7 @@ void UpdateEnemyBullet(void)
 		}
 
 		if (BoxCollision(pEnemyBullet->obj, GetPlayer()->obj))
-		{
+		{// プレイヤーとの衝突判定
 			HitPlayer();
 		}
 
@@ -141,7 +155,7 @@ void DrawEnemyBullet(void)
 		SetVertexPos(pVtx, pEnemyBullet->obj);
 		SetVertexRHW(pVtx, 1.0f);
 		SetVertexColor(pVtx, pEnemyBullet->obj.color);
-		SetVertexTexturePos(pVtx);
+		SetVertexTexturePos(pVtx, pEnemyBullet->obj.bInversed);
 	}
 
 	// 頂点バッファをアンロック

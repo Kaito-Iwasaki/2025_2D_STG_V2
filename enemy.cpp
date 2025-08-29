@@ -108,7 +108,7 @@ void UpdateEnemy(void)
 			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
 			{
 				pEnemy->nCounterShoot = 0;
-				SetEnemyBullet(ENEMYBULLET_TYPE_000, pEnemy->obj.pos, 5.0f, Direction(pEnemy->obj.pos, GetPlayer()->obj.pos));
+				SetEnemyBullet(ENEMYBULLET_TYPE_001, pEnemy->obj.pos, 5.0f, Direction(pEnemy->obj.pos, GetPlayer()->obj.pos));
 			}
 
 			break;

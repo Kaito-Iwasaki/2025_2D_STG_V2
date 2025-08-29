@@ -146,3 +146,27 @@ bool IsObjectOutOfScreen(BASEOBJECT obj, DWORD flags)
 
 	return bOutofScreen;
 }
+
+bool IsObjectOutOfScreen(BASEOBJECT obj, DWORD flags, RECT rect)
+{
+	bool bOutofScreen = false;
+
+	if ((flags & OOS_TOP) == 0x0001)
+	{
+		bOutofScreen = bOutofScreen || obj.pos.y < rect.top - obj.size.y;
+	}
+	if ((flags & OOS_BOTTOM) == 0x0010)
+	{
+		bOutofScreen = bOutofScreen || obj.pos.y < rect.bottom + obj.size.y;
+	}
+	if ((flags & OOS_LEFT) == 0x0100)
+	{
+		bOutofScreen = bOutofScreen || obj.pos.x < rect.left - obj.size.x;
+	}
+	if ((flags & OOS_RIGHT) == 0x1000)
+	{
+		bOutofScreen = bOutofScreen || obj.pos.x < rect.right + obj.size.x;
+	}
+
+	return bOutofScreen;
+}

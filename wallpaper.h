@@ -1,49 +1,39 @@
 //=====================================================================
 //
-// baseScene.cppのヘッダファイル [baseScene.h]
+// wallpaper.cppのヘッダファイル [wallpaper.h]
 // Author : Kaito Iwasaki
 // 
 //=====================================================================
-#ifndef _BASESCENE_H_
-#define _BASESCENE_H_
+#ifndef _WALLPAPER_H_
+#define _WALLPAPER_H_
 
 //*********************************************************************
 // 
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
+#include "baseObject.h"
 #include "main.h"
 
 //*********************************************************************
 // 
-// ***** マクロ定義 *****
+// ***** 構造体 *****
 // 
 //*********************************************************************
-#define GAME_SCREEN_WIDTH		(720.0f)
-#define GAME_SCREEN_HEIGHT		(720.0f)
-#define GAME_SCREEN_RECT		{ SCREEN_CENTER - GAME_SCREEN_WIDTH / 2, 0, SCREEN_CENTER + GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT};
-
-//*********************************************************************
-// 
-// ***** 列挙型 *****
-// 
-//*********************************************************************
-typedef enum
+typedef struct
 {
-	SCENE_GAME = 0,
-	SCENE_ANOTHER,
-	SCENE_MAX
-}SCENE;		// シーン列挙型
+	BASEOBJECT obj;
+}WALLPAPER;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitScene(void);
-void UninitScene(void);
-void UpdateScene(void);
-void DrawScene(void);
-SCENE SetScene(SCENE nextScene);
+void InitWallPaper(void);
+void UninitWallPaper(void);
+void UpdateWallPaper(void);
+void DrawWallPaper(void);
+WALLPAPER* GetWallPaper(void);
 
 #endif

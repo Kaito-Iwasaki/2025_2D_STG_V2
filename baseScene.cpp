@@ -10,10 +10,12 @@
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
+#include "wallpaper.h"
 #include "baseScene.h"
 #include "fade.h"
 #include "title.h"
 #include "game.h"
+#include "decal.h"
 
 //*********************************************************************
 // 
@@ -27,8 +29,8 @@ SCENE g_currentScene = SCENE_GAME;
 //=====================================================================
 void InitScene(void)
 {
+	InitWallPaper();
 	InitFade(g_currentScene);
-	//SetScene(g_currentScene);
 }
 
 //=====================================================================
@@ -36,6 +38,7 @@ void InitScene(void)
 //=====================================================================
 void UninitScene(void)
 {
+	UninitWallPaper();
 	UninitTitle();
 	UninitGame();
 	UninitFade();
@@ -46,7 +49,6 @@ void UninitScene(void)
 //=====================================================================
 void UpdateScene(void)
 {
-
 	switch (g_currentScene)
 	{
 	case SCENE_GAME:
@@ -67,6 +69,15 @@ void UpdateScene(void)
 //=====================================================================
 void DrawScene(void)
 {
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	RECT rc = GAME_SCREEN_RECT;
+
+	pDevice->SetScissorRect(&rc);
+
+	DrawWallPaper();
+
+	pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE);
+
 	switch (g_currentScene)
 	{
 	case SCENE_GAME:
@@ -79,6 +90,9 @@ void DrawScene(void)
 	}
 
 	DrawFade();
+
+	pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
+
 }
 
 //=====================================================================
