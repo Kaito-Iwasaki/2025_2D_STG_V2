@@ -51,7 +51,7 @@ void InitTitle(void)
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 	);
 
-	PlaySound(SOUND_LABEL_STAGE01);
+	PlaySound(SOUND_LABEL_BGM_STAGE01);
 }
 
 //=====================================================================

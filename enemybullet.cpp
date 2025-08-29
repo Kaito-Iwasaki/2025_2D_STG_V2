@@ -119,7 +119,7 @@ void UpdateEnemyBullet(void)
 		}
 		pEnemyBullet->nCounterState++;
 
-		if (IsObjectOutOfScreen(pEnemyBullet->obj, OOS_TOP))
+		if (IsObjectOutOfScreen(pEnemyBullet->obj, OOS_BOTTOM | OOS_TOP | OOS_RIGHT | OOS_LEFT))
 		{// ‰æ–ÊŠO‚Éo‚½‚çíœ
 			pEnemyBullet->bUsed = false;
 			continue;

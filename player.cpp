@@ -206,6 +206,7 @@ void UpdatePlayer(void)
 	if (GetKeyboardPress(DIK_SPACE) && g_player.nCounterShoot % INIT_SHOOT_INTERVAL == 0)
 	{// ’eŒ‚‚¿
 		g_player.nCounterShoot = 0;
+		PlaySound(SOUND_LABEL_SE_SHOOT);
 		SetBullet(g_player.obj.pos + D3DXVECTOR3(5, -5, 0), g_player.fShootSpeed, D3DX_PI);
 		SetBullet(g_player.obj.pos + D3DXVECTOR3(-5, -5, 0), g_player.fShootSpeed, D3DX_PI);
 		SetBullet(g_player.obj.pos + D3DXVECTOR3(15, 0, 0), g_player.fShootSpeed, D3DX_PI);

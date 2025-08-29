@@ -14,6 +14,8 @@
 #include "sound.h"
 #include "util.h"
 #include "collision.h"
+#include "baseScene.h"
+#include "baseObject.h"
 
 #include "bullet.h"
 #include "enemy.h"
@@ -103,6 +105,7 @@ void UpdateBullet(void)
 {
 	BULLET* pBullet = &g_aBullet[0];
 	ENEMY* pEnemy;
+	RECT rectScreen = GAME_SCREEN_RECT;
 
 	for (int nCountBullet = 0; nCountBullet < MAX_BULLET; nCountBullet++, pBullet++)
 	{
@@ -111,7 +114,7 @@ void UpdateBullet(void)
 		// “G‚ðŽæ“¾
 		pEnemy = GetEnemy();
 
-		if (IsObjectOutOfScreen(pBullet->obj, OOS_TOP))
+		if (IsObjectOutOfScreen(pBullet->obj, OOS_TOP, rectScreen))
 		{// ‰æ–ÊŠO‚Éo‚½‚çíœ
 			pBullet->bUsed = false;
 			continue;

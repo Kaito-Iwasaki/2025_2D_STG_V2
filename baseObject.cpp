@@ -127,21 +127,21 @@ bool IsObjectOutOfScreen(BASEOBJECT obj, DWORD flags)
 {
 	bool bOutofScreen = false;
 
-	if ((flags & OOS_TOP) == 0x0001)
+	if (flags & OOS_TOP)
 	{
 		bOutofScreen = bOutofScreen || obj.pos.y < 0 - obj.size.y;
 	}
-	if ((flags & OOS_BOTTOM) == 0x0010)
+	if (flags & OOS_BOTTOM)
 	{
-		bOutofScreen = bOutofScreen || obj.pos.y < SCREEN_HEIGHT + obj.size.y;
+		bOutofScreen = bOutofScreen || obj.pos.y > SCREEN_HEIGHT + obj.size.y;
 	}
-	if ((flags & OOS_LEFT) == 0x0100)
+	if (flags & OOS_LEFT)
 	{
 		bOutofScreen = bOutofScreen || obj.pos.x < 0 - obj.size.x;
 	}
-	if ((flags & OOS_RIGHT) == 0x1000)
+	if (flags & OOS_RIGHT)
 	{
-		bOutofScreen = bOutofScreen || obj.pos.x < SCREEN_WIDTH + obj.size.x;
+		bOutofScreen = bOutofScreen || obj.pos.x > SCREEN_WIDTH + obj.size.x;
 	}
 
 	return bOutofScreen;
@@ -151,21 +151,21 @@ bool IsObjectOutOfScreen(BASEOBJECT obj, DWORD flags, RECT rect)
 {
 	bool bOutofScreen = false;
 
-	if ((flags & OOS_TOP) == 0x0001)
+	if (flags & OOS_TOP)
 	{
 		bOutofScreen = bOutofScreen || obj.pos.y < rect.top - obj.size.y;
 	}
-	if ((flags & OOS_BOTTOM) == 0x0010)
+	if (flags & OOS_BOTTOM)
 	{
-		bOutofScreen = bOutofScreen || obj.pos.y < rect.bottom + obj.size.y;
+		bOutofScreen = bOutofScreen || obj.pos.y > rect.bottom + obj.size.y;
 	}
-	if ((flags & OOS_LEFT) == 0x0100)
+	if (flags & OOS_LEFT)
 	{
 		bOutofScreen = bOutofScreen || obj.pos.x < rect.left - obj.size.x;
 	}
-	if ((flags & OOS_RIGHT) == 0x1000)
+	if (flags & OOS_RIGHT)
 	{
-		bOutofScreen = bOutofScreen || obj.pos.x < rect.right + obj.size.x;
+		bOutofScreen = bOutofScreen || obj.pos.x > rect.right + obj.size.x;
 	}
 
 	return bOutofScreen;

@@ -13,6 +13,7 @@
 #include "input.h"
 #include "sound.h"
 #include "util.h"
+#include "baseScene.h"
 
 #include "player.h"
 #include "enemy.h"
@@ -96,6 +97,7 @@ void UninitEnemy(void)
 void UpdateEnemy(void)
 {
 	ENEMY* pEnemy = &g_aEnemy[0];
+	RECT rectScreen = GAME_SCREEN_RECT;
 
 	for (int nCount = 0; nCount < MAX_ENEMY; nCount++, pEnemy++)
 	{
@@ -105,6 +107,8 @@ void UpdateEnemy(void)
 		{
 		case ENEMYTYPE_000:
 			pEnemy->nCounterShoot++;
+			pEnemy->obj.pos.y += 5;
+
 			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
 			{
 				pEnemy->nCounterShoot = 0;
@@ -116,6 +120,12 @@ void UpdateEnemy(void)
 		case ENEMYTYPE_001:
 
 			break;
+		}
+
+		if (IsObjectOutOfScreen(pEnemy->obj, OOS_BOTTOM))
+		{// ‰æ–ÊŠO‚Éo‚½‚çíœ
+			pEnemy->bUsed = false;
+			continue;
 		}
 	}
 }

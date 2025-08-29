@@ -36,6 +36,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] = {
 	{"data\\BGM\\bgm003.wav", -1},
 	{"data\\BGM\\stage01.wav", -1},
 	{"data\\BGM\\stage02.wav", -1},
+	{"data\\SE\\shoot000.wav", 0},
 };
 
 //=============================================================================
