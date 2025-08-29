@@ -15,13 +15,12 @@
 #include "input.h"
 #include "sound.h"
 #include "fade.h"
+#include "font.h"
 
-#include "uzawa.h"
 #include "player.h"
+#include "enemy.h"
 #include "bullet.h"
-#include "decal.h"
-
-#include "util.h"
+#include "enemybullet.h"
 
 //*********************************************************************
 // 
@@ -36,23 +35,19 @@
 // 
 //*********************************************************************
 
+
 //=====================================================================
 // èâä˙âªèàóù
 //=====================================================================
 void InitGame(void)
 {
+	InitFont();
 	InitPlayer();
 	InitBullet();
-	InitDecal();
+	InitEnemy();
+	InitEnemyBullet();
 
-	SetDecal(
-		DECAL_LABEL_TITLE,
-		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
-		D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f),
-		D3DXVECTOR3_ZERO
-	);
-
-	PlaySound(SOUND_LABEL_STAGE01);
+	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f));
 }
 
 //=====================================================================
@@ -60,9 +55,11 @@ void InitGame(void)
 //=====================================================================
 void UninitGame(void)
 {
+	UninitFont();
 	UninitPlayer();
 	UninitBullet();
-	UninitDecal();
+	UninitEnemy();
+	UninitEnemyBullet();
 }
 
 //=====================================================================
@@ -70,12 +67,15 @@ void UninitGame(void)
 //=====================================================================
 void UpdateGame(void)
 {
+	UpdateFont();
 	UpdatePlayer();
 	UpdateBullet();
+	UpdateEnemy();
+	UpdateEnemyBullet();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
-		SetFade(SCENE_ANOTHER);
+		SetFade(SCENE_GAME);
 	}
 }
 
@@ -84,7 +84,9 @@ void UpdateGame(void)
 //=====================================================================
 void DrawGame(void)
 {
-	DrawDecal();
-	DrawPlayer();
+	DrawEnemy();
+	DrawEnemyBullet();
 	DrawBullet();
+	DrawPlayer();
+	DrawFont();
 }

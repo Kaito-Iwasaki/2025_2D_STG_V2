@@ -16,7 +16,7 @@
 #include "collision.h"
 
 #include "bullet.h"
-#include "uzawa.h"
+#include "enemy.h"
 
 //*********************************************************************
 // 
@@ -102,9 +102,14 @@ void UninitBullet(void)
 void UpdateBullet(void)
 {
 	BULLET* pBullet = &g_aBullet[0];
-	for (int nCount = 0; nCount < MAX_BULLET; nCount++, pBullet++)
+	ENEMY* pEnemy;
+
+	for (int nCountBullet = 0; nCountBullet < MAX_BULLET; nCountBullet++, pBullet++)
 	{
 		if (pBullet->bUsed == false) continue;		// 未使用の敵ならスキップ
+
+		// 敵を取得
+		pEnemy = GetEnemy();
 
 		if (IsObjectOutOfScreen(pBullet->obj, OOS_TOP))
 		{// 画面外に出たら削除
@@ -112,7 +117,16 @@ void UpdateBullet(void)
 			continue;
 		}
 
-		pBullet->obj.pos += D3DXVECTOR3(sin(pBullet->fDirection), cos(pBullet->fDirection), 0.0f) * pBullet->fSpeed;
+		pBullet->obj.pos += D3DXVECTOR3(sinf(pBullet->fDirection), cosf(pBullet->fDirection), 0.0f) * pBullet->fSpeed;
+
+		for (int nCountEnemy = 0; nCountEnemy < MAX_ENEMY; nCountEnemy++, pEnemy++)
+		{
+			if (pEnemy->bUsed && BoxCollision(pBullet->obj, pEnemy->obj))
+			{
+				HitEnemy(pEnemy);
+				pBullet->bUsed = false;
+			}
+		}
 	}
 }
 

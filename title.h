@@ -1,11 +1,11 @@
 //=====================================================================
 //
-// another.cppのヘッダファイル [another.h]
+// title.cppのヘッダファイル [title.h]
 // Author : Kaito Iwasaki
 // 
 //=====================================================================
-#ifndef _ANOTHER_H_
-#define _ANOTHER_H_
+#ifndef _TITLE_H_
+#define _TITLE_H_
 
 //*********************************************************************
 // 
@@ -19,9 +19,9 @@
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitAnother(void);
-void UninitAnother(void);
-void UpdateAnother(void);
-void DrawAnother(void);
+void InitTitle(void);
+void UninitTitle(void);
+void UpdateTitle(void);
+void DrawTitle(void);
 
 #endif

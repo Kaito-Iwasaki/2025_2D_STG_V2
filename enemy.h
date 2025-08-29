@@ -1,11 +1,11 @@
 //=====================================================================
 //
-// decal.cppのヘッダファイル [decal.h]
+// enemy.cppのヘッダファイル [enemy.h]
 // Author : Kaito Iwasaki
 // 
 //=====================================================================
-#ifndef _DECAL_H_
-#define _DECAL_H_
+#ifndef _ENEMY_H_
+#define _ENEMY_H_
 
 //*********************************************************************
 // 
@@ -20,7 +20,7 @@
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-#define MAX_DECAL		(256)
+#define MAX_ENEMY		(256)
 
 //*********************************************************************
 // 
@@ -29,13 +29,18 @@
 //*********************************************************************
 typedef enum
 {
-	DECAL_LABEL_TITLE = 0,
-	DECAL_LABEL_TUTORIAL,
-	DECAL_LABEL_BG000,
-	DECAL_LABEL_BG001,
-	DECAL_LABEL_BG002,
-	DECAL_LABEL_MAX
-}DECAL_LABEL;
+	ENEMYTYPE_000 = 0,
+	ENEMYTYPE_001,
+	ENEMYTYPE_002,
+	ENEMYTYPE_MAX
+}ENEMYTYPE;
+
+typedef enum
+{
+	ENEMYSTATE_NORMAL = 0,
+	ENEMYSTATE_DAMAGED,
+	ENEMYSTATE_MAX
+}ENEMYSTATE;
 
 //*********************************************************************
 // 
@@ -46,22 +51,27 @@ typedef struct
 {
 	BASEOBJECT obj;
 	bool bUsed;
-	DECAL_LABEL label;
-	int nID;
-}DECAL;
+
+	ENEMYTYPE type;
+	float fLife;
+	int nShootInterval;
+
+	int nCounterState;
+	int nCounterShoot;
+}ENEMY;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitDecal(void);
-void UninitDecal(void);
-void UpdateDecal(void);
-void DrawDecal(void);
-DECAL* GetDecal(void);
-int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot);
-void DeleteDecal(int nID);
-void DeleteDecal(void);
+void InitEnemy(void);
+void UninitEnemy(void);
+void UpdateEnemy(void);
+void DrawEnemy(void);
+ENEMY* GetEnemy(void);
+int GetEnemyLeft(void);
+ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos);
+void HitEnemy(ENEMY* pEnemy);
 
 #endif

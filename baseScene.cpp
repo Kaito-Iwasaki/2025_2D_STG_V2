@@ -12,8 +12,8 @@
 //*********************************************************************
 #include "baseScene.h"
 #include "fade.h"
+#include "title.h"
 #include "game.h"
-#include "another.h"
 
 //*********************************************************************
 // 
@@ -36,8 +36,8 @@ void InitScene(void)
 //=====================================================================
 void UninitScene(void)
 {
+	UninitTitle();
 	UninitGame();
-	UninitAnother();
 	UninitFade();
 }
 
@@ -50,11 +50,11 @@ void UpdateScene(void)
 	switch (g_currentScene)
 	{
 	case SCENE_GAME:
-		UpdateGame();
+		UpdateTitle();
 		break;
 
 	case SCENE_ANOTHER:
-		UpdateAnother();
+		UpdateGame();
 		break;
 
 	}
@@ -70,11 +70,11 @@ void DrawScene(void)
 	switch (g_currentScene)
 	{
 	case SCENE_GAME:
-		DrawGame();
+		DrawTitle();
 		break;
 
 	case SCENE_ANOTHER:
-		DrawAnother();
+		DrawGame();
 		break;
 	}
 
@@ -90,11 +90,11 @@ SCENE SetScene(SCENE nextScene)
 	switch (g_currentScene)
 	{
 	case SCENE_GAME:
-		UninitGame();
+		UninitTitle();
 		break;
 
 	case SCENE_ANOTHER:
-		UninitAnother();
+		UninitGame();
 		break;
 	}
 
@@ -102,11 +102,11 @@ SCENE SetScene(SCENE nextScene)
 	switch (nextScene)
 	{
 	case SCENE_GAME:
-		InitGame();
+		InitTitle();
 		break;
 
 	case SCENE_ANOTHER:
-		InitAnother();
+		InitGame();
 		break;
 	}
 

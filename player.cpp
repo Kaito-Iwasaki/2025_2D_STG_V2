@@ -30,9 +30,21 @@
 #define INIT_SIZE				{64.0f, 64.0f, 0.0f}
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 
-#define INIT_PLAYER_SPEED		(5.0f)
-#define INIT_SHOOT_SPEED		(17.0f)
-#define INIT_SHOOT_INTERVAL		(5)
+#define INIT_PLAYER_SPEED		(10.0f)
+#define INIT_SHOOT_SPEED		(49.0f)
+#define INIT_SHOOT_INTERVAL		(3)
+#define INIT_PLAYER_LIFE		(3)
+#define INIT_PLAYER_CHARGE		(0)
+
+#define PLAYER_HEAL_MAX			(3)
+#define PLAYER_HEAL_SCALE		(0.01f)
+
+//*********************************************************************
+// 
+// ***** プロトタイプ宣言 *****
+// 
+//*********************************************************************
+void SetPlayerState(PLAYERSTATE state);
 
 //*********************************************************************
 // 
@@ -49,7 +61,6 @@ PLAYER g_player;
 void InitPlayer(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイス
-	VERTEX_2D* pVtx;							// 頂点情報
 
 	// 構造体の初期化
 	memset(&g_player, 0, sizeof(PLAYER));
@@ -58,8 +69,11 @@ void InitPlayer(void)
 	g_player.obj.color = INIT_COLOR;
 	g_player.obj.bVisible = true;
 
+	g_player.state = PLAYERSTATE_APPEAR;
 	g_player.fSpeed = INIT_PLAYER_SPEED;
 	g_player.fShootSpeed = INIT_SHOOT_SPEED;
+	g_player.fLife = INIT_PLAYER_LIFE;
+	g_player.fCharge = INIT_PLAYER_CHARGE;
 
 	// テクスチャの読み込み
 	if (TEXTURE_FILENAME)
@@ -114,20 +128,38 @@ void UpdatePlayer(void)
 	switch (g_player.state)
 	{
 	case PLAYERSTATE_NORMAL:
-
+		g_player.obj.bVisible = true;
+		if (g_player.fLife < PLAYER_HEAL_MAX)
+		{
+			g_player.fLife += PLAYER_HEAL_SCALE;
+		}
 		break;
 
 	case PLAYERSTATE_APPEAR:
-
+		if (g_player.nCounterState > 60)
+		{
+			SetPlayerState(PLAYERSTATE_NORMAL);
+		}
 		break;
 
 	case PLAYERSTATE_DAMAGED:
+		if (g_player.nCounterState % 3 == 0)
+		{
+			g_player.obj.bVisible ^= 1;
+		}
 
+		if (g_player.nCounterState > 120)
+		{
+			SetPlayerState(PLAYERSTATE_NORMAL);
+		}
 		break;
 
 	case PLAYERSTATE_DIED:
-
-		break;
+		if (g_player.nCounterState > 120)
+		{
+			SetPlayerState(PLAYERSTATE_NORMAL);
+		}
+		return;
 	}
 	g_player.nCounterState++;
 
@@ -152,6 +184,7 @@ void UpdatePlayer(void)
 		direction.y += 1;
 	}
 
+	// 移動方向に応じてテクスチャパターンを設定
 	g_player.nTexPattern = direction.x;
 
 	// 方向の大きさを求める
@@ -171,7 +204,10 @@ void UpdatePlayer(void)
 	if (GetKeyboardPress(DIK_SPACE) && g_player.nCounterShoot % INIT_SHOOT_INTERVAL == 0)
 	{// 弾撃ち
 		g_player.nCounterShoot = 0;
-		SetBullet(g_player.obj.pos, g_player.fShootSpeed, D3DX_PI);
+		SetBullet(g_player.obj.pos + D3DXVECTOR3(5, -5, 0), g_player.fShootSpeed, D3DX_PI);
+		SetBullet(g_player.obj.pos + D3DXVECTOR3(-5, -5, 0), g_player.fShootSpeed, D3DX_PI);
+		SetBullet(g_player.obj.pos + D3DXVECTOR3(15, 0, 0), g_player.fShootSpeed, D3DX_PI);
+		SetBullet(g_player.obj.pos + D3DXVECTOR3(-15, 0, 0), g_player.fShootSpeed, D3DX_PI);
 	}
 }
 
@@ -224,10 +260,11 @@ PLAYER* GetPlayer(void)
 
 void HitPlayer(void)
 {
-	if (PLAYERSTATE_APPEAR)		return;
-	if (PLAYERSTATE_DAMAGED)	return;
-	if (PLAYERSTATE_DIED)		return;
-	if (PLAYERSTATE_END)		return;
+	// 以下の状態では判定しない
+	if (g_player.state == PLAYERSTATE_APPEAR)	return;		// 出現直後
+	if (g_player.state == PLAYERSTATE_DAMAGED)	return;		// ダメージ直後
+	if (g_player.state == PLAYERSTATE_DIED)		return;		// 死亡状態
+	if (g_player.state == PLAYERSTATE_END)		return;		// ゲーム終了状態
 
 	g_player.fLife -= 1;
 
@@ -237,8 +274,14 @@ void HitPlayer(void)
 	}
 	else
 	{
-		PLAYERSTATE_DAMAGED;
+		g_player.state = PLAYERSTATE_DAMAGED;
 	}
 
+	g_player.nCounterState = 0;
+}
+
+void SetPlayerState(PLAYERSTATE state)
+{
+	g_player.state = state;
 	g_player.nCounterState = 0;
 }

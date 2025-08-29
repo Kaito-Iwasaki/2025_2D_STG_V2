@@ -26,7 +26,7 @@
 #define TEXTURE_FILENAME		"data\\TEXTURE\\enemybullet000.png"
 
 #define INIT_POS				D3DXVECTOR3_ZERO
-#define INIT_SIZE				D3DXVECTOR3(64.0f, 64.0f, 64.0f)
+#define INIT_SIZE				D3DXVECTOR3(16.0f, 16.0f, 16.0f)
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 
 //*********************************************************************
@@ -38,9 +38,9 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffEnemyBullet = NULL;
 LPDIRECT3DTEXTURE9 g_pTexBuffEnemyBullet[ENEMYBULLET_TYPE_MAX] = {};
 ENEMYBULLET g_aEnemyBullet[MAX_ENEMYBULLET] = {};
 
-char g_aEnemyBulletFileName[ENEMYBULLET_TYPE_MAX][MAX_PATH] = {
-	"data\\TEXTURE\\enemybullet000",
-	"data\\TEXTURE\\enemybullet001",
+const char* g_aEnemyBulletFileName[ENEMYBULLET_TYPE_MAX] = {
+	"data\\TEXTURE\\enemybullet000.png",
+	"data\\TEXTURE\\enemybullet001.png",
 };
 
 //=====================================================================

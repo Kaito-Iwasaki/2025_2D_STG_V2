@@ -1,6 +1,6 @@
 //=====================================================================
 //
-// ゲーム画面 [another.cpp]
+// ゲーム画面 [title.cpp]
 // Author : Kaito Iwasaki
 // 
 //=====================================================================
@@ -11,7 +11,7 @@
 // 
 //*********************************************************************
 #include "baseScene.h"
-#include "another.h"
+#include "title.h"
 #include "input.h"
 #include "sound.h"
 #include "fade.h"
@@ -19,6 +19,9 @@
 #include "uzawa.h"
 #include "player.h"
 #include "bullet.h"
+#include "decal.h"
+
+#include "util.h"
 
 //*********************************************************************
 // 
@@ -33,52 +36,46 @@
 // 
 //*********************************************************************
 
-
 //=====================================================================
 // 初期化処理
 //=====================================================================
-void InitAnother(void)
+void InitTitle(void)
 {
-	InitUzawa();
-	InitPlayer();
-	InitBullet();
+	InitDecal();
 
-	GetUzawa()->obj.size *= 0.5;
+	SetDecal(
+		DECAL_LABEL_TITLE,
+		D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f),
+		D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f),
+		D3DXVECTOR3_ZERO
+	);
+
+	PlaySound(SOUND_LABEL_STAGE01);
 }
 
 //=====================================================================
 // 終了処理
 //=====================================================================
-void UninitAnother(void)
+void UninitTitle(void)
 {
-	UninitBullet();
-	UninitUzawa();
-	UninitPlayer();
+	UninitDecal();
 }
 
 //=====================================================================
 // 更新処理
 //=====================================================================
-void UpdateAnother(void)
+void UpdateTitle(void)
 {
-	GetUzawa()->obj.rot.z += 0.1f;
-
-	UpdateUzawa();
-	UpdatePlayer();
-	UpdateBullet();
-
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
-		SetFade(SCENE_GAME);
+		SetFade(SCENE_ANOTHER);
 	}
 }
 
 //=====================================================================
 // 描画処理
 //=====================================================================
-void DrawAnother(void)
+void DrawTitle(void)
 {
-	DrawUzawa();
-	DrawBullet();
-	DrawPlayer();
+	DrawDecal();
 }

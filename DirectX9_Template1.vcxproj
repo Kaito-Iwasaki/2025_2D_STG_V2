@@ -137,7 +137,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="another.h" />
+    <ClInclude Include="enemy.h" />
+    <ClInclude Include="font.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="baseObject.h" />
     <ClInclude Include="baseScene.h" />
     <ClInclude Include="decal.h" />
@@ -147,7 +149,7 @@
     </ClInclude>
     <ClInclude Include="enemybullet.h" />
     <ClInclude Include="fade.h" />
-    <ClInclude Include="game.h" />
+    <ClInclude Include="title.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="player.h" />
@@ -157,7 +159,9 @@
     <ClInclude Include="bullet.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="another.cpp" />
+    <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="font.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="baseScene.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="collision.cpp">
@@ -167,7 +171,7 @@
     <ClCompile Include="decal.cpp" />
     <ClCompile Include="enemybullet.cpp" />
     <ClCompile Include="fade.cpp" />
-    <ClCompile Include="game.cpp" />
+    <ClCompile Include="title.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />

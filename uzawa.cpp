@@ -24,11 +24,17 @@
 //*********************************************************************
 #define TEXTURE_FILENAME		"data\\TEXTURE\\uzawa.png"
 
-#define INIT_POS_X				(SCREEN_WIDTH / 2)
-#define INIT_POS_Y				(SCREEN_HEIGHT/ 2)
-#define INIT_SIZE_X				(300.0f)
-#define INIT_SIZE_Y				(600.0f)
+#define INIT_POS				{SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2, 0.0f}
+#define INIT_SIZE				{300.0f, 600.0f, 0.0f}
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+
+#define INIT_PLAYER_SPEED		(10.0f)
+
+//*********************************************************************
+// 
+// ***** グローバル変数 *****
+// 
+//*********************************************************************
 
 //*********************************************************************
 // 
@@ -49,12 +55,12 @@ void InitUzawa(void)
 
 	// 構造体の初期化
 	memset(&g_uzawa, 0, sizeof(UZAWA));
-	g_uzawa.obj.pos = { INIT_POS_X, INIT_POS_Y, 0.0f };
-	g_uzawa.obj.size = { INIT_SIZE_X, INIT_SIZE_Y, 0.0f };
+	g_uzawa.obj.pos = INIT_POS;
+	g_uzawa.obj.size = INIT_SIZE;
 	g_uzawa.obj.color = INIT_COLOR;
 	g_uzawa.obj.bVisible = true;
 
-	g_uzawa.fSpeed = 10.0f;
+	g_uzawa.fSpeed = INIT_PLAYER_SPEED;
 
 	// テクスチャの読み込み
 	if (TEXTURE_FILENAME)
