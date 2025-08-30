@@ -37,11 +37,12 @@ LPDIRECT3DTEXTURE9 g_pTexBuffDecal[DECAL_LABEL_MAX] = {};
 DECAL g_aDecal[MAX_DECAL] = {};
 
 const char* g_aDecalFileName[DECAL_LABEL_MAX] = {
-	"data\\TEXTURE\\title000.png",
-	"data\\TEXTURE\\title000.png",
+	"data\\TEXTURE\\title000.jpg",
+	"data\\TEXTURE\\title001.png",
 	"data\\TEXTURE\\bg100.png",
 	"data\\TEXTURE\\bg101.png",
-	"data\\TEXTURE\\bg102.png"
+	"data\\TEXTURE\\bg102.png",
+	"data\\TEXTURE\\wallpaper01.png",
 };
 
 //=====================================================================

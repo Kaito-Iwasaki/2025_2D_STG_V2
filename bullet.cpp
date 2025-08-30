@@ -19,6 +19,8 @@
 
 #include "bullet.h"
 #include "enemy.h"
+#include "enemybullet.h"
+#include "spriteEffect.h"
 
 //*********************************************************************
 // 
@@ -105,6 +107,7 @@ void UpdateBullet(void)
 {
 	BULLET* pBullet = &g_aBullet[0];
 	ENEMY* pEnemy;
+	ENEMYBULLET* pEnemyBullet;
 	RECT rectScreen = GAME_SCREEN_RECT;
 
 	for (int nCountBullet = 0; nCountBullet < MAX_BULLET; nCountBullet++, pBullet++)
@@ -113,6 +116,7 @@ void UpdateBullet(void)
 
 		// ìGÇéÊìæ
 		pEnemy = GetEnemy();
+		pEnemyBullet = GetEnemyBullet();
 
 		if (IsObjectOutOfScreen(pBullet->obj, OOS_TOP, rectScreen))
 		{// âÊñ äOÇ…èoÇΩÇÁçÌèú
@@ -122,11 +126,22 @@ void UpdateBullet(void)
 
 		pBullet->obj.pos += D3DXVECTOR3(sinf(pBullet->fDirection), cosf(pBullet->fDirection), 0.0f) * pBullet->fSpeed;
 
+		// ìGÇ∆ÇÃè’ìÀîªíË
 		for (int nCountEnemy = 0; nCountEnemy < MAX_ENEMY; nCountEnemy++, pEnemy++)
 		{
 			if (pEnemy->bUsed && BoxCollision(pBullet->obj, pEnemy->obj))
 			{
 				HitEnemy(pEnemy);
+				pBullet->bUsed = false;
+			}
+		}
+
+		// ìGíeÇ∆ÇÃè’ìÀîªíË
+		for (int nCountEnemyBullet = 0; nCountEnemyBullet < MAX_ENEMY; nCountEnemyBullet++, pEnemyBullet++)
+		{
+			if (pEnemyBullet->bUsed && BoxCollision(pBullet->obj, pEnemyBullet->obj))
+			{
+				HitEnemyBullet(pEnemyBullet);
 				pBullet->bUsed = false;
 			}
 		}

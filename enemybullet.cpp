@@ -17,6 +17,7 @@
 
 #include "enemybullet.h"
 #include "player.h"
+#include "spriteEffect.h"
 
 //*********************************************************************
 // 
@@ -27,7 +28,11 @@
 
 #define INIT_POS				D3DXVECTOR3_ZERO
 #define INIT_SIZE				D3DXVECTOR3(16.0f, 16.0f, 16.0f)
-#define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+#define INIT_COLOR				D3DXCOLOR(0.0f, 0.0f, 0.0f,1.0f)
+
+#define ENEMYBULLET_COLOR_NORMAL		INIT_COLOR
+#define ENEMYBULLET_COLOR_DAMAGED		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+
 
 //*********************************************************************
 // 
@@ -101,23 +106,18 @@ void UninitEnemyBullet(void)
 void UpdateEnemyBullet(void)
 {
 	ENEMYBULLET* pEnemyBullet = &g_aEnemyBullet[0];
+	PLAYER* pPlayer = GetPlayer();
+
 	for (int nCount = 0; nCount < MAX_ENEMYBULLET; nCount++, pEnemyBullet++)
 	{
 		if (pEnemyBullet->bUsed == false) continue;		// 未使用の敵ならスキップ
 
-		switch (pEnemyBullet->type)
-		{
-		case ENEMYBULLET_TYPE_001:
-			if (pEnemyBullet->nCounterState % 3 == 0)
-			{
-				pEnemyBullet->obj.bInversed ^= 1;
-			}
-			break;
-
-		default:
-			break;
+		if (pEnemyBullet->fLife <= 0)
+		{// 弾死亡
+			SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.8f);
+			pEnemyBullet->bUsed = false;
+			continue;
 		}
-		pEnemyBullet->nCounterState++;
 
 		if (IsObjectOutOfScreen(pEnemyBullet->obj, OOS_BOTTOM | OOS_TOP | OOS_RIGHT | OOS_LEFT))
 		{// 画面外に出たら削除
@@ -125,9 +125,41 @@ void UpdateEnemyBullet(void)
 			continue;
 		}
 
-		if (BoxCollision(pEnemyBullet->obj, GetPlayer()->obj))
+		if (BoxCollision(pEnemyBullet->obj.pos, pEnemyBullet->obj.size, pPlayer->obj.pos, pPlayer->hitBoxSize))
 		{// プレイヤーとの衝突判定
 			HitPlayer();
+			pEnemyBullet->bUsed = false;
+			continue;
+		}
+
+		switch (pEnemyBullet->state)
+		{
+		case ENEMYBULLETSTATE_NORMAL:
+			pEnemyBullet->obj.color = ENEMYBULLET_COLOR_NORMAL;
+			break;
+
+		case ENEMYBULLETSTATE_DAMAGED:
+			pEnemyBullet->obj.color = ENEMYBULLET_COLOR_DAMAGED;
+
+			if (pEnemyBullet->nCounterState % 1 == 0)
+			{
+ 				pEnemyBullet->state = ENEMYBULLETSTATE_NORMAL;
+			}
+			break;
+		}
+		pEnemyBullet->nCounterState++;
+
+		switch (pEnemyBullet->type)
+		{
+		case ENEMYBULLET_TYPE_001:
+			if (pEnemyBullet->nCounterState % 2 == 0)
+			{
+				pEnemyBullet->obj.rot.z += D3DX_PI * 0.125f;
+			}
+			break;
+
+		default:
+			break;
 		}
 
 		pEnemyBullet->obj.pos += D3DXVECTOR3(sin(pEnemyBullet->fDirection), cos(pEnemyBullet->fDirection), 0.0f) * pEnemyBullet->fSpeed;
@@ -167,6 +199,8 @@ void DrawEnemyBullet(void)
 	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
+	pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_ADD);
+
 	pEnemyBullet = &g_aEnemyBullet[0];
 	for (int nCount = 0; nCount < MAX_ENEMYBULLET; nCount++, pEnemyBullet++)
 	{
@@ -179,6 +213,8 @@ void DrawEnemyBullet(void)
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCount * 4, 2);
 		}
 	}
+
+	pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 }
 
 //=====================================================================
@@ -218,10 +254,28 @@ void SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float 
 			pEnemyBullet->fSpeed = fSpeed;
 			pEnemyBullet->fDirection = fDirection;
 			pEnemyBullet->fDamage = 1.0f;
+			pEnemyBullet->fLife = 10.0f;
 			pEnemyBullet->type = type;
+			pEnemyBullet->state = ENEMYBULLETSTATE_NORMAL;
 			pEnemyBullet->obj.bVisible = true;
 
 			break;
 		}
+	}
+}
+
+void HitEnemyBullet(ENEMYBULLET* pEnemyBullet)
+{
+	pEnemyBullet->fLife -= 1;
+
+	if (pEnemyBullet->fLife <= 0)
+	{
+		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 1.0f);
+		pEnemyBullet->bUsed = false;
+	}
+	else
+	{
+		pEnemyBullet->state = ENEMYBULLETSTATE_DAMAGED;
+		pEnemyBullet->nCounterState = 0;
 	}
 }

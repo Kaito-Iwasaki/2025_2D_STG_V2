@@ -18,6 +18,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "enemybullet.h"
+#include "spriteEffect.h"
 
 //*********************************************************************
 // 
@@ -28,10 +29,13 @@
 #define INIT_POS_Y				(SCREEN_HEIGHT/ 2)
 #define INIT_SIZE_X				(48.0f)
 #define INIT_SIZE_Y				(48.0f)
-#define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+#define INIT_COLOR				D3DXCOLOR(0.0f, 0.0f, 0.0f,1.0f)
 
-#define INIT_ENEMY_LIFE				(10)
+#define INIT_ENEMY_LIFE				(30)
 #define INIT_ENEMY_SHOOT_INTERVAL	(20)
+
+#define ENEMY_COLOR_NORMAL		INIT_COLOR
+#define ENEMY_COLOR_DAMAGED		D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f)
 
 //*********************************************************************
 // 
@@ -103,11 +107,30 @@ void UpdateEnemy(void)
 	{
 		if (pEnemy->bUsed == false) continue;
 
+		// 敵の状態別処理
+		switch (pEnemy->state)
+		{
+		case ENEMYSTATE_NORMAL:
+			pEnemy->obj.color = ENEMY_COLOR_NORMAL;
+			break;
+
+		case ENEMYSTATE_DAMAGED:
+			pEnemy->obj.color = ENEMY_COLOR_DAMAGED;
+
+			if (pEnemy->nCounterState % 1 == 0)
+			{
+				pEnemy->state = ENEMYSTATE_NORMAL;
+			}
+			break;
+		}
+		pEnemy->nCounterState++;
+
+		// 敵の行動別処理
 		switch (pEnemy->type)
 		{
 		case ENEMYTYPE_000:
 			pEnemy->nCounterShoot++;
-			pEnemy->obj.pos.y += 5;
+			pEnemy->obj.pos.y += 3;
 
 			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
 			{
@@ -163,6 +186,8 @@ void DrawEnemy(void)
 	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
+	pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_ADD);
+
 	pEnemy = &g_aEnemy[0];
 	for (int nCount = 0; nCount < MAX_ENEMY; nCount++, pEnemy++)
 	{
@@ -175,6 +200,9 @@ void DrawEnemy(void)
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, nCount * 4, 2);
 		}
 	}
+
+	pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+
 }
 
 //=====================================================================
@@ -250,6 +278,11 @@ void HitEnemy(ENEMY* pEnemy)
 	
 	if (pEnemy->fLife <= 0)
 	{
+		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 1.0f);
 		pEnemy->bUsed = false;
+	}
+	else
+	{
+		pEnemy->state = ENEMYSTATE_DAMAGED;
 	}
 }

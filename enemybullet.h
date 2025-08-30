@@ -34,6 +34,13 @@ typedef enum
 	ENEMYBULLET_TYPE_MAX
 }ENEMYBULLET_TYPE;
 
+typedef enum
+{
+	ENEMYBULLETSTATE_NORMAL = 0,
+	ENEMYBULLETSTATE_DAMAGED,
+	ENEMYBULLETSTATE_MAX
+}ENEMYBULLETSTATE;
+
 //*********************************************************************
 // 
 // ***** ç\ë¢ëÃ *****
@@ -46,7 +53,9 @@ typedef struct
 	float fSpeed;
 	float fDirection;
 	float fDamage;
+	float fLife;
 	ENEMYBULLET_TYPE type;
+	ENEMYBULLETSTATE state;
 
 	int nCounterState;
 }ENEMYBULLET;
@@ -62,5 +71,6 @@ void UpdateEnemyBullet(void);
 void DrawEnemyBullet(void);
 ENEMYBULLET* GetEnemyBullet(void);
 void SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fDirection);
+void HitEnemyBullet(ENEMYBULLET* pEnemyBullet);
 
 #endif

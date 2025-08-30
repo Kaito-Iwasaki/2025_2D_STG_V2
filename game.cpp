@@ -22,6 +22,7 @@
 #include "enemy.h"
 #include "bullet.h"
 #include "enemybullet.h"
+#include "spriteEffect.h"
 
 //*********************************************************************
 // 
@@ -48,6 +49,7 @@ void InitGame(void)
 	InitBullet();
 	InitEnemy();
 	InitEnemyBullet();
+	InitSpriteEffect();
 
 	SetDecal(
 		DECAL_LABEL_NULL,
@@ -58,6 +60,9 @@ void InitGame(void)
 	);
 
 	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 200, 0.0f));
+	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 400, 0.0f));
+	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2 + 100, 0 - 400, 0.0f));
+	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2 - 100, 0 - 400, 0.0f));
 }
 
 //=====================================================================
@@ -71,6 +76,7 @@ void UninitGame(void)
 	UninitBullet();
 	UninitEnemy();
 	UninitEnemyBullet();
+	UninitSpriteEffect();
 }
 
 //=====================================================================
@@ -84,6 +90,7 @@ void UpdateGame(void)
 	UpdateBullet();
 	UpdateEnemy();
 	UpdateEnemyBullet();
+	UpdateSpriteEffect();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -97,6 +104,7 @@ void UpdateGame(void)
 void DrawGame(void)
 {
 	DrawDecal();
+	DrawSpriteEffect();
 	DrawEnemy();
 	DrawEnemyBullet();
 	DrawBullet();

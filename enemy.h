@@ -53,6 +53,7 @@ typedef struct
 	bool bUsed;
 
 	ENEMYTYPE type;
+	ENEMYSTATE state;
 	float fLife;
 	int nShootInterval;
 

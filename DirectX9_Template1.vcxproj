@@ -158,8 +158,13 @@
     <ClInclude Include="uzawa.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="wallpaper.h" />
+    <ClInclude Include="spriteEffect.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="spriteEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="game.cpp" />

@@ -19,7 +19,7 @@
 // ***** É}ÉNÉçíËã` *****
 // 
 //*********************************************************************
-#define GAME_SCREEN_WIDTH		(720.0f)
+#define GAME_SCREEN_WIDTH		(540.0f)
 #define GAME_SCREEN_HEIGHT		(720.0f)
 #define GAME_SCREEN_RECT		{ SCREEN_CENTER - GAME_SCREEN_WIDTH / 2, 0, SCREEN_CENTER + GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT};
 

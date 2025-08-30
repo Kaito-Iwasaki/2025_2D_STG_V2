@@ -18,6 +18,7 @@
 #include "collision.h"
 #include "player.h"
 #include "bullet.h"
+#include "enemybullet.h"
 
 //*********************************************************************
 // 
@@ -39,6 +40,7 @@
 
 #define PLAYER_HEAL_MAX			(3)
 #define PLAYER_HEAL_SCALE		(0.01f)
+#define PLAYER_HITBOX_SIZE		D3DXVECTOR3(24.0f, 24.0f, 0.0f)
 
 //*********************************************************************
 // 
@@ -75,6 +77,7 @@ void InitPlayer(void)
 	g_player.fShootSpeed = INIT_SHOOT_SPEED;
 	g_player.fLife = INIT_PLAYER_LIFE;
 	g_player.fCharge = INIT_PLAYER_CHARGE;
+	g_player.hitBoxSize = PLAYER_HITBOX_SIZE;
 
 	// テクスチャの読み込み
 	if (TEXTURE_FILENAME)

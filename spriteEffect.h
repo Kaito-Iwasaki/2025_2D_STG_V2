@@ -1,26 +1,26 @@
 //=====================================================================
 //
-// decal.cppのヘッダファイル [decal.h]
+// spriteeffect.cppのヘッダファイル [spriteeffect.h]
 // Author : Kaito Iwasaki
 // 
 //=====================================================================
-#ifndef _DECAL_H_
-#define _DECAL_H_
+#ifndef _SPRITEEFFECT_H_
+#define _SPRITEEFFECT_H_		// 二重インクルード防止のマクロ
 
 //*********************************************************************
 // 
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
-#include "baseObject.h"
 #include "main.h"
+#include "baseObject.h"
 
 //*********************************************************************
 // 
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-#define MAX_DECAL		(8)
+#define MAX_SPRITEEFFECT				(256)
 
 //*********************************************************************
 // 
@@ -29,15 +29,9 @@
 //*********************************************************************
 typedef enum
 {
-	DECAL_LABEL_NULL = -1,
-	DECAL_LABEL_TITLE,
-	DECAL_LABEL_TUTORIAL,
-	DECAL_LABEL_BG000,
-	DECAL_LABEL_BG001,
-	DECAL_LABEL_BG002,
-	DECAL_LABEL_WALLPAPER01,
-	DECAL_LABEL_MAX
-}DECAL_LABEL;
+	SPRITEEFFECTYPE_EXPLOSION,
+	SPRITEEFFECTTYPE_MAX
+}SPRITEEFFECTTYPE;
 
 //*********************************************************************
 // 
@@ -47,23 +41,23 @@ typedef enum
 typedef struct
 {
 	BASEOBJECT obj;
-	bool bUsed;
-	DECAL_LABEL label;
-	int nID;
-}DECAL;
+	SPRITEEFFECTTYPE type;
+	bool bUsed;				// 使用しているかどうか
+	int nAnimSpeed;
+	int nCounterAnim;			// アニメーションカウント
+	int nPatternAnim;		// アニメーションパターンNo
+	int nMaxPattern;
+}SPRITEEFFECT;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitDecal(void);
-void UninitDecal(void);
-void UpdateDecal(void);
-void DrawDecal(void);
-DECAL* GetDecal(void);
-int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col);
-void DeleteDecal(int nID);
-void DeleteDecal(void);
+void InitSpriteEffect(void);
+void UninitSpriteEffect(void);
+void UpdateSpriteEffect(void);
+void DrawSpriteEffect(void);
+void SetSpriteEffect(SPRITEEFFECTTYPE type, D3DXVECTOR3 pos, float fScale);
 
 #endif

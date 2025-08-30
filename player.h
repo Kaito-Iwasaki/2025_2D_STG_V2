@@ -46,6 +46,7 @@ typedef struct
 	float fShootSpeed;
 	float fLife;
 	float fCharge;
+	D3DXVECTOR3 hitBoxSize;
 
 	int nCounterState;
 	int nCounterShoot;

@@ -57,10 +57,10 @@ bool BoxCollision(BASEOBJECT objA, BASEOBJECT objB)
 bool BoxCollision(D3DXVECTOR3 posA, D3DXVECTOR3 sizeA, D3DXVECTOR3 posB, D3DXVECTOR3 sizeB)
 {
 	if (
-		posA.x >= (posB.x - sizeB.x / 2 - sizeA.x)
-		&& posA.x <= (posB.x + sizeB.x / 2 + sizeA.x)
-		&& posA.y >= (posB.y - sizeB.y / 2 - sizeA.y)
-		&& posA.y <= (posB.y + sizeB.y / 2 + sizeA.y)
+		posA.x >= (posB.x - sizeB.x / 2 - sizeA.x / 2)
+		&& posA.x <= (posB.x + sizeB.x / 2 + sizeA.x / 2)
+		&& posA.y >= (posB.y - sizeB.y / 2 - sizeA.y / 2)
+		&& posA.y <= (posB.y + sizeB.y / 2 + sizeA.y / 2)
 		)
 	{
 		return true;
