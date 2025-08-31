@@ -19,6 +19,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "enemybullet.h"
+#include "spriteEffect.h"
 
 //*********************************************************************
 // 
@@ -28,7 +29,7 @@
 #define TEXTURE_FILENAME		"data\\TEXTURE\\player000.png"
 #define NUM_TEXTURE				(2)
 
-#define INIT_POS				{SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2, 0.0f}
+#define INIT_POS				{SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2 + 200, 0.0f}
 #define INIT_SIZE				{64.0f, 64.0f, 0.0f}
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 
@@ -130,6 +131,7 @@ void UpdatePlayer(void)
 	float fMagnitude;
 
 	// ***** ó‘Ô•Êˆ— *****
+	g_player.nCounterState++;
 	switch (g_player.state)
 	{
 	case PLAYERSTATE_NORMAL:
@@ -160,13 +162,14 @@ void UpdatePlayer(void)
 		break;
 
 	case PLAYERSTATE_DIED:
-		if (g_player.nCounterState > 120)
+		g_player.obj.bVisible = false;
+		if (g_player.nCounterState > 60)
 		{
-			SetPlayerState(PLAYERSTATE_NORMAL);
+			g_player.obj.pos = INIT_POS;
+			SetPlayerState(PLAYERSTATE_DAMAGED);
 		}
 		return;
 	}
-	g_player.nCounterState++;
 
 	// ***** ˆÚ“® *****
 	if (GetKeyboardPress(DIK_A))
@@ -209,7 +212,7 @@ void UpdatePlayer(void)
 	if (GetKeyboardPress(DIK_SPACE) && g_player.nCounterShoot % INIT_SHOOT_INTERVAL == 0)
 	{// ’eŒ‚‚¿
 		g_player.nCounterShoot = 0;
-		PlaySound(SOUND_LABEL_SE_SHOOT);
+		PlaySound(SOUND_LABEL_SE_SHOOT, 0.1f);
 		SetBullet(g_player.obj.pos + D3DXVECTOR3(5, -5, 0), g_player.fShootSpeed, D3DX_PI);
 		SetBullet(g_player.obj.pos + D3DXVECTOR3(-5, -5, 0), g_player.fShootSpeed, D3DX_PI);
 		SetBullet(g_player.obj.pos + D3DXVECTOR3(15, 0, 0), g_player.fShootSpeed, D3DX_PI);
@@ -276,14 +279,15 @@ void HitPlayer(void)
 
 	if (g_player.fLife <= 0)
 	{
-		g_player.state = PLAYERSTATE_DIED;
+		PlaySound(SOUND_LABEL_SE_HIT02);
+		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, g_player.obj.pos, 1.5f);
+		SetPlayerState(PLAYERSTATE_DIED);
 	}
 	else
 	{
-		g_player.state = PLAYERSTATE_DAMAGED;
+		PlaySound(SOUND_LABEL_SE_HIT01);
+		SetPlayerState(PLAYERSTATE_DAMAGED);
 	}
-
-	g_player.nCounterState = 0;
 }
 
 void SetPlayerState(PLAYERSTATE state)

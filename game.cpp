@@ -51,6 +51,8 @@ void InitGame(void)
 	InitEnemyBullet();
 	InitSpriteEffect();
 
+	PlaySound(SOUND_LABEL_BGM_STAGE02);
+
 	SetDecal(
 		DECAL_LABEL_NULL,
 		D3DXVECTOR3(SCREEN_CENTER, SCREEN_VCENTER, 0.0f),
@@ -62,7 +64,9 @@ void InitGame(void)
 	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 200, 0.0f));
 	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 400, 0.0f));
 	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2 + 100, 0 - 400, 0.0f));
-	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2 - 100, 0 - 400, 0.0f));
+	SetEnemy(ENEMYTYPE_001, D3DXVECTOR3(SCREEN_WIDTH / 2 - 100, 0 - 400, 0.0f));
+	SetEnemy(ENEMYTYPE_001, D3DXVECTOR3(SCREEN_WIDTH / 2 - 100, 0 - 500, 0.0f));
+	SetEnemy(ENEMYTYPE_001, D3DXVECTOR3(SCREEN_WIDTH / 2 - 100, 0 - 600, 0.0f));
 }
 
 //=====================================================================

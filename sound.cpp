@@ -14,6 +14,7 @@ typedef struct
 {
 	const char *pFilename;	// ファイル名
 	int nCntLoop;			// ループカウント
+	float fLoopBegin;
 } SOUNDINFO;
 
 //*****************************************************************************
@@ -33,10 +34,16 @@ DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 
 // サウンドの情報
 SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] = {
-	{"data\\BGM\\bgm003.wav", -1},
-	{"data\\BGM\\stage01.wav", -1},
+	{"data\\BGM\\title00.wav", -1},
+	{"data\\BGM\\stage01.wav", -1, 25.561},
 	{"data\\BGM\\stage02.wav", -1},
+	{"data\\BGM\\stage03.wav", -1, 2.130},
+	{"data\\BGM\\stage04.wav", -1, 12.780},
+	{"data\\BGM\\stage05.wav", -1, 9.585},
 	{"data\\SE\\shoot000.wav", 0},
+	{"data\\SE\\hit000.wav", 0},
+	{"data\\SE\\hit001.wav", 0},
+	{"data\\SE\\hit002.wav", 0},
 };
 
 //=============================================================================
@@ -248,7 +255,7 @@ void UninitSound(void)
 //=============================================================================
 // セグメント再生(再生中なら停止)
 //=============================================================================
-HRESULT PlaySound(SOUND_LABEL label)
+HRESULT PlaySound(SOUND_LABEL label, float fVolume)
 {
 	XAUDIO2_VOICE_STATE xa2state;
 	XAUDIO2_BUFFER buffer;
@@ -259,6 +266,7 @@ HRESULT PlaySound(SOUND_LABEL label)
 	buffer.pAudioData = g_apDataAudio[label];
 	buffer.Flags      = XAUDIO2_END_OF_STREAM;
 	buffer.LoopCount  = g_aSoundInfo[label].nCntLoop;
+	buffer.LoopBegin = g_aSoundInfo[label].fLoopBegin * 44100;
 
 	// 状態取得
 	g_apSourceVoice[label]->GetState(&xa2state);
@@ -273,6 +281,9 @@ HRESULT PlaySound(SOUND_LABEL label)
 
 	// オーディオバッファの登録
 	g_apSourceVoice[label]->SubmitSourceBuffer(&buffer);
+
+	// 音量の設定
+	g_apSourceVoice[label]->SetVolume(fVolume);
 
 	// 再生
 	g_apSourceVoice[label]->Start(0);
@@ -313,6 +324,30 @@ void StopSound(void)
 			g_apSourceVoice[nCntSound]->Stop(0);
 		}
 	}
+}
+
+void PauseSound(SOUND_LABEL label)
+{
+	XAUDIO2_VOICE_STATE xa2state;
+
+	// 状態取得
+	g_apSourceVoice[label]->GetState(&xa2state);
+	if (xa2state.BuffersQueued != 0)
+	{// 再生中
+		// 一時停止
+		g_apSourceVoice[label]->Stop(0);
+	}
+}
+
+HRESULT UnPauseSound(SOUND_LABEL label)
+{
+	if (g_apSourceVoice[label] != NULL)
+	{
+		// 一時停止
+		g_apSourceVoice[label]->Start(0);
+	}
+
+	return S_OK;
 }
 
 //=============================================================================

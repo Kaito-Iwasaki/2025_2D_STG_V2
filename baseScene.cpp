@@ -10,6 +10,8 @@
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
+#include "sound.h"
+
 #include "wallpaper.h"
 #include "baseScene.h"
 #include "fade.h"
@@ -98,7 +100,7 @@ void DrawScene(void)
 //=====================================================================
 // シーン設定処理
 //=====================================================================
-SCENE SetScene(SCENE nextScene)
+SCENE SetScene(SCENE nextScene, bool bStopSound)
 {
 	// 現在のシーンを終了
 	switch (g_currentScene)
@@ -110,6 +112,11 @@ SCENE SetScene(SCENE nextScene)
 	case SCENE_ANOTHER:
 		UninitGame();
 		break;
+	}
+
+	if (bStopSound)
+	{
+		StopSound();
 	}
 
 	// 新規シーンを初期化

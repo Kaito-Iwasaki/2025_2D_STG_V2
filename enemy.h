@@ -51,7 +51,9 @@ typedef struct
 {
 	BASEOBJECT obj;
 	bool bUsed;
+	D3DXVECTOR3 startPos;
 
+	D3DXVECTOR3 move;
 	ENEMYTYPE type;
 	ENEMYSTATE state;
 	float fLife;

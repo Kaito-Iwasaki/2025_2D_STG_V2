@@ -26,13 +26,14 @@
 //*********************************************************************
 #define TEXTURE_FILENAME		"data\\TEXTURE\\enemybullet000.png"
 
-#define INIT_POS				D3DXVECTOR3_ZERO
-#define INIT_SIZE				D3DXVECTOR3(16.0f, 16.0f, 16.0f)
-#define INIT_COLOR				D3DXCOLOR(0.0f, 0.0f, 0.0f,1.0f)
+#define INIT_POS						D3DXVECTOR3_ZERO
+#define INIT_SIZE						D3DXVECTOR3(16.0f, 16.0f, 16.0f)
+#define INIT_COLOR						D3DXCOLOR(0.0f, 0.0f, 0.0f,1.0f)
+
+#define INIT_ENEMYBULLET_LIFE			(3.0f)
 
 #define ENEMYBULLET_COLOR_NORMAL		INIT_COLOR
 #define ENEMYBULLET_COLOR_DAMAGED		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
-
 
 //*********************************************************************
 // 
@@ -254,7 +255,7 @@ void SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float 
 			pEnemyBullet->fSpeed = fSpeed;
 			pEnemyBullet->fDirection = fDirection;
 			pEnemyBullet->fDamage = 1.0f;
-			pEnemyBullet->fLife = 10.0f;
+			pEnemyBullet->fLife = INIT_ENEMYBULLET_LIFE;
 			pEnemyBullet->type = type;
 			pEnemyBullet->state = ENEMYBULLETSTATE_NORMAL;
 			pEnemyBullet->obj.bVisible = true;
@@ -270,7 +271,8 @@ void HitEnemyBullet(ENEMYBULLET* pEnemyBullet)
 
 	if (pEnemyBullet->fLife <= 0)
 	{
-		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 1.0f);
+		PlaySound(SOUND_LABEL_SE_HIT00, 0.5f);
+		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.75f);
 		pEnemyBullet->bUsed = false;
 	}
 	else

@@ -18,7 +18,13 @@ typedef enum
 	SOUND_LABEL_BGM_TITLE00 = 0,
 	SOUND_LABEL_BGM_STAGE01,
 	SOUND_LABEL_BGM_STAGE02,
+	SOUND_LABEL_BGM_STAGE03,
+	SOUND_LABEL_BGM_STAGE04,
+	SOUND_LABEL_BGM_STAGE05,
 	SOUND_LABEL_SE_SHOOT,
+	SOUND_LABEL_SE_HIT00,
+	SOUND_LABEL_SE_HIT01,
+	SOUND_LABEL_SE_HIT02,
 	SOUND_LABEL_MAX
 } SOUND_LABEL;
 
@@ -27,8 +33,10 @@ typedef enum
 //*****************************************************************************
 HRESULT InitSound(HWND hWnd);
 void UninitSound(void);
-HRESULT PlaySound(SOUND_LABEL label);
+HRESULT PlaySound(SOUND_LABEL label, float fVolume = 1.0f);
 void StopSound(SOUND_LABEL label);
 void StopSound(void);
+void PauseSound(SOUND_LABEL label);
+HRESULT UnPauseSound(SOUND_LABEL label);
 
 #endif

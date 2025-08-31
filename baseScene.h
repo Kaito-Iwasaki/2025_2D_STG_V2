@@ -44,6 +44,6 @@ void InitScene(void);
 void UninitScene(void);
 void UpdateScene(void);
 void DrawScene(void);
-SCENE SetScene(SCENE nextScene);
+SCENE SetScene(SCENE nextScene, bool bStopSound = true);
 
 #endif

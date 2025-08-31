@@ -14,6 +14,7 @@
 #include "sound.h"
 #include "util.h"
 #include "baseScene.h"
+#include "collision.h"
 
 #include "player.h"
 #include "enemy.h"
@@ -35,7 +36,7 @@
 #define INIT_ENEMY_SHOOT_INTERVAL	(20)
 
 #define ENEMY_COLOR_NORMAL		INIT_COLOR
-#define ENEMY_COLOR_DAMAGED		D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f)
+#define ENEMY_COLOR_DAMAGED		D3DXCOLOR(0.75f, 0.75f, 0.75f, 1.0f)
 
 //*********************************************************************
 // 
@@ -101,11 +102,26 @@ void UninitEnemy(void)
 void UpdateEnemy(void)
 {
 	ENEMY* pEnemy = &g_aEnemy[0];
+	PLAYER* pPlayer = GetPlayer();
 	RECT rectScreen = GAME_SCREEN_RECT;
 
 	for (int nCount = 0; nCount < MAX_ENEMY; nCount++, pEnemy++)
 	{
 		if (pEnemy->bUsed == false) continue;
+
+		if (IsObjectOutOfScreen(pEnemy->obj, OOS_BOTTOM))
+		{// 画面外に出たら削除
+			pEnemy->bUsed = false;
+			continue;
+		}
+
+		if (BoxCollision(pEnemy->obj.pos, pEnemy->obj.size, pPlayer->obj.pos, pPlayer->hitBoxSize))
+		{// プレイヤーとの衝突判定
+			HitPlayer();
+		}
+
+		pEnemy->nCounterState++;
+		pEnemy->nCounterShoot++;
 
 		// 敵の状態別処理
 		switch (pEnemy->state)
@@ -123,32 +139,25 @@ void UpdateEnemy(void)
 			}
 			break;
 		}
-		pEnemy->nCounterState++;
 
 		// 敵の行動別処理
 		switch (pEnemy->type)
 		{
 		case ENEMYTYPE_000:
-			pEnemy->nCounterShoot++;
-			pEnemy->obj.pos.y += 3;
+			pEnemy->obj.pos.y += 1;
 
 			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
 			{
 				pEnemy->nCounterShoot = 0;
-				SetEnemyBullet(ENEMYBULLET_TYPE_001, pEnemy->obj.pos, 5.0f, Direction(pEnemy->obj.pos, GetPlayer()->obj.pos));
+				SetEnemyBullet(ENEMYBULLET_TYPE_001, pEnemy->obj.pos, 2.0f, Direction(pEnemy->obj.pos, GetPlayer()->obj.pos));
 			}
 
 			break;
 
 		case ENEMYTYPE_001:
-
+			pEnemy->obj.pos.x = pEnemy->startPos.x + sin((float)pEnemy->nCounterState * pEnemy->move.x) * pEnemy->move.z;
+			pEnemy->obj.pos.y += pEnemy->move.y;
 			break;
-		}
-
-		if (IsObjectOutOfScreen(pEnemy->obj, OOS_BOTTOM))
-		{// 画面外に出たら削除
-			pEnemy->bUsed = false;
-			continue;
 		}
 	}
 }
@@ -256,6 +265,8 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 			memset(pEnemy, 0, sizeof(ENEMY));
 			pEnemy->bUsed = true;
 			pEnemy->obj.pos = pos;
+			pEnemy->startPos = pos;
+			pEnemy->move = { 1.0f, 1.0f, 1.0f };
 			pEnemy->obj.size = { INIT_SIZE_X, INIT_SIZE_Y, 0.0f };
 			pEnemy->obj.rot = D3DXVECTOR3_ZERO;
 			pEnemy->obj.color = INIT_COLOR;
@@ -278,11 +289,13 @@ void HitEnemy(ENEMY* pEnemy)
 	
 	if (pEnemy->fLife <= 0)
 	{
+		PlaySound(SOUND_LABEL_SE_HIT00);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 1.0f);
 		pEnemy->bUsed = false;
 	}
 	else
 	{
+		PlaySound(SOUND_LABEL_SE_HIT00, 0.25f);
 		pEnemy->state = ENEMYSTATE_DAMAGED;
 	}
 }
