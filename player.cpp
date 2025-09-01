@@ -129,6 +129,7 @@ void UpdatePlayer(void)
 	RECT rectScreen = GAME_SCREEN_RECT;
 	D3DXVECTOR3 direction = D3DXVECTOR3_ZERO;
 	float fMagnitude;
+	XINPUT_GAMEPAD* pGamepad = &GetJoypad()->Gamepad;
 
 	// ***** 状態別処理 *****
 	g_player.nCounterState++;
@@ -172,28 +173,48 @@ void UpdatePlayer(void)
 	}
 
 	// ***** 移動 *****
-	if (GetKeyboardPress(DIK_A))
+	// ジョイパッド（スティック）操作
+	if (pGamepad->sThumbLX < -INPUT_DEADZONE)
 	{// 左
 		direction.x -= 1;
 		g_player.obj.bInversed = true;
 	}
-	if (GetKeyboardPress(DIK_D))
+	if (pGamepad->sThumbLX > INPUT_DEADZONE)
 	{// 右
 		direction.x += 1;
-		g_player.nTexPattern = 1;
 		g_player.obj.bInversed = false;
 	}
-	if (GetKeyboardPress(DIK_W))
+	if (pGamepad->sThumbLY > INPUT_DEADZONE)
 	{// 上
 		direction.y -= 1;
 	}
-	if (GetKeyboardPress(DIK_S))
+	if (pGamepad->sThumbLY < -INPUT_DEADZONE)
+	{// 下
+		direction.y += 1;
+	}
+
+	// キーボード&ジョイパッド（十字キー）操作
+	if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_LEFT))
+	{// 左
+		direction.x -= 1;
+		g_player.obj.bInversed = true;
+	}
+	if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGHT))
+	{// 右
+		direction.x += 1;
+		g_player.obj.bInversed = false;
+	}
+	if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_UP))
+	{// 上
+		direction.y -= 1;
+	}
+	if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_DOWN))
 	{// 下
 		direction.y += 1;
 	}
 
 	// 移動方向に応じてテクスチャパターンを設定
-	g_player.nTexPattern = direction.x;
+	g_player.nTexPattern = Clamp(direction.x, -1, 1);
 
 	// 方向の大きさを求める
 	fMagnitude = sqrtf(direction.x * direction.x + direction.y * direction.y);
@@ -209,7 +230,7 @@ void UpdatePlayer(void)
 
 	// ***** ショット *****
 	g_player.nCounterShoot++;
-	if (GetKeyboardPress(DIK_SPACE) && g_player.nCounterShoot % INIT_SHOOT_INTERVAL == 0)
+	if ((GetKeyboardPress(DIK_SPACE) || GetJoypadPress(JOYKEY_A)) && g_player.nCounterShoot % INIT_SHOOT_INTERVAL == 0)
 	{// 弾撃ち
 		g_player.nCounterShoot = 0;
 		PlaySound(SOUND_LABEL_SE_SHOOT, 0.1f);

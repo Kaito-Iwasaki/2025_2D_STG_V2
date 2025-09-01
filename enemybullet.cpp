@@ -229,7 +229,7 @@ ENEMYBULLET* GetEnemyBullet(void)
 //=====================================================================
 // “G’e‚Ìİ’èˆ—
 //=====================================================================
-void SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fDirection)
+bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fDirection)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	ENEMYBULLET* pEnemyBullet = &g_aEnemyBullet[0];
@@ -260,9 +260,16 @@ void SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float 
 			pEnemyBullet->state = ENEMYBULLETSTATE_NORMAL;
 			pEnemyBullet->obj.bVisible = true;
 
-			break;
+			if (IsObjectOutOfScreen(pEnemyBullet->obj))
+			{
+				pEnemyBullet->bUsed = false;
+				return false;	// ’e‚Ì¶¬‚É¸”s
+			}
+
+			return true; // ’e‚Ì¶¬‚É¬Œ÷
 		}
 	}
+	return false;	// ’e‚Ì¶¬‚É¸”s
 }
 
 void HitEnemyBullet(ENEMYBULLET* pEnemyBullet)

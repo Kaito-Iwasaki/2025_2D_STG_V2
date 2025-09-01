@@ -20,6 +20,7 @@
 #include "enemy.h"
 #include "enemybullet.h"
 #include "spriteEffect.h"
+#include "score.h"
 
 //*********************************************************************
 // 
@@ -28,6 +29,7 @@
 //*********************************************************************
 #define INIT_POS_X				(SCREEN_WIDTH / 2)
 #define INIT_POS_Y				(SCREEN_HEIGHT/ 2)
+#define INIT_SIZE				{48.0f, 48.0f, 0.0f}
 #define INIT_SIZE_X				(48.0f)
 #define INIT_SIZE_Y				(48.0f)
 #define INIT_COLOR				D3DXCOLOR(0.0f, 0.0f, 0.0f,1.0f)
@@ -47,9 +49,16 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffEnemy = NULL;
 LPDIRECT3DTEXTURE9 g_pTexBuffEnemy[ENEMYTYPE_MAX] = {};
 ENEMY g_aEnemy[MAX_ENEMY] = {};
 
+// 敵のテクスチャ
 const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 	"data\\TEXTURE\\enemy000.png",
 	"data\\TEXTURE\\enemy001.png",
+};
+
+// 敵の情報[サイズ | 移動量 | 体力 | 弾数 | ショット間隔]
+ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
+	{ INIT_SIZE, {0.0f, 1.0f, 0.0f}, 10.0f, 10, 5},
+	{ INIT_SIZE, {0.05f, 1.0f, 50.0f}, 10.0f, 0, 0},
 };
 
 //=====================================================================
@@ -144,14 +153,23 @@ void UpdateEnemy(void)
 		switch (pEnemy->type)
 		{
 		case ENEMYTYPE_000:
-			pEnemy->obj.pos.y += 1;
+			pEnemy->obj.pos += pEnemy->move;
+
+			if (pEnemy->nShootLeft < 1) break;
 
 			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
 			{
 				pEnemy->nCounterShoot = 0;
-				SetEnemyBullet(ENEMYBULLET_TYPE_001, pEnemy->obj.pos, 2.0f, Direction(pEnemy->obj.pos, GetPlayer()->obj.pos));
+				pEnemy->fShootRot = 0.0f + sin((float)pEnemy->nCounterState * 0.5f) * 0.5f;
+				if (SetEnemyBullet(
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos,
+					pEnemy->fShootSpeed,
+					pEnemy->fShootRot))
+				{
+					pEnemy->nShootLeft--;
+				}
 			}
-
 			break;
 
 		case ENEMYTYPE_001:
@@ -159,6 +177,7 @@ void UpdateEnemy(void)
 			pEnemy->obj.pos.y += pEnemy->move.y;
 			break;
 		}
+
 	}
 }
 
@@ -266,14 +285,18 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 			pEnemy->bUsed = true;
 			pEnemy->obj.pos = pos;
 			pEnemy->startPos = pos;
-			pEnemy->move = { 1.0f, 1.0f, 1.0f };
-			pEnemy->obj.size = { INIT_SIZE_X, INIT_SIZE_Y, 0.0f };
+			pEnemy->move = g_aEnemyInfo[type].move;
+			pEnemy->obj.size = g_aEnemyInfo[type].size;
 			pEnemy->obj.rot = D3DXVECTOR3_ZERO;
 			pEnemy->obj.color = INIT_COLOR;
 			pEnemy->obj.bVisible = true;
 
-			pEnemy->fLife = INIT_ENEMY_LIFE;
-			pEnemy->nShootInterval = INIT_ENEMY_SHOOT_INTERVAL;
+			pEnemy->fLife = g_aEnemyInfo[type].fLife;
+			pEnemy->nShootLeft = g_aEnemyInfo[type].nShootLeft;
+			pEnemy->nShootInterval = g_aEnemyInfo[type].nShootInterval;
+			pEnemy->fShootSpeed = 2.0f;
+			pEnemy->fShootRot = 0;
+			pEnemy->nScore = 100;
 			pEnemy->type = type;
 
 			return pEnemy;
@@ -285,12 +308,18 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 
 void HitEnemy(ENEMY* pEnemy)
 {
+	if (IsObjectOutOfScreen(pEnemy->obj, OOS_ALL))
+	{
+		return;
+	}
+
 	pEnemy->fLife -= 1;
 	
 	if (pEnemy->fLife <= 0)
 	{
 		PlaySound(SOUND_LABEL_SE_HIT00);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 1.0f);
+		AddScore(pEnemy->nScore * (pEnemy->nShootLeft + 1));
 		pEnemy->bUsed = false;
 	}
 	else

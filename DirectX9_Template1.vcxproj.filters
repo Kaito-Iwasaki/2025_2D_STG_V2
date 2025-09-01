@@ -69,9 +69,6 @@
     <ClCompile Include="baseObject.cpp">
       <Filter>ソース ファイル\BaseObject</Filter>
     </ClCompile>
-    <ClCompile Include="uzawa.cpp">
-      <Filter>ソース ファイル\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="collision.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
@@ -114,6 +111,12 @@
     <ClCompile Include="spriteEffect.cpp">
       <Filter>ソース ファイル\GameObject\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ソース ファイル\GameObject\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="stage_loader.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sound.h">
@@ -127,9 +130,6 @@
     </ClInclude>
     <ClInclude Include="baseObject.h">
       <Filter>ヘッダー ファイル\BaseObject</Filter>
-    </ClInclude>
-    <ClInclude Include="uzawa.h">
-      <Filter>ヘッダー ファイル\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>ヘッダー ファイル\Component</Filter>
@@ -172,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="spriteEffect.h">
       <Filter>ヘッダー ファイル\GameObject\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ヘッダー ファイル\GameObject\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="stage_loader.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

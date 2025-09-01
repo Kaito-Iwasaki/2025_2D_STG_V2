@@ -27,6 +27,7 @@ int ClampVector(D3DXVECTOR3);
 int RandRange(int nMin, int nMax);
 float Magnitude(D3DXVECTOR3 from, D3DXVECTOR3 to);
 float Direction(D3DXVECTOR3 from, D3DXVECTOR3 to);
+D3DXVECTOR2 Vector3To2(D3DXVECTOR3 source);
 bool LoadBin(const char* pFilePath, void* pBuffer, size_t ElementSize, size_t ElementCount);
 bool SaveBin(const char* pFilePath, void* pBuffer, size_t ElementSize, size_t ElementCount);
 

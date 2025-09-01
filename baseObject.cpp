@@ -13,7 +13,7 @@
 #include "baseObject.h"
 
 //=====================================================================
-// 頂点位置の設定処理
+// 頂点位置の設定処理（自動）
 //=====================================================================
 void SetVertexPos(VERTEX_2D* pVtx, BASEOBJECT obj)
 {
@@ -34,6 +34,28 @@ void SetVertexPos(VERTEX_2D* pVtx, BASEOBJECT obj)
 
 	pVtx[3].pos.x = obj.pos.x + sinf(obj.rot.z + fAngle) * fLength;
 	pVtx[3].pos.y = obj.pos.y + cosf(obj.rot.z + fAngle) * fLength;
+	pVtx[3].pos.z = 0.0f;
+}
+
+//=====================================================================
+// 頂点位置の設定処理（手動）
+//=====================================================================
+void SetVertexPos(VERTEX_2D* pVtx, D3DXVECTOR3 leftTop, D3DXVECTOR3 rightTop, D3DXVECTOR3 leftBottom, D3DXVECTOR3 rightBottom)
+{
+	pVtx[0].pos.x = leftTop.x;
+	pVtx[0].pos.y = leftTop.y;
+	pVtx[0].pos.z = 0.0f;
+
+	pVtx[1].pos.x = rightTop.x;
+	pVtx[1].pos.y = rightTop.y;
+	pVtx[1].pos.z = 0.0f;
+
+	pVtx[2].pos.x = leftBottom.x;
+	pVtx[2].pos.y = leftBottom.y;
+	pVtx[2].pos.z = 0.0f;
+
+	pVtx[3].pos.x = rightBottom.x;
+	pVtx[3].pos.y = rightBottom.y;
 	pVtx[3].pos.z = 0.0f;
 }
 
@@ -147,7 +169,7 @@ bool IsObjectOutOfScreen(BASEOBJECT obj, DWORD flags)
 	return bOutofScreen;
 }
 
-bool IsObjectOutOfScreen(BASEOBJECT obj, DWORD flags, RECT rect)
+bool IsObjectOutOfScreen(BASEOBJECT obj, RECT rect, DWORD flags)
 {
 	bool bOutofScreen = false;
 

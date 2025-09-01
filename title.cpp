@@ -16,7 +16,6 @@
 #include "sound.h"
 #include "fade.h"
 
-#include "uzawa.h"
 #include "player.h"
 #include "bullet.h"
 #include "decal.h"
@@ -67,7 +66,7 @@ void UninitTitle(void)
 //=====================================================================
 void UpdateTitle(void)
 {
-	if (GetKeyboardTrigger(DIK_RETURN))
+	if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START))
 	{
 		SetFade(SCENE_ANOTHER);
 	}

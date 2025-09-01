@@ -1,19 +1,27 @@
 //=====================================================================
-//
-// uzawa.cppのヘッダファイル [uzawa.h]
-// Author : Kaito Iwasaki
 // 
+// score.cppのヘッダファイル [score.h]
+// Author:
+//
 //=====================================================================
-#ifndef _UZAWA_H_
-#define _UZAWA_H_
+#ifndef _SCORE_H_
+#define _SCORE_H_		// 二重インクルード防止のマクロ
 
 //*********************************************************************
 // 
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
-#include "baseObject.h"
 #include "main.h"
+#include "baseObject.h"
+
+//*********************************************************************
+// 
+// ***** マクロ定義 *****
+// 
+//*********************************************************************
+#define NUM_PLACE		(8)
+
 
 //*********************************************************************
 // 
@@ -23,18 +31,21 @@
 typedef struct
 {
 	BASEOBJECT obj;
-	float fSpeed;
-}UZAWA;
+	int nScore;
+	int aTexPattern[NUM_PLACE];
+}SCORE;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitUzawa(void);
-void UninitUzawa(void);
-void UpdateUzawa(void);
-void DrawUzawa(void);
-UZAWA* GetUzawa(void);
+void InitScore(void);
+void UninitScore(void);
+void UpdateScore(void);
+void DrawScore(void);
+void SetScore(int nScore);
+void AddScore(int nValue);
+int GetScore(void);
 
 #endif

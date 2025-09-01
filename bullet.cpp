@@ -118,7 +118,7 @@ void UpdateBullet(void)
 		pEnemy = GetEnemy();
 		pEnemyBullet = GetEnemyBullet();
 
-		if (IsObjectOutOfScreen(pBullet->obj, OOS_TOP, rectScreen))
+		if (IsObjectOutOfScreen(pBullet->obj, rectScreen))
 		{// ‰æ–ÊŠO‚Éo‚½‚çíœ
 			pBullet->bUsed = false;
 			continue;

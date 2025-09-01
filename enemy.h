@@ -57,11 +57,25 @@ typedef struct
 	ENEMYTYPE type;
 	ENEMYSTATE state;
 	float fLife;
+	int nShootLeft;
 	int nShootInterval;
+	float fShootSpeed;
+	float fShootRot;
+	int nScore;
 
 	int nCounterState;
 	int nCounterShoot;
 }ENEMY;
+
+typedef struct
+{
+	D3DXVECTOR3 size;
+	D3DXVECTOR3 move;
+	
+	float fLife;
+	int nShootLeft;
+	int nShootInterval;
+}ENEMYINFO;
 
 //*********************************************************************
 // 

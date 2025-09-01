@@ -94,6 +94,11 @@ float Direction(D3DXVECTOR3 from, D3DXVECTOR3 to)
 	return atan2f(to.x - from.x, to.y - from.y);
 }
 
+D3DXVECTOR2 Vector3To2(D3DXVECTOR3 source)
+{
+	return D3DXVECTOR2(source.x, source.y);
+}
+
 //=====================================================================
 // w’è‚µ‚½”ÍˆÍ‚Ì—”i®”j‚ğæ“¾‚·‚éˆ—
 //=====================================================================

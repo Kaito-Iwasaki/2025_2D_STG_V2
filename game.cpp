@@ -23,6 +23,7 @@
 #include "bullet.h"
 #include "enemybullet.h"
 #include "spriteEffect.h"
+#include "score.h"
 
 //*********************************************************************
 // 
@@ -36,7 +37,9 @@
 // ***** ÉOÉçÅ[ÉoÉãïœêî *****
 // 
 //*********************************************************************
-
+TIMELINE g_timeline[MAX_TIMELINE];
+SOUND_LABEL g_CurrentSound = SOUND_LABEL_BGM_STAGE02;
+bool g_bPause = false;
 
 //=====================================================================
 // èâä˙âªèàóù
@@ -50,8 +53,11 @@ void InitGame(void)
 	InitEnemy();
 	InitEnemyBullet();
 	InitSpriteEffect();
+	InitScore();
+	
+	g_bPause = false;
 
-	PlaySound(SOUND_LABEL_BGM_STAGE02);
+	PlaySound(g_CurrentSound);
 
 	SetDecal(
 		DECAL_LABEL_NULL,
@@ -60,6 +66,8 @@ void InitGame(void)
 		D3DXVECTOR3_ZERO,
 		D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f)
 	);
+
+
 
 	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 200, 0.0f));
 	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 400, 0.0f));
@@ -81,6 +89,7 @@ void UninitGame(void)
 	UninitEnemy();
 	UninitEnemyBullet();
 	UninitSpriteEffect();
+	UninitScore();
 }
 
 //=====================================================================
@@ -88,17 +97,36 @@ void UninitGame(void)
 //=====================================================================
 void UpdateGame(void)
 {
-	UpdateFont();
-	UpdateDecal();
-	UpdatePlayer();
-	UpdateBullet();
-	UpdateEnemy();
-	UpdateEnemyBullet();
-	UpdateSpriteEffect();
-
-	if (GetKeyboardTrigger(DIK_RETURN))
+	if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_BACK))
 	{
 		SetFade(SCENE_GAME);
+	}
+
+	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START))
+	{
+		PlaySound(SOUND_LABEL_SE_PAUSE, 0.25f);
+		g_bPause ^= 1;
+
+		if (g_bPause)
+		{
+			PauseSound(g_CurrentSound);
+		}
+		else
+		{
+			UnPauseSound(g_CurrentSound);
+		}
+	}
+
+	if (g_bPause == false)
+	{
+		UpdateFont();
+		UpdateDecal();
+		UpdatePlayer();
+		UpdateBullet();
+		UpdateEnemy();
+		UpdateEnemyBullet();
+		UpdateSpriteEffect();
+		UpdateScore();
 	}
 }
 
@@ -114,4 +142,5 @@ void DrawGame(void)
 	DrawBullet();
 	DrawPlayer();
 	DrawFont();
+	DrawScore();
 }
