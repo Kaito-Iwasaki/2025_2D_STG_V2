@@ -35,6 +35,8 @@
 #define INIT_SIZE_Y				(32.0f)
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 
+#define INIT_HITBOX_SIZE		D3DXVECTOR3(8, 8, 0);
+
 //*********************************************************************
 // 
 // ***** グローバル変数 *****
@@ -59,6 +61,7 @@ void InitBullet(void)
 	{
 		pBullet->obj.size = { INIT_SIZE_X, INIT_SIZE_Y, 0.0f };
 		pBullet->obj.color = INIT_COLOR;
+		pBullet->hitBoxSize = INIT_HITBOX_SIZE;
 	}
 
 	// テクスチャの読み込み
@@ -118,13 +121,13 @@ void UpdateBullet(void)
 		pEnemy = GetEnemy();
 		pEnemyBullet = GetEnemyBullet();
 
-		if (IsObjectOutOfScreen(pBullet->obj, rectScreen))
+		pBullet->obj.pos += D3DXVECTOR3(sinf(pBullet->fDirection), cosf(pBullet->fDirection), 0.0f) * pBullet->fSpeed;
+
+		if (pBullet->obj.pos.y < 0)
 		{// 画面外に出たら削除
 			pBullet->bUsed = false;
 			continue;
 		}
-
-		pBullet->obj.pos += D3DXVECTOR3(sinf(pBullet->fDirection), cosf(pBullet->fDirection), 0.0f) * pBullet->fSpeed;
 
 		// 敵との衝突判定
 		for (int nCountEnemy = 0; nCountEnemy < MAX_ENEMY; nCountEnemy++, pEnemy++)

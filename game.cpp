@@ -16,6 +16,7 @@
 #include "sound.h"
 #include "fade.h"
 #include "font.h"
+#include "stage_loader.h"
 
 #include "decal.h"
 #include "player.h"
@@ -31,7 +32,6 @@
 // 
 //*********************************************************************
 
-
 //*********************************************************************
 // 
 // ***** ÉOÉçÅ[ÉoÉãïœêî *****
@@ -39,7 +39,7 @@
 //*********************************************************************
 TIMELINE g_timeline[MAX_TIMELINE];
 SOUND_LABEL g_CurrentSound = SOUND_LABEL_BGM_STAGE02;
-bool g_bPause = false;
+STAGE g_stage;
 
 //=====================================================================
 // èâä˙âªèàóù
@@ -55,7 +55,9 @@ void InitGame(void)
 	InitSpriteEffect();
 	InitScore();
 	
-	g_bPause = false;
+	g_stage.bPaused = false;
+	g_stage.nCountGame = 0;
+	g_stage.nCurrentWave = 0;
 
 	PlaySound(g_CurrentSound);
 
@@ -67,14 +69,7 @@ void InitGame(void)
 		D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f)
 	);
 
-
-
-	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 200, 0.0f));
-	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 400, 0.0f));
-	SetEnemy(ENEMYTYPE_000, D3DXVECTOR3(SCREEN_WIDTH / 2 + 100, 0 - 400, 0.0f));
-	SetEnemy(ENEMYTYPE_001, D3DXVECTOR3(SCREEN_WIDTH / 2 - 100, 0 - 400, 0.0f));
-	SetEnemy(ENEMYTYPE_001, D3DXVECTOR3(SCREEN_WIDTH / 2 - 100, 0 - 500, 0.0f));
-	SetEnemy(ENEMYTYPE_001, D3DXVECTOR3(SCREEN_WIDTH / 2 - 100, 0 - 600, 0.0f));
+	LoadStage("data/STAGE/stage01.txt", &g_timeline[0]);
 }
 
 //=====================================================================
@@ -105,9 +100,9 @@ void UpdateGame(void)
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START))
 	{
 		PlaySound(SOUND_LABEL_SE_PAUSE, 0.25f);
-		g_bPause ^= 1;
+		g_stage.bPaused ^= 1;
 
-		if (g_bPause)
+		if (g_stage.bPaused)
 		{
 			PauseSound(g_CurrentSound);
 		}
@@ -117,7 +112,7 @@ void UpdateGame(void)
 		}
 	}
 
-	if (g_bPause == false)
+	if (g_stage.bPaused == false)
 	{
 		UpdateFont();
 		UpdateDecal();
@@ -127,6 +122,29 @@ void UpdateGame(void)
 		UpdateEnemyBullet();
 		UpdateSpriteEffect();
 		UpdateScore();
+
+		for (int nCount = 0; nCount < MAX_TIMELINE; nCount++)
+		{
+			if (g_timeline[nCount].bSet == false) continue;
+			if (g_timeline[nCount].nWave != g_stage.nCurrentWave) continue;
+			if (g_timeline[nCount].nCountTime != g_stage.nCountGame) continue;
+
+			SetEnemy(
+				(ENEMYTYPE)g_timeline[nCount].nType,
+				D3DXVECTOR3(g_timeline[nCount].pos.x, g_timeline[nCount].pos.y, 0.0f)
+			);
+		}
+
+
+		if (g_stage.nCountGame > 100, GetEnemyLeft() < 1)
+		{
+			SetWave(g_stage.nCurrentWave + 1);
+		}
+		else
+		{
+			g_stage.nCountGame++;
+		}
+
 	}
 }
 
@@ -143,4 +161,10 @@ void DrawGame(void)
 	DrawPlayer();
 	DrawFont();
 	DrawScore();
+}
+
+void SetWave(int nWave)
+{
+	g_stage.nCurrentWave = nWave;
+	g_stage.nCountGame = 0;
 }

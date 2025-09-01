@@ -34,9 +34,19 @@ typedef struct
 	int nNumEnemy;
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 posOffset;
+	D3DXVECTOR3 move;
+	int nLife;
+	int nWave;
 	int nCountTime;
 	int nCountTimeOffset;
 }TIMELINE;
+
+typedef struct
+{
+	bool bPaused;
+	int nCurrentWave;
+	int nCountGame;
+}STAGE;
 
 //*********************************************************************
 // 
@@ -47,5 +57,6 @@ void InitGame(void);
 void UninitGame(void);
 void UpdateGame(void);
 void DrawGame(void);
+void SetWave(int nWave);
 
 #endif

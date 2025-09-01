@@ -34,6 +34,7 @@ typedef struct
 	float fSpeed;
 	float fDirection;
 	float fDamage;
+	D3DXVECTOR3 hitBoxSize;
 }BULLET;
 
 //*********************************************************************

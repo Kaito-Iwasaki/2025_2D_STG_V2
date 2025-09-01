@@ -58,7 +58,7 @@ const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 // 敵の情報[サイズ | 移動量 | 体力 | 弾数 | ショット間隔]
 ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
 	{ INIT_SIZE, {0.0f, 1.0f, 0.0f}, 10.0f, 10, 5},
-	{ INIT_SIZE, {0.05f, 1.0f, 50.0f}, 10.0f, 0, 0},
+	{ INIT_SIZE, {0.05f, 2.0f, 100.0f}, 2.0f, 0, 0},
 };
 
 //=====================================================================
@@ -118,7 +118,7 @@ void UpdateEnemy(void)
 	{
 		if (pEnemy->bUsed == false) continue;
 
-		if (IsObjectOutOfScreen(pEnemy->obj, OOS_BOTTOM))
+		if (IsObjectOutOfScreen(pEnemy->obj, rectScreen, OOS_BOTTOM))
 		{// 画面外に出たら削除
 			pEnemy->bUsed = false;
 			continue;
@@ -308,7 +308,7 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 
 void HitEnemy(ENEMY* pEnemy)
 {
-	if (IsObjectOutOfScreen(pEnemy->obj, OOS_ALL))
+	if (IsObjectOutOfScreen(pEnemy->obj))
 	{
 		return;
 	}

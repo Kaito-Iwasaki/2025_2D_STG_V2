@@ -14,6 +14,7 @@
 //*********************************************************************
 #include "baseObject.h"
 #include "main.h"
+#include "game.h"
 
 //*********************************************************************
 // 
@@ -89,6 +90,7 @@ void DrawEnemy(void);
 ENEMY* GetEnemy(void);
 int GetEnemyLeft(void);
 ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos);
+ENEMY* SetEnemy(TIMELINE* pTimeline);
 void HitEnemy(ENEMY* pEnemy);
 
 #endif

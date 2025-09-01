@@ -18,6 +18,7 @@
 #include "enemybullet.h"
 #include "player.h"
 #include "spriteEffect.h"
+#include "baseScene.h"
 
 //*********************************************************************
 // 
@@ -233,6 +234,7 @@ bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float 
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	ENEMYBULLET* pEnemyBullet = &g_aEnemyBullet[0];
+	RECT rectScreen = GAME_SCREEN_RECT;
 
 	for (int nCount = 0; nCount < MAX_ENEMYBULLET; nCount++, pEnemyBullet++)
 	{
@@ -260,7 +262,7 @@ bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float 
 			pEnemyBullet->state = ENEMYBULLETSTATE_NORMAL;
 			pEnemyBullet->obj.bVisible = true;
 
-			if (IsObjectOutOfScreen(pEnemyBullet->obj))
+			if (IsObjectOutOfScreen(pEnemyBullet->obj, rectScreen))
 			{
 				pEnemyBullet->bUsed = false;
 				return false;	// íeÇÃê∂ê¨Ç…é∏îs
