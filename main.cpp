@@ -23,7 +23,7 @@
 // 
 //*********************************************************************
 #define CLASS_NAME		"WindowsClass"				// ウィンドウクラスの名前
-#define WINDOW_NAME		"DirectX9"					// ウィンドウの名前
+#define WINDOW_NAME		"Glory Bullet"					// ウィンドウの名前
 #define DEFAULT_COLOR	D3DXCOLOR(0, 0, 0, 255)		// 画面クリア時の背景色
 
 //*********************************************************************
@@ -58,18 +58,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine
 
 	// ウィンドウクラスの設定
 	WNDCLASSEX wcex = {
-		sizeof(WNDCLASSEX),					// WNDCLASSのメモリサイズ
-		CS_CLASSDC,							// ウィンドウのスタイル
-		WindowProc,							// ウィンドウプロシージャ
-		0,									// 0（使わない）
-		0,									// 0（使わない）
-		hInstance,							// インスタンスハンドル
-		LoadIcon(NULL, IDI_APPLICATION),	// タスクバーのアイコン
-		LoadCursor(NULL, IDC_ARROW),		// マウスカーソル
-		(HBRUSH)(COLOR_WINDOW + 1),			// クライアント領域の背景色
-		NULL,								// メニューバー
-		CLASS_NAME,							// ウィンドウクラスの名前
-		LoadIcon(NULL, IDI_APPLICATION)		// ファイルのアイコン
+		sizeof(WNDCLASSEX),						// WNDCLASSのメモリサイズ
+		CS_CLASSDC,								// ウィンドウのスタイル
+		WindowProc,								// ウィンドウプロシージャ
+		0,										// 0（使わない）
+		0,										// 0（使わない）
+		hInstance,								// インスタンスハンドル
+		LoadIcon(hInstance, TEXT("GAMEICON")),	// タスクバーのアイコン
+		LoadCursor(NULL, IDC_ARROW),			// マウスカーソル
+		(HBRUSH)(COLOR_WINDOW + 1),				// クライアント領域の背景色
+		NULL,									// メニューバー
+		CLASS_NAME,								// ウィンドウクラスの名前
+		LoadIcon(hInstance, TEXT("GAMEICON"))			// ファイルのアイコン
 	};
 
 	HWND hWnd;											// ウィンドウハンドル（識別子）
