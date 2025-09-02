@@ -168,14 +168,14 @@ void UpdateGame(void)
 //=====================================================================
 void DrawGame(void)
 {
-	//DrawBackground();
-	//DrawEnemy();
-	//DrawSpriteEffect();
-	//DrawEnemyBullet();
-	//DrawBullet();
-	//DrawPlayer();
-	//DrawFont();
-	//DrawScore();
+	DrawBackground();
+	DrawEnemy();
+	DrawSpriteEffect();
+	DrawEnemyBullet();
+	DrawBullet();
+	DrawPlayer();
+	DrawFont();
+	DrawScore();
 
 	if (g_stage.bPaused)
 	{
