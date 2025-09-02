@@ -59,6 +59,7 @@ typedef struct
 	D3DXVECTOR3 move;
 	ENEMYTYPE type;
 	ENEMYSTATE state;
+	int nMode;
 	float fLife;
 	int nShootLeft;
 	int nShootInterval;

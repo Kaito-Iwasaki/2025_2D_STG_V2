@@ -106,8 +106,6 @@ void InitPlayer(void)
 //=====================================================================
 void UninitPlayer(void)
 {
-	memset(&g_player, 0, sizeof(PLAYER));
-
 	if (g_pVtxBuffPlayer != NULL)
 	{// 頂点バッファの破棄
 		g_pVtxBuffPlayer->Release();
@@ -164,10 +162,9 @@ void UpdatePlayer(void)
 
 	case PLAYERSTATE_DIED:
 		g_player.obj.bVisible = false;
-		if (g_player.nCounterState > 60)
+		if (g_player.nCounterState > 120)
 		{
-			g_player.obj.pos = INIT_POS;
-			SetPlayerState(PLAYERSTATE_DAMAGED);
+			SetPlayerState(PLAYERSTATE_END);
 		}
 		return;
 	}

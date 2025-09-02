@@ -59,5 +59,6 @@ void UninitGame(void);
 void UpdateGame(void);
 void DrawGame(void);
 void SetWave(int nWave);
+void TogglePause(bool bPause);
 
 #endif

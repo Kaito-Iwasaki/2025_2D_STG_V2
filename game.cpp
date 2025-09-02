@@ -25,13 +25,16 @@
 #include "enemybullet.h"
 #include "spriteEffect.h"
 #include "score.h"
+#include "pause.h"
+#include "bg.h"
 
 //*********************************************************************
 // 
 // ***** É}ÉNÉçíËã` *****
 // 
 //*********************************************************************
-#define MAX_WAVE		(5)
+#define MAX_WAVE		(8)
+#define WAVE_START		(0)
 
 //*********************************************************************
 // 
@@ -39,7 +42,7 @@
 // 
 //*********************************************************************
 TIMELINE g_timeline[MAX_TIMELINE];
-SOUND_LABEL g_CurrentSound = SOUND_LABEL_BGM_STAGE02;
+SOUND_LABEL g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
 STAGE g_stage;
 
 //=====================================================================
@@ -55,10 +58,12 @@ void InitGame(void)
 	InitEnemyBullet();
 	InitSpriteEffect();
 	InitScore();
-	
+	InitPause();
+	InitBackground();
+
 	g_stage.bPaused = false;
 	g_stage.nCountGameState = 0;
-	g_stage.nCurrentWave = 0;
+	g_stage.nCurrentWave = WAVE_START;
 	g_stage.nCountTimeline = 0;
 
 	PlaySound(g_CurrentSound);
@@ -66,7 +71,7 @@ void InitGame(void)
 	SetDecal(
 		DECAL_LABEL_NULL,
 		D3DXVECTOR3(SCREEN_CENTER, SCREEN_VCENTER, 0.0f),
-		D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f),
+		D3DXVECTOR3(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, 0.0f),
 		D3DXVECTOR3_ZERO,
 		D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f)
 	);
@@ -87,6 +92,8 @@ void UninitGame(void)
 	UninitEnemyBullet();
 	UninitSpriteEffect();
 	UninitScore();
+	UninitPause();
+	UninitBackground();
 }
 
 //=====================================================================
@@ -94,31 +101,28 @@ void UninitGame(void)
 //=====================================================================
 void UpdateGame(void)
 {
+#if _DEBUG
+	if (GetKeyboardTrigger(DIK_F1))
+	{
+		SetFade(SCENE_RESULT);
+	}
+#endif
+
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START))
 	{
-		PlaySound(SOUND_LABEL_SE_PAUSE, 0.25f);
-		g_stage.bPaused ^= 1;
-
-		if (g_stage.bPaused)
-		{
-			PauseSound(g_CurrentSound);
-		}
-		else
-		{
-			UnPauseSound(g_CurrentSound);
-		}
+		TogglePause(g_stage.bPaused ^ 1);
 	}
 
 	if (g_stage.bPaused == false)
 	{
 		UpdateFont();
-		UpdateDecal();
 		UpdatePlayer();
 		UpdateBullet();
 		UpdateEnemy();
 		UpdateEnemyBullet();
 		UpdateSpriteEffect();
 		UpdateScore();
+		UpdateBackground();
 
 		for (int nCount = 0; nCount < MAX_TIMELINE; nCount++)
 		{
@@ -147,6 +151,15 @@ void UpdateGame(void)
 		{
 			SetWave(g_stage.nCurrentWave + 1);
 		}
+
+		if (GetPlayer()->state == PLAYERSTATE_END)
+		{
+			SetFade(SCENE_RESULT);
+		}
+	}
+	else
+	{
+		UpdatePause();
 	}
 }
 
@@ -155,26 +168,47 @@ void UpdateGame(void)
 //=====================================================================
 void DrawGame(void)
 {
-	DrawDecal();
-	DrawEnemy();
-	DrawSpriteEffect();
-	DrawEnemyBullet();
-	DrawBullet();
-	DrawPlayer();
-	DrawFont();
-	DrawScore();
+	//DrawBackground();
+	//DrawEnemy();
+	//DrawSpriteEffect();
+	//DrawEnemyBullet();
+	//DrawBullet();
+	//DrawPlayer();
+	//DrawFont();
+	//DrawScore();
+
+	if (g_stage.bPaused)
+	{
+		DrawPause();
+	}
 }
 
 void SetWave(int nWave)
 {
 	if (nWave > MAX_WAVE)
 	{
-		SetFade(SCENE_TITLE);
+		SetFade(SCENE_RESULT);
 	}
 	else
 	{
 		g_stage.nCurrentWave = nWave;
 		g_stage.nCountGameState = 0;
 		g_stage.nCountTimeline = 0;
+	}
+}
+
+void TogglePause(bool bPause)
+{
+	PlaySound(SOUND_LABEL_SE_PAUSE, 0.25f);
+	g_stage.bPaused = bPause;
+
+	if (g_stage.bPaused)
+	{
+		PauseSound(g_CurrentSound);
+	}
+	else
+	{
+		UnPauseSound(g_CurrentSound);
+		SetPauseMenuCursor(0);
 	}
 }

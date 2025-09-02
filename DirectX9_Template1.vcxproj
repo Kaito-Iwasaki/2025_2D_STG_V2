@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="bg.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="game.h" />
@@ -149,6 +150,7 @@
     </ClInclude>
     <ClInclude Include="enemybullet.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="result.h" />
     <ClInclude Include="score.h">
       <SubType>
       </SubType>
@@ -169,7 +171,9 @@
     <ClInclude Include="pause.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bg.cpp" />
     <ClCompile Include="pause.cpp" />
+    <ClCompile Include="result.cpp" />
     <ClCompile Include="score.cpp">
       <SubType>
       </SubType>

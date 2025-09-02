@@ -46,7 +46,7 @@ typedef struct
 FONT g_aFont[MAX_FONT] = {};
 
 FONT_INFO g_aFontInfo[FONT_LABEL_MAX][MAX_PATH] = {
-	{"x10y12pxDonguriDuel.ttf", "x10y12pxDonguriDuel" }
+	{"data\\FONT\\x10y12pxDonguriDuel.ttf", "x10y12pxDonguriDuel" }
 };
 
 //=====================================================================
@@ -122,7 +122,7 @@ void DrawFont(void)
 				(long)(pFont->obj.pos.y + pFont->obj.size.y),
 			};
 
-			pFont->font->DrawText(NULL, pFont->aText, -1, &rect, DT_LEFT, D3DXCOLOR(255, 0, 0, 255));
+			pFont->font->DrawText(NULL, pFont->aText, -1, &rect, pFont->format, pFont->obj.color);
 		}
 	}
 }
@@ -138,7 +138,7 @@ FONT* GetFont(void)
 //=====================================================================
 // ‰æ‘œ‚ÌÝ’èˆ—
 //=====================================================================
-FONT* SetFont(FONT_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, const char* aText)
+FONT* SetFont(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, const char* aText, UINT format)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -153,6 +153,7 @@ FONT* SetFont(FONT_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 r
 			pFont->obj.size = size;
 			pFont->obj.color = INIT_COLOR;
 			pFont->nID = nCount;
+			pFont->format = format;
 			pFont->obj.bVisible = true;
 			strcpy(&pFont->aText[0], aText);
 

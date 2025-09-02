@@ -18,6 +18,7 @@
 #include "title.h"
 #include "game.h"
 #include "decal.h"
+#include "result.h"
 
 //*********************************************************************
 // 
@@ -61,6 +62,10 @@ void UpdateScene(void)
 		UpdateGame();
 		break;
 
+	case SCENE_RESULT:
+		UpdateResult();
+		break;
+
 	}
 
 	UpdateFade();
@@ -89,6 +94,10 @@ void DrawScene(void)
 	case SCENE_GAME:
 		DrawGame();
 		break;
+
+	case SCENE_RESULT:
+		DrawResult();
+		break;
 	}
 
 	DrawFade();
@@ -112,6 +121,10 @@ SCENE SetScene(SCENE nextScene, bool bStopSound)
 	case SCENE_GAME:
 		UninitGame();
 		break;
+
+	case SCENE_RESULT:
+		UninitResult();
+		break;
 	}
 
 	if (bStopSound)
@@ -128,6 +141,10 @@ SCENE SetScene(SCENE nextScene, bool bStopSound)
 
 	case SCENE_GAME:
 		InitGame();
+		break;
+
+	case SCENE_RESULT:
+		InitResult();
 		break;
 	}
 

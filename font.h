@@ -48,6 +48,7 @@ typedef struct
 	bool bUsed;
 	int nID;
 	char aText[MAX_TEXTCHAR];
+	UINT format;
 }FONT;
 
 //*********************************************************************
@@ -60,7 +61,7 @@ void UninitFont(void);
 void UpdateFont(void);
 void DrawFont(void);
 FONT* GetFont(void);
-FONT* SetFont(FONT_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, const char* aText);
+FONT* SetFont(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, const char* aText, UINT format);
 void DeleteFont(int nID);
 void DeleteFont(void);
 

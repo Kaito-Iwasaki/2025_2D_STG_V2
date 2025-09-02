@@ -1,11 +1,11 @@
 //=====================================================================
 //
-// bullet.cppのヘッダファイル [bullet.h]
+// bg.cppのヘッダファイル [bg.h]
 // Author : Kaito Iwasaki
 // 
 //=====================================================================
-#ifndef _BULLET_H_
-#define _BULLET_H_
+#ifndef _BACKGROUND_H_
+#define _BACKGROUND_H_
 
 //*********************************************************************
 // 
@@ -20,7 +20,7 @@
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-#define MAX_BULLET		(256)
+#define MAX_BACKGROUND		(4)
 
 //*********************************************************************
 // 
@@ -30,23 +30,17 @@
 typedef struct
 {
 	BASEOBJECT obj;
-	bool bUsed;
-	float fSpeed;
-	float fDirection;
-	float fDamage;
-	D3DXVECTOR3 hitBoxSize;
-}BULLET;
+}BACKGROUND;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitBullet(void);
-void UninitBullet(void);
-void UpdateBullet(void);
-void DrawBullet(void);
-BULLET* GetBullet(void);
-void SetBullet(D3DXVECTOR3 pos, float fSpeed, float fDirection);
+void InitBackground(void);
+void UninitBackground(void);
+void UpdateBackground(void);
+void DrawBackground(void);
+BACKGROUND* GetBackground(void);
 
 #endif

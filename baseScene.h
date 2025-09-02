@@ -32,6 +32,7 @@ typedef enum
 {
 	SCENE_TITLE = 0,
 	SCENE_GAME,
+	SCENE_RESULT,
 	SCENE_MAX
 }SCENE;		// ƒV[ƒ“—ñ‹“Œ^
 

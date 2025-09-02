@@ -26,8 +26,6 @@
 // ***** É}ÉNÉçíËã` *****
 // 
 //*********************************************************************
-#define TEXTURE_FILENAME		"data\\TEXTURE\\enemybullet000.png"
-
 #define INIT_POS						D3DXVECTOR3_ZERO
 #define INIT_SIZE						D3DXVECTOR3(16.0f, 16.0f, 16.0f)
 #define INIT_COLOR						D3DXCOLOR(0.0f, 0.0f, 0.0f,1.0f)

@@ -29,7 +29,7 @@
 //*********************************************************************
 #define INIT_POS_X				(SCREEN_WIDTH / 2)
 #define INIT_POS_Y				(SCREEN_HEIGHT/ 2)
-#define INIT_SIZE				{48.0f, 48.0f, 0.0f}
+#define INIT_SIZE				D3DXVECTOR3(48.0f, 48.0f, 0.0f)
 #define INIT_SIZE_X				(48.0f)
 #define INIT_SIZE_Y				(48.0f)
 #define INIT_COLOR				D3DXCOLOR(0.0f, 0.0f, 0.0f,1.0f)
@@ -54,7 +54,8 @@ const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 	"data\\TEXTURE\\enemy000.png",
 	"data\\TEXTURE\\enemy001.png",
 	"data\\TEXTURE\\enemy002.png",
-	"data\\TEXTURE\\enemy003.png"
+	"data\\TEXTURE\\enemy003.png",
+	"data\\TEXTURE\\enemy004.png"
 };
 
 // “G‚Ìî•ñ[ƒTƒCƒY | ˆÚ“®—Ê | ‘Ì—Í | ’e” | ƒVƒ‡ƒbƒgŠÔŠu]
@@ -62,7 +63,8 @@ ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
 	{ INIT_SIZE, {0.0f, 1.0f, 0.0f}, 10.0f, 10, 5},
 	{ INIT_SIZE, {0.05f, 2.0f, 100.0f}, 2.0f, 0, 0},
 	{ INIT_SIZE, {0.0f, 10.0f, 0.0f}, 10.0f, 1, 30},
-	{ INIT_SIZE, {0.0f, 3.0f, 0.0f}, 5.0f, 0, 00},
+	{ INIT_SIZE, {0.0f, 2.0f, 0.0f}, 5.0f, 0, 00},
+	{ INIT_SIZE * 1.2f, {0.0f, 3.0f, 0.0f}, 25.0f, 0, 00},
 };
 
 //=====================================================================
@@ -221,8 +223,56 @@ void UpdateEnemy(void)
 
 			pEnemy->obj.pos.y += pEnemy->move.y;
 			break;
-		}
 
+		case ENEMYTYPE_004:
+			pEnemy->fShootRot = Direction(pEnemy->obj.pos, pPlayer->obj.pos);
+
+			switch (pEnemy->nMode)
+			{
+			case 0:
+				pEnemy->obj.pos.x += pEnemy->move.y * sinf(pEnemy->fShootRot);
+				pEnemy->obj.pos.y += pEnemy->move.y * cosf(pEnemy->fShootRot);
+
+				if (pEnemy->nCounterState > 90)
+				{
+					pEnemy->nMode = 1;
+					pEnemy->nCounterState = 0;
+				}
+				break;
+
+			case 1:
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_000,
+					pEnemy->obj.pos,
+					pEnemy->fShootSpeed,
+					pEnemy->fShootRot
+				);
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_000,
+					pEnemy->obj.pos,
+					pEnemy->fShootSpeed,
+					pEnemy->fShootRot + 0.4f
+				);
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_000,
+					pEnemy->obj.pos,
+					pEnemy->fShootSpeed,
+					pEnemy->fShootRot - 0.4f
+				);
+				pEnemy->nMode = 2;
+				pEnemy->nCounterState = 0;
+				break;
+
+			case 2:
+				if (pEnemy->nCounterState > 60)
+				{
+					pEnemy->nMode = 0;
+					pEnemy->nCounterState = 0;
+				}
+				break;
+			}
+			break;
+		}
 	}
 }
 
