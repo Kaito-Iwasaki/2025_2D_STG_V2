@@ -68,7 +68,7 @@ void UpdateTitle(void)
 {
 	if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START))
 	{
-		SetFade(SCENE_ANOTHER);
+		SetFade(SCENE_GAME);
 	}
 }
 

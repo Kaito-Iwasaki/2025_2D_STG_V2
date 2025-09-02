@@ -50,8 +50,6 @@ void LoadStage(const char* aFileName, TIMELINE* pTimeline)
 
 			memset(&timelineTemp, 0, sizeof(TIMELINE));
 			timelineTemp.posOffset = D3DXVECTOR3(0.0f, -50.0f, 0.0f);
-			timelineTemp.nCountTimeOffset = 10;
-			timelineTemp.nWave = 0;
 
 			do
 			{
@@ -87,14 +85,15 @@ void LoadStage(const char* aFileName, TIMELINE* pTimeline)
 					fscanf(pFile, "%f", &timelineTemp.move.x);
 					fscanf(pFile, "%f", &timelineTemp.move.y);
 				}
-				else if (strncmp(aStrFile, "TIME", 4) == 0)
-				{
-					fscanf(pFile, "%d", &timelineTemp.nCountTime);
-				}
 				else if (strncmp(aStrFile, "TIMEOFFSET", 10) == 0)
 				{
 					fscanf(pFile, "%d", &timelineTemp.nCountTimeOffset);
 				}
+				else if (strncmp(aStrFile, "TIME", 4) == 0)
+				{
+					fscanf(pFile, "%d", &timelineTemp.nCountTime);
+				}
+
 				else if (strncmp(aStrFile, "LIFE", 4) == 0)
 				{
 					fscanf(pFile, "%d", &timelineTemp.nLife);
@@ -108,7 +107,7 @@ void LoadStage(const char* aFileName, TIMELINE* pTimeline)
 				pTimeline->bSet = true;
 				pTimeline->nType = timelineTemp.nType;
 				pTimeline->pos = timelineTemp.pos + timelineTemp.posOffset * nCount;
-				pTimeline->nCountTime = timelineTemp.nCountTime * nCount;
+				pTimeline->nCountTime = timelineTemp.nCountTime + (nCount * timelineTemp.nCountTimeOffset);
 				pTimeline->nWave = timelineTemp.nWave;
 			}
 

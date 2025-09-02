@@ -22,7 +22,7 @@
 // ***** É}ÉNÉçíËã` *****
 // 
 //*********************************************************************
-#define TEXTURE_FILENAME		"data\\TEXTURE\\wallpaper01.jpg"
+#define TEXTURE_FILENAME		"data\\TEXTURE\\sakai001.png"
 
 #define INIT_POS				{SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2, 0.0f}
 #define INIT_SIZE				{SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f}

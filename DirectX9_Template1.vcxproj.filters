@@ -117,6 +117,9 @@
     <ClCompile Include="stage_loader.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>ソース ファイル\GameObject\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sound.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="stage_loader.h">
       <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>ヘッダー ファイル\GameObject\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

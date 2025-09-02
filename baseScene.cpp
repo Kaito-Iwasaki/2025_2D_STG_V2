@@ -24,7 +24,7 @@
 // ***** グローバル変数 *****
 // 
 //*********************************************************************
-SCENE g_currentScene = SCENE_GAME;
+SCENE g_currentScene = SCENE_TITLE;
 
 //=====================================================================
 // 初期化処理
@@ -53,11 +53,11 @@ void UpdateScene(void)
 {
 	switch (g_currentScene)
 	{
-	case SCENE_GAME:
+	case SCENE_TITLE:
 		UpdateTitle();
 		break;
 
-	case SCENE_ANOTHER:
+	case SCENE_GAME:
 		UpdateGame();
 		break;
 
@@ -82,11 +82,11 @@ void DrawScene(void)
 
 	switch (g_currentScene)
 	{
-	case SCENE_GAME:
+	case SCENE_TITLE:
 		DrawTitle();
 		break;
 
-	case SCENE_ANOTHER:
+	case SCENE_GAME:
 		DrawGame();
 		break;
 	}
@@ -105,11 +105,11 @@ SCENE SetScene(SCENE nextScene, bool bStopSound)
 	// 現在のシーンを終了
 	switch (g_currentScene)
 	{
-	case SCENE_GAME:
+	case SCENE_TITLE:
 		UninitTitle();
 		break;
 
-	case SCENE_ANOTHER:
+	case SCENE_GAME:
 		UninitGame();
 		break;
 	}
@@ -122,11 +122,11 @@ SCENE SetScene(SCENE nextScene, bool bStopSound)
 	// 新規シーンを初期化
 	switch (nextScene)
 	{
-	case SCENE_GAME:
+	case SCENE_TITLE:
 		InitTitle();
 		break;
 
-	case SCENE_ANOTHER:
+	case SCENE_GAME:
 		InitGame();
 		break;
 	}

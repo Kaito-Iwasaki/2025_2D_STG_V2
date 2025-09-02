@@ -19,6 +19,7 @@
 #include "player.h"
 #include "spriteEffect.h"
 #include "baseScene.h"
+#include "score.h"
 
 //*********************************************************************
 // 
@@ -282,6 +283,7 @@ void HitEnemyBullet(ENEMYBULLET* pEnemyBullet)
 	{
 		PlaySound(SOUND_LABEL_SE_HIT00, 0.5f);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.75f);
+		AddScore(10);
 		pEnemyBullet->bUsed = false;
 	}
 	else

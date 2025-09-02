@@ -31,6 +31,7 @@
 // ***** ƒ}ƒNƒ’è‹` *****
 // 
 //*********************************************************************
+#define MAX_WAVE		(5)
 
 //*********************************************************************
 // 
@@ -56,8 +57,9 @@ void InitGame(void)
 	InitScore();
 	
 	g_stage.bPaused = false;
-	g_stage.nCountGame = 0;
+	g_stage.nCountGameState = 0;
 	g_stage.nCurrentWave = 0;
+	g_stage.nCountTimeline = 0;
 
 	PlaySound(g_CurrentSound);
 
@@ -92,11 +94,6 @@ void UninitGame(void)
 //=====================================================================
 void UpdateGame(void)
 {
-	if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_BACK))
-	{
-		SetFade(SCENE_GAME);
-	}
-
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START))
 	{
 		PlaySound(SOUND_LABEL_SE_PAUSE, 0.25f);
@@ -127,7 +124,7 @@ void UpdateGame(void)
 		{
 			if (g_timeline[nCount].bSet == false) continue;
 			if (g_timeline[nCount].nWave != g_stage.nCurrentWave) continue;
-			if (g_timeline[nCount].nCountTime != g_stage.nCountGame) continue;
+			if (g_timeline[nCount].nCountTime != g_stage.nCountTimeline) continue;
 
 			SetEnemy(
 				(ENEMYTYPE)g_timeline[nCount].nType,
@@ -135,16 +132,21 @@ void UpdateGame(void)
 			);
 		}
 
-
-		if (g_stage.nCountGame > 100, GetEnemyLeft() < 1)
+		if (GetEnemyLeft() < 1)
 		{
-			SetWave(g_stage.nCurrentWave + 1);
+			g_stage.nCountGameState++;
 		}
 		else
 		{
-			g_stage.nCountGame++;
+			g_stage.nCountGameState = 0;
 		}
 
+		g_stage.nCountTimeline++;
+
+		if (g_stage.nCountGameState > 100)
+		{
+			SetWave(g_stage.nCurrentWave + 1);
+		}
 	}
 }
 
@@ -154,8 +156,8 @@ void UpdateGame(void)
 void DrawGame(void)
 {
 	DrawDecal();
-	DrawSpriteEffect();
 	DrawEnemy();
+	DrawSpriteEffect();
 	DrawEnemyBullet();
 	DrawBullet();
 	DrawPlayer();
@@ -165,6 +167,14 @@ void DrawGame(void)
 
 void SetWave(int nWave)
 {
-	g_stage.nCurrentWave = nWave;
-	g_stage.nCountGame = 0;
+	if (nWave > MAX_WAVE)
+	{
+		SetFade(SCENE_TITLE);
+	}
+	else
+	{
+		g_stage.nCurrentWave = nWave;
+		g_stage.nCountGameState = 0;
+		g_stage.nCountTimeline = 0;
+	}
 }

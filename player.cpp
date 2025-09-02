@@ -177,12 +177,10 @@ void UpdatePlayer(void)
 	if (pGamepad->sThumbLX < -INPUT_DEADZONE)
 	{// 左
 		direction.x -= 1;
-		g_player.obj.bInversed = true;
 	}
 	if (pGamepad->sThumbLX > INPUT_DEADZONE)
 	{// 右
 		direction.x += 1;
-		g_player.obj.bInversed = false;
 	}
 	if (pGamepad->sThumbLY > INPUT_DEADZONE)
 	{// 上
@@ -197,12 +195,11 @@ void UpdatePlayer(void)
 	if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_LEFT))
 	{// 左
 		direction.x -= 1;
-		g_player.obj.bInversed = true;
 	}
 	if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGHT))
 	{// 右
 		direction.x += 1;
-		g_player.obj.bInversed = false;
+		//g_player.obj.bInversed = false;
 	}
 	if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_UP))
 	{// 上
@@ -215,6 +212,7 @@ void UpdatePlayer(void)
 
 	// 移動方向に応じてテクスチャパターンを設定
 	g_player.nTexPattern = Clamp(direction.x, -1, 1);
+	g_player.obj.bInversed = g_player.nTexPattern == -1;
 
 	// 方向の大きさを求める
 	fMagnitude = sqrtf(direction.x * direction.x + direction.y * direction.y);

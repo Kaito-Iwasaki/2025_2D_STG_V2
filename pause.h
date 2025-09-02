@@ -1,11 +1,11 @@
 //=====================================================================
-//
-// baseScene.cppのヘッダファイル [baseScene.h]
-// Author : Kaito Iwasaki
 // 
+// pause.cppのヘッダファイル [pause.h]
+// Author : Kaito Iwasaki
+//
 //=====================================================================
-#ifndef _BASESCENE_H_
-#define _BASESCENE_H_
+#ifndef _PAUSE_H_
+#define _PAUSE_H_		// 二重インクルード防止のマクロ
 
 //*********************************************************************
 // 
@@ -16,34 +16,37 @@
 
 //*********************************************************************
 // 
-// ***** マクロ定義 *****
-// 
-//*********************************************************************
-#define GAME_SCREEN_WIDTH		(540.0f)
-#define GAME_SCREEN_HEIGHT		(720.0f)
-#define GAME_SCREEN_RECT		{ SCREEN_CENTER - GAME_SCREEN_WIDTH / 2, 0, SCREEN_CENTER + GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT};
-
-//*********************************************************************
-// 
 // ***** 列挙型 *****
 // 
 //*********************************************************************
 typedef enum
 {
-	SCENE_TITLE = 0,
-	SCENE_GAME,
-	SCENE_MAX
-}SCENE;		// シーン列挙型
+	PAUSE_MENU_CONTINUE = 0,
+	PAUSE_MENU_RETRY,
+	PAUSE_MENU_QUIT,
+	PAUSE_MENU_MAX
+}PAUSE_MENU;
+
+//*********************************************************************
+// 
+// ***** 構造体 *****
+// 
+//*********************************************************************
+typedef struct
+{
+	BASEOBJECT obj;
+	int nSelect;
+}PAUSE;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitScene(void);
-void UninitScene(void);
-void UpdateScene(void);
-void DrawScene(void);
-SCENE SetScene(SCENE nextScene, bool bStopSound = true);
+void InitPause(void);
+void UninitPause(void);
+void UpdatePause(void);
+void DrawPause(void);
+void SetPauseMenuCursor(int nCursor);
 
 #endif

@@ -53,12 +53,16 @@ ENEMY g_aEnemy[MAX_ENEMY] = {};
 const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 	"data\\TEXTURE\\enemy000.png",
 	"data\\TEXTURE\\enemy001.png",
+	"data\\TEXTURE\\enemy002.png",
+	"data\\TEXTURE\\enemy003.png"
 };
 
 // “G‚Ìî•ñ[ƒTƒCƒY | ˆÚ“®—Ê | ‘Ì—Í | ’e” | ƒVƒ‡ƒbƒgŠÔŠu]
 ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
 	{ INIT_SIZE, {0.0f, 1.0f, 0.0f}, 10.0f, 10, 5},
 	{ INIT_SIZE, {0.05f, 2.0f, 100.0f}, 2.0f, 0, 0},
+	{ INIT_SIZE, {0.0f, 10.0f, 0.0f}, 10.0f, 1, 30},
+	{ INIT_SIZE, {0.0f, 3.0f, 0.0f}, 5.0f, 0, 00},
 };
 
 //=====================================================================
@@ -160,7 +164,7 @@ void UpdateEnemy(void)
 			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
 			{
 				pEnemy->nCounterShoot = 0;
-				pEnemy->fShootRot = 0.0f + sin((float)pEnemy->nCounterState * 0.5f) * 0.5f;
+				pEnemy->fShootRot = RandRange(-100, 100) * 0.01f;
 				if (SetEnemyBullet(
 					ENEMYBULLET_TYPE_001,
 					pEnemy->obj.pos,
@@ -174,6 +178,47 @@ void UpdateEnemy(void)
 
 		case ENEMYTYPE_001:
 			pEnemy->obj.pos.x = pEnemy->startPos.x + sin((float)pEnemy->nCounterState * pEnemy->move.x) * pEnemy->move.z;
+			pEnemy->obj.pos.y += pEnemy->move.y;
+			break;
+
+		case ENEMYTYPE_002:
+			pEnemy->move.y += (0.0f - pEnemy->move.y) * 0.05f;
+			pEnemy->obj.pos.y += pEnemy->move.y + 1.0f;
+
+			if (pEnemy->nShootLeft < 1) break;
+
+			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
+			{
+				pEnemy->nCounterShoot = 0;
+				pEnemy->fShootRot = Direction(pEnemy->obj.pos, pPlayer->obj.pos);
+				if (SetEnemyBullet(
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos,
+					pEnemy->fShootSpeed,
+					pEnemy->fShootRot))
+				{
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_001,
+						pEnemy->obj.pos,
+						pEnemy->fShootSpeed,
+						pEnemy->fShootRot + 0.4f);
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_001,
+						pEnemy->obj.pos,
+						pEnemy->fShootSpeed,
+						pEnemy->fShootRot - 0.4f);
+					pEnemy->nShootLeft--;
+				}
+			}
+			break;
+
+		case ENEMYTYPE_003:
+			if (pEnemy->nCounterState == 1)
+			{
+				pEnemy->obj.pos.x = RandRange(640 - 250, 640 + 250);
+				pEnemy->move.y += RandRange(pEnemy->move.y - 1, pEnemy->move.y + 1);
+			}
+
 			pEnemy->obj.pos.y += pEnemy->move.y;
 			break;
 		}

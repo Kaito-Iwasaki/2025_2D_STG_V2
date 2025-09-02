@@ -45,7 +45,8 @@ typedef struct
 {
 	bool bPaused;
 	int nCurrentWave;
-	int nCountGame;
+	int nCountGameState;
+	int nCountTimeline;
 }STAGE;
 
 //*********************************************************************
