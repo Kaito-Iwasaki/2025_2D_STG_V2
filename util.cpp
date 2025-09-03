@@ -79,6 +79,10 @@ void Clampf(float* pNum, float fMin, float fMax)
 //=====================================================================
 // 二つのベクトルの大きさ（距離）を求める処理
 //=====================================================================
+
+//=====================================================================
+// 二つのベクトルの大きさ（距離）を求める処理
+//=====================================================================
 float Magnitude(D3DXVECTOR3 from, D3DXVECTOR3 to)
 {
 	D3DXVECTOR3 fDistance = to - from;
@@ -105,6 +109,11 @@ D3DXVECTOR2 Vector3To2(D3DXVECTOR3 source)
 int RandRange(int nMin, int nMax)
 {
 	return (rand() % (nMax - nMin)) + nMin;
+}
+
+float Dot3(D3DXVECTOR3 a, D3DXVECTOR3 b)
+{
+	return a.x;
 }
 
 //=====================================================================

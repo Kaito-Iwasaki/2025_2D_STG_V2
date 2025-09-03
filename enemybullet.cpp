@@ -47,6 +47,7 @@ ENEMYBULLET g_aEnemyBullet[MAX_ENEMYBULLET] = {};
 const char* g_aEnemyBulletFileName[ENEMYBULLET_TYPE_MAX] = {
 	"data\\TEXTURE\\enemybullet000.png",
 	"data\\TEXTURE\\enemybullet001.png",
+	"data\\TEXTURE\\enemybullet002.png",
 };
 
 //=====================================================================
@@ -156,6 +157,29 @@ void UpdateEnemyBullet(void)
 			if (pEnemyBullet->nCounterState % 2 == 0)
 			{
 				pEnemyBullet->obj.rot.z += D3DX_PI * 0.125f;
+			}
+			break;
+
+		case ENEMYBULLET_TYPE_002:
+			pEnemyBullet->obj.size = INIT_SIZE * 2;
+			if (pEnemyBullet->nCounterState < 100000)
+			{
+				//float naiseki;
+				//float bulletToPlayer;
+				//D3DXVECTOR3 dir1, dir2;
+				//float length1, length2;
+
+				//dir1 = D3DXVECTOR3(cosf(pEnemyBullet->fDirection), sinf(pEnemyBullet->fDirection), 0.0f) * 10.0f7;
+				//dir2 = pPlayer->obj.pos - pEnemyBullet->obj.pos;
+				//
+
+				//naiseki = dir1.x * dir2.x + dir1.y * dir2.y;
+
+				//length1 = sqrtf(dir1.x * dir1.x + dir1.y * dir1.y);
+				//length2 = sqrtf(dir2.x * dir2.x + dir2.y * dir2.y);
+
+				//pEnemyBullet->fDirection += (naiseki / (length1 * length2)) * 0.1f;
+				//pEnemyBullet->obj.rot.z = pEnemyBullet->fDirection + D3DX_PI;
 			}
 			break;
 

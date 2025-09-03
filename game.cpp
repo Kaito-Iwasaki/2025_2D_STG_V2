@@ -34,7 +34,8 @@
 // 
 //*********************************************************************
 #define MAX_WAVE		(8)
-#define WAVE_START		(0)
+#define WAVE_START		(4)
+#define WAVE_INTERVAL	(10)
 
 //*********************************************************************
 // 
@@ -147,7 +148,7 @@ void UpdateGame(void)
 
 		g_stage.nCountTimeline++;
 
-		if (g_stage.nCountGameState > 100)
+		if (g_stage.nCountGameState > WAVE_INTERVAL)
 		{
 			SetWave(g_stage.nCurrentWave + 1);
 		}

@@ -194,18 +194,18 @@ void UpdateEnemy(void)
 				pEnemy->nCounterShoot = 0;
 				pEnemy->fShootRot = Direction(pEnemy->obj.pos, pPlayer->obj.pos);
 				if (SetEnemyBullet(
-					ENEMYBULLET_TYPE_001,
+					ENEMYBULLET_TYPE_002,
 					pEnemy->obj.pos,
 					pEnemy->fShootSpeed,
 					pEnemy->fShootRot))
 				{
 					SetEnemyBullet(
-						ENEMYBULLET_TYPE_001,
+						ENEMYBULLET_TYPE_002,
 						pEnemy->obj.pos,
 						pEnemy->fShootSpeed,
 						pEnemy->fShootRot + 0.4f);
 					SetEnemyBullet(
-						ENEMYBULLET_TYPE_001,
+						ENEMYBULLET_TYPE_002,
 						pEnemy->obj.pos,
 						pEnemy->fShootSpeed,
 						pEnemy->fShootRot - 0.4f);
@@ -225,6 +225,7 @@ void UpdateEnemy(void)
 			break;
 
 		case ENEMYTYPE_004:
+			pEnemy->fShootRot = 4.0f;
 			pEnemy->fShootRot = Direction(pEnemy->obj.pos, pPlayer->obj.pos);
 
 			switch (pEnemy->nMode)
@@ -233,7 +234,7 @@ void UpdateEnemy(void)
 				pEnemy->obj.pos.x += pEnemy->move.y * sinf(pEnemy->fShootRot);
 				pEnemy->obj.pos.y += pEnemy->move.y * cosf(pEnemy->fShootRot);
 
-				if (pEnemy->nCounterState > 90)
+				if (pEnemy->nCounterState > 30)
 				{
 					pEnemy->nMode = 1;
 					pEnemy->nCounterState = 0;
@@ -264,7 +265,7 @@ void UpdateEnemy(void)
 				break;
 
 			case 2:
-				if (pEnemy->nCounterState > 60)
+				if (pEnemy->nCounterState > 30)
 				{
 					pEnemy->nMode = 0;
 					pEnemy->nCounterState = 0;

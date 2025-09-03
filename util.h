@@ -25,6 +25,7 @@ int Clampf(float fNum, float fMin, float fMax);
 void Clampf(float* pNum, float fMin, float fMax);
 int ClampVector(D3DXVECTOR3);
 int RandRange(int nMin, int nMax);
+float Dot(float fX, float fY);
 float Magnitude(D3DXVECTOR3 from, D3DXVECTOR3 to);
 float Direction(D3DXVECTOR3 from, D3DXVECTOR3 to);
 D3DXVECTOR2 Vector3To2(D3DXVECTOR3 source);
