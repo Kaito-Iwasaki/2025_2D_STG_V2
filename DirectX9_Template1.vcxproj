@@ -172,10 +172,12 @@
     <ClInclude Include="wallpaper.h" />
     <ClInclude Include="spriteEffect.h" />
     <ClInclude Include="pause.h" />
+    <ClInclude Include="ranking.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="pause.cpp" />
+    <ClCompile Include="ranking.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="score.cpp">
       <SubType>

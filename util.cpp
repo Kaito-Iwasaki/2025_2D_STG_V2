@@ -77,8 +77,22 @@ void Clampf(float* pNum, float fMin, float fMax)
 }
 
 //=====================================================================
-// 二つのベクトルの大きさ（距離）を求める処理
+// ベクトルの内積
 //=====================================================================
+float Dot(D3DXVECTOR2 vectorA, D3DXVECTOR2 vectorB)
+{
+	return vectorA.x * vectorB.x + vectorA.y * vectorB.y;
+}
+
+//=====================================================================
+// ベクトルの正規化処理
+//=====================================================================
+D3DXVECTOR3 Normalize(D3DXVECTOR3 vector)
+{
+	float fMagnitude = sqrtf(vector.x * vector.x + vector.y * vector.y);
+
+	return D3DXVECTOR3(vector.x / fMagnitude, vector.y / fMagnitude, vector.z / fMagnitude);
+}
 
 //=====================================================================
 // 二つのベクトルの大きさ（距離）を求める処理
@@ -98,6 +112,9 @@ float Direction(D3DXVECTOR3 from, D3DXVECTOR3 to)
 	return atan2f(to.x - from.x, to.y - from.y);
 }
 
+//=====================================================================
+// 3次元ベクトルから2次元ベクトルへの変換処理
+//=====================================================================
 D3DXVECTOR2 Vector3To2(D3DXVECTOR3 source)
 {
 	return D3DXVECTOR2(source.x, source.y);
@@ -109,11 +126,6 @@ D3DXVECTOR2 Vector3To2(D3DXVECTOR3 source)
 int RandRange(int nMin, int nMax)
 {
 	return (rand() % (nMax - nMin)) + nMin;
-}
-
-float Dot3(D3DXVECTOR3 a, D3DXVECTOR3 b)
-{
-	return a.x;
 }
 
 //=====================================================================

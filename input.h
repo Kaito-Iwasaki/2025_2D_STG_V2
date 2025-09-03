@@ -72,6 +72,6 @@ bool GetJoypadPress(JOYKEY key);
 bool GetJoypadTrigger(JOYKEY key);
 bool GetJoypadRelease(JOYKEY key);
 bool GetJoypadRepeat(JOYKEY key);
-void SetVibration(WORD wLeftMotorSpeed, WORD wRightMotorSpeed);
+void SetVibration(WORD wLeftMotorSpeed, WORD wRightMotorSpeed, int nCountVibration = -1);
 
 #endif

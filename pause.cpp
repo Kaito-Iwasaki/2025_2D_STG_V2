@@ -103,7 +103,9 @@ void UninitPause(void)
 //=====================================================================
 void UpdatePause(void)
 {
-	if (GetKeyboardTrigger(DIK_RETURN))
+	if (GetKeyboardTrigger(DIK_RETURN) ||
+		GetJoypadTrigger(JOYKEY_A)
+		)
 	{
 		switch (g_menu.nSelect)
 		{
@@ -121,11 +123,11 @@ void UpdatePause(void)
 		}
 	}
 
-	if (GetKeyboardRepeat(DIK_W))
+	if (GetKeyboardRepeat(DIK_W) || GetJoypadRepeat(JOYKEY_UP))
 	{
 		g_menu.nSelect--;
 	}
-	if (GetKeyboardRepeat(DIK_S))
+	if (GetKeyboardRepeat(DIK_S) || GetJoypadRepeat(JOYKEY_DOWN))
 	{
 		g_menu.nSelect++;
 	}

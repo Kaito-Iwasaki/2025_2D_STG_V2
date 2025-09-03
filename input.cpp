@@ -18,8 +18,8 @@
 // 
 //*********************************************************************
 #define NUM_KEY_MAX		(256)	// 最大キー数
-#define REPEAT_START	(30)	// リピート開始までのカウント
-#define REPEAT_INTERVAL	(5)		// リピート毎のカウント
+#define REPEAT_START	(20)	// リピート開始までのカウント
+#define REPEAT_INTERVAL	(8)		// リピート毎のカウント
 
 //*********************************************************************
 // 
@@ -39,6 +39,7 @@ XINPUT_STATE g_joyKeyTriggerState;
 XINPUT_STATE g_joyKeyReleaseState;
 int g_aJoyKeyRepeatState[JOYKEY_MAX];
 XINPUT_VIBRATION g_vibration;
+int g_nCountVibration = 0;
 
 //=====================================================================
 // 
@@ -192,6 +193,7 @@ HRESULT InitJoypad(void)
 	// メモリのクリア
 	memset(&g_joyKeyState, 0, sizeof(XINPUT_STATE));
 	memset(&g_vibration, 0, sizeof(XINPUT_VIBRATION));
+	g_nCountVibration = 0;
 
 	// XINPUTのステートを有効にする
 	XInputEnable(true);
@@ -235,6 +237,14 @@ void UpdateJoypad(void)
 				g_aJoyKeyRepeatState[nCntKey] = 0;
 			}
 		}
+	}
+
+	if (g_nCountVibration > -1) g_nCountVibration--;
+	if (g_nCountVibration == 0)
+	{
+		g_vibration.wLeftMotorSpeed = 0;
+		g_vibration.wRightMotorSpeed = 0;
+		XInputSetState(0, &g_vibration);
 	}
 }
 
@@ -285,8 +295,9 @@ bool GetJoypadRepeat(JOYKEY key)
 //=====================================================================
 // 振動情報の設定処理
 //=====================================================================
-void SetVibration(WORD wLeftMotorSpeed, WORD wRightMotorSpeed)
+void SetVibration(WORD wLeftMotorSpeed, WORD wRightMotorSpeed, int nCountVibration)
 {
+	g_nCountVibration = nCountVibration;
 	g_vibration.wLeftMotorSpeed = wLeftMotorSpeed; // use any value between 0-65535 here
 	g_vibration.wRightMotorSpeed = wRightMotorSpeed; // use any value between 0-65535 here
 	XInputSetState(0, &g_vibration);

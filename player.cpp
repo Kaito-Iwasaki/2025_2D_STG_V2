@@ -296,12 +296,14 @@ void HitPlayer(void)
 	if (g_player.fLife <= 0)
 	{
 		PlaySound(SOUND_LABEL_SE_HIT02);
+		SetVibration(60000, 60000, 50);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, g_player.obj.pos, 1.5f);
 		SetPlayerState(PLAYERSTATE_DIED);
 	}
 	else
 	{
 		PlaySound(SOUND_LABEL_SE_HIT01);
+		SetVibration(40000, 40000, 50);
 		SetPlayerState(PLAYERSTATE_DAMAGED);
 	}
 }
