@@ -131,19 +131,18 @@ void DrawRanking(void)
 
 void SaveScore(int nScore)
 {
+	LoadBin(RANKING_FILEPATH, &g_aRanking[0], sizeof(int), MAX_PLACE);
+
 	qsort(&g_aRanking[0], MAX_PLACE, sizeof(int), compare);
 
-	for (int nCount = 0; nCount < MAX_PLACE; nCount++)
+	if (g_aRanking[MAX_PLACE - 1] < nScore)
 	{
-		if (g_aRanking[nCount] < nScore)
-		{
-			g_aRanking[nCount] = nScore;
-
-			SaveBin(RANKING_FILEPATH, &g_aRanking[0], sizeof(int), MAX_PLACE);
-
-			break;
-		}
+		g_aRanking[MAX_PLACE - 1] = nScore;
 	}
+
+	qsort(&g_aRanking[0], MAX_PLACE, sizeof(int), compare);
+
+	SaveBin(RANKING_FILEPATH, &g_aRanking[0], sizeof(int), MAX_PLACE);
 }
 
 //=====================================================================
@@ -151,5 +150,10 @@ void SaveScore(int nScore)
 //=====================================================================
 int compare(const void* arg1, const void* arg2)
 {
-	return (int)arg1 - (int)arg2;
+	int va = *(const int*)arg1;
+	int vb = *(const int*)arg2;
+
+	if (va > vb) return -1;
+	if (va < vb) return 1;
+	return 0;
 }

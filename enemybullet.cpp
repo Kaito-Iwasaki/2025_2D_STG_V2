@@ -173,7 +173,7 @@ void UpdateEnemyBullet(void)
 		case ENEMYBULLET_TYPE_002:
 			pEnemyBullet->obj.size = INIT_SIZE * 2;
 			pEnemyBullet->fSpeed = 4.0f;
-			if (pEnemyBullet->nCounterState < 120)
+			if (pEnemyBullet->nCounterState < 60)
 			{
 				float fBulletToPlayer = Direction(pEnemyBullet->obj.pos, pPlayer->obj.pos);
 				float fRotDiff = fBulletToPlayer - pEnemyBullet->fDirection;

@@ -68,6 +68,7 @@ void InitGame(void)
 	g_stage.nCurrentWave = WAVE_START;
 	g_stage.nCountTimeline = 0;
 	g_stage.state = GAMESTATE_NORMAL;
+	SOUND_LABEL g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
 
 	PlaySound(g_CurrentSound);
 
