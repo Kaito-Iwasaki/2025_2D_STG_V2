@@ -55,16 +55,18 @@ const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 	"data\\TEXTURE\\enemy001.png",
 	"data\\TEXTURE\\enemy002.png",
 	"data\\TEXTURE\\enemy003.png",
-	"data\\TEXTURE\\enemy004.png"
+	"data\\TEXTURE\\enemy004.png",
+	"data\\TEXTURE\\enemy005.png"
 };
 
-// 敵の情報[サイズ | 移動量 | 体力 | 弾数 | ショット間隔]
+// 敵の情報[サイズ | 移動量 | 体力 | 弾数 | ショット間隔 | スコア]
 ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
-	{ INIT_SIZE, {0.0f, 1.0f, 0.0f}, 10.0f, 10, 5},
-	{ INIT_SIZE, {0.05f, 2.0f, 100.0f}, 2.0f, 0, 0},
-	{ INIT_SIZE, {0.0f, 10.0f, 0.0f}, 10.0f, 1, 30},
-	{ INIT_SIZE, {0.0f, 2.0f, 0.0f}, 5.0f, 0, 00},
-	{ INIT_SIZE * 1.2f, {0.0f, 3.0f, 0.0f}, 25.0f, 0, 00},
+	{ INIT_SIZE, {0.0f, 1.0f, 0.0f},		10.0f,	10,	 5,	100},
+	{ INIT_SIZE, {0.05f, 2.0f, 100.0f},		2.0f,	0,	 0,	100},
+	{ INIT_SIZE, {0.0f, 10.0f, 0.0f},		10.0f,	1,	 30,100},
+	{ INIT_SIZE, {0.0f, 2.0f, 0.0f},		5.0f,	0,	 00,100},
+	{ INIT_SIZE * 1.2f, {0.0f, 3.0f, 0.0f},	25.0f,	0,	 0,	100},
+	{ INIT_SIZE * 3.0f, {0.0f, 3.0f, 0.0f},	500.0f,	0,	 3,	1000},
 };
 
 //=====================================================================
@@ -282,6 +284,54 @@ void UpdateEnemy(void)
 				}
 				break;
 			}
+			break;
+
+		case ENEMYTYPE_005:
+			if (pEnemy->obj.pos.y < 100.0f)
+			{
+				pEnemy->obj.pos.y += pEnemy->move.y;
+			}
+
+			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
+			{
+				pEnemy->nShootLeft++;
+
+				if (pEnemy->nShootLeft % 30 == 0)
+				{
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_001,
+						pEnemy->obj.pos,
+						pEnemy->fShootSpeed + 2,
+						Direction(pEnemy->obj.pos, pPlayer->obj.pos),
+						30
+					);
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_001,
+						pEnemy->obj.pos,
+						pEnemy->fShootSpeed + 2,
+						Direction(pEnemy->obj.pos, pPlayer->obj.pos) + 0.4f,
+						30
+					);
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_001,
+						pEnemy->obj.pos,
+						pEnemy->fShootSpeed + 2,
+						Direction(pEnemy->obj.pos, pPlayer->obj.pos) - 0.4f,
+						30
+					);
+				}
+
+				pEnemy->nCounterShoot = 0;
+				pEnemy->fShootRot += 0.5f;
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos,
+					pEnemy->fShootSpeed,
+					pEnemy->fShootRot,
+					15
+				);
+			}
+
 			break;
 		}
 	}

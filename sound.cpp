@@ -41,6 +41,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] = {
 	{"data\\BGM\\stage03.wav", -1, 2.130f},
 	{"data\\BGM\\stage04.wav", -1, 12.780f},
 	{"data\\BGM\\stage05.wav", -1, 9.585f},
+	{"data\\BGM\\boss00.wav", -1, 2.13f},
 	{"data\\SE\\pause000.wav", 0},
 	{"data\\SE\\shoot000.wav", 0},
 	{"data\\SE\\hit000.wav", 0},

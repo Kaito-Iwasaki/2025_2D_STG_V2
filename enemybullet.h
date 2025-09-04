@@ -71,7 +71,7 @@ void UninitEnemyBullet(void);
 void UpdateEnemyBullet(void);
 void DrawEnemyBullet(void);
 ENEMYBULLET* GetEnemyBullet(void);
-bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fDirection);
+bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fDirection, float fLife = 0);
 void HitEnemyBullet(ENEMYBULLET* pEnemyBullet);
 
 #endif

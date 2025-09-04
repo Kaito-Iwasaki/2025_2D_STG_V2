@@ -33,8 +33,8 @@
 // ***** É}ÉNÉçíËã` *****
 // 
 //*********************************************************************
-#define MAX_WAVE		(8)
-#define WAVE_START		(4)
+#define MAX_WAVE		(10)
+#define WAVE_START		(0)
 #define WAVE_INTERVAL	(10)
 #define FADE_START		(120)
 
@@ -210,6 +210,13 @@ void SetWave(int nWave)
 		g_stage.nCurrentWave = nWave;
 		g_stage.nCountGameState = 0;
 		g_stage.nCountTimeline = 0;
+
+		if (nWave == MAX_WAVE)
+		{
+			StopSound(g_CurrentSound);
+			g_CurrentSound = SOUND_LABEL_BGM_BOSS00;
+			PlaySound(g_CurrentSound);
+		}
 	}
 }
 

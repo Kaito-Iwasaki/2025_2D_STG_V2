@@ -35,6 +35,7 @@ typedef enum
 	ENEMYTYPE_002,
 	ENEMYTYPE_003,
 	ENEMYTYPE_004,
+	ENEMYTYPE_005,
 	ENEMYTYPE_MAX
 }ENEMYTYPE;
 
@@ -79,6 +80,7 @@ typedef struct
 	float fLife;
 	int nShootLeft;
 	int nShootInterval;
+	int nScore;
 }ENEMYINFO;
 
 //*********************************************************************

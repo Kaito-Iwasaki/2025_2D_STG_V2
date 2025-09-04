@@ -30,7 +30,7 @@
 #define INIT_SIZE						D3DXVECTOR3(16.0f, 16.0f, 16.0f)
 #define INIT_COLOR						D3DXCOLOR(0.0f, 0.0f, 0.0f,1.0f)
 
-#define INIT_ENEMYBULLET_LIFE			(3.0f)
+#define INIT_ENEMYBULLET_LIFE			(7.0f)
 
 #define ENEMYBULLET_COLOR_NORMAL		INIT_COLOR
 #define ENEMYBULLET_COLOR_DAMAGED		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
@@ -272,7 +272,7 @@ ENEMYBULLET* GetEnemyBullet(void)
 //=====================================================================
 // “G’e‚ÌÝ’èˆ—
 //=====================================================================
-bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fDirection)
+bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fDirection, float fLife)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	ENEMYBULLET* pEnemyBullet = &g_aEnemyBullet[0];
@@ -294,6 +294,11 @@ bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float 
 			pEnemyBullet->type = type;
 			pEnemyBullet->state = ENEMYBULLETSTATE_NORMAL;
 			pEnemyBullet->obj.bVisible = true;
+
+			if (fLife != 0)
+			{
+				pEnemyBullet->fLife = fLife;
+			}
 
 			if (IsObjectOutOfScreen(pEnemyBullet->obj, rectScreen))
 			{

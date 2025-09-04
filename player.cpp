@@ -20,6 +20,7 @@
 #include "bullet.h"
 #include "enemybullet.h"
 #include "spriteEffect.h"
+#include "fade.h"
 
 //*********************************************************************
 // 
@@ -40,7 +41,8 @@
 #define INIT_PLAYER_CHARGE		(0)
 
 #define PLAYER_HEAL_MAX			(3)
-#define PLAYER_HEAL_SCALE		(0.01f)
+#define PLAYER_HEAL_SCALE		(0)
+//#define PLAYER_HEAL_SCALE		(0.0001f)
 #define PLAYER_HITBOX_SIZE		D3DXVECTOR3(24.0f, 24.0f, 0.0f)
 
 //*********************************************************************
@@ -166,6 +168,10 @@ void UpdatePlayer(void)
 		{
 			SetPlayerState(PLAYERSTATE_END);
 		}
+		return;
+
+	case PLAYERSTATE_END:
+		SetFade(SCENE_RESULT);
 		return;
 	}
 
