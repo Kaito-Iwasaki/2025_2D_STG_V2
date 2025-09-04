@@ -79,6 +79,16 @@ void InitEnemy(void)
 	// 構造体の初期化
 	memset(pEnemy, 0, sizeof(ENEMY) * MAX_ENEMY);
 
+	// テクスチャの読み込み
+	for (int nCount = 0; nCount < ENEMYTYPE_MAX; nCount++)
+	{
+		D3DXCreateTextureFromFile(
+			pDevice,
+			g_aEnemyFileName[nCount],
+			&g_pTexBuffEnemy[nCount]
+		);
+	}
+
 	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(
 		sizeof(VERTEX_2D) * 4 * MAX_ENEMY,
@@ -203,12 +213,12 @@ void UpdateEnemy(void)
 						ENEMYBULLET_TYPE_002,
 						pEnemy->obj.pos,
 						pEnemy->fShootSpeed,
-						pEnemy->fShootRot + 0.4f);
+						pEnemy->fShootRot + D3DX_PI / 2);
 					SetEnemyBullet(
 						ENEMYBULLET_TYPE_002,
 						pEnemy->obj.pos,
 						pEnemy->fShootSpeed,
-						pEnemy->fShootRot - 0.4f);
+						pEnemy->fShootRot - D3DX_PI / 2);
 					pEnemy->nShootLeft--;
 				}
 			}
@@ -368,15 +378,6 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 	{
 		if (pEnemy->bUsed == false)
 		{
-			if (g_pTexBuffEnemy[type] == NULL)
-			{// テクスチャの生成
-				D3DXCreateTextureFromFile(
-					pDevice,
-					g_aEnemyFileName[type],
-					&g_pTexBuffEnemy[type]
-				);
-			}
-
 			memset(pEnemy, 0, sizeof(ENEMY));
 			pEnemy->bUsed = true;
 			pEnemy->obj.pos = pos;

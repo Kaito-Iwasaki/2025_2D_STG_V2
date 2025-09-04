@@ -36,6 +36,8 @@ typedef enum
 	DECAL_LABEL_BG001,
 	DECAL_LABEL_BG002,
 	DECAL_LABEL_WALLPAPER01,
+	DECAL_LABEL_PLAYER,
+	DECAL_LABEL_LOGO,
 	DECAL_LABEL_MAX
 }DECAL_LABEL;
 
@@ -62,7 +64,7 @@ void UninitDecal(void);
 void UpdateDecal(void);
 void DrawDecal(void);
 DECAL* GetDecal(void);
-int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col);
+DECAL* SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col);
 void DeleteDecal(int nID);
 void DeleteDecal(void);
 

@@ -68,6 +68,16 @@ void InitEnemyBullet(void)
 		pEnemyBullet->obj.color = INIT_COLOR;
 	}
 
+	// テクスチャの読み込み
+	for (int nCount = 0; nCount < ENEMYBULLET_TYPE_MAX; nCount++)
+	{
+		D3DXCreateTextureFromFile(
+			pDevice,
+			g_aEnemyBulletFileName[nCount],
+			&g_pTexBuffEnemyBullet[nCount]
+		);
+	}
+
 	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(
 		sizeof(VERTEX_2D) * 4 * MAX_ENEMYBULLET,
@@ -121,7 +131,7 @@ void UpdateEnemyBullet(void)
 			continue;
 		}
 
-		if (IsObjectOutOfScreen(pEnemyBullet->obj, OOS_BOTTOM | OOS_TOP | OOS_RIGHT | OOS_LEFT))
+		if (IsObjectOutOfScreen(pEnemyBullet->obj))
 		{// 画面外に出たら削除
 			pEnemyBullet->bUsed = false;
 			continue;
@@ -162,21 +172,30 @@ void UpdateEnemyBullet(void)
 
 		case ENEMYBULLET_TYPE_002:
 			pEnemyBullet->obj.size = INIT_SIZE * 2;
-			pEnemyBullet->fSpeed = 3.0f;
+			pEnemyBullet->fSpeed = 4.0f;
 			if (pEnemyBullet->nCounterState < 120)
 			{
-				float dot;
-				D3DXVECTOR3 bulletToPlayer;
-				D3DXVECTOR3 bulletDir;
+				float fBulletToPlayer = Direction(pEnemyBullet->obj.pos, pPlayer->obj.pos);
+				float fRotDiff = fBulletToPlayer - pEnemyBullet->fDirection;
 
-				bulletToPlayer = Normalize(pPlayer->obj.pos - pEnemyBullet->obj.pos);
-				bulletDir = D3DXVECTOR3(sinf(pEnemyBullet->fDirection), cosf(pEnemyBullet->fDirection), 0.0f);
-
-				dot = bulletToPlayer.x * bulletDir.x + bulletToPlayer.y * bulletDir.y;
-
-				if (dot < 0.9f)
+				if (fRotDiff > D3DX_PI)
 				{
-					pEnemyBullet->fDirection += 0.05f;
+					fRotDiff -= D3DX_PI * 2;
+				}
+				else if (fRotDiff < -D3DX_PI)
+				{
+					fRotDiff += D3DX_PI * 2;
+				}
+
+				pEnemyBullet->fDirection += fRotDiff * 0.025f;
+
+				if (pEnemyBullet->fDirection > D3DX_PI)
+				{
+					pEnemyBullet->fDirection -= D3DX_PI * 2;
+				}
+				else if (pEnemyBullet->fDirection < -D3DX_PI)
+				{
+					pEnemyBullet->fDirection += D3DX_PI * 2;
 				}
 
 				pEnemyBullet->obj.rot.z = pEnemyBullet->fDirection + D3DX_PI;
@@ -263,15 +282,6 @@ bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float 
 	{
 		if (pEnemyBullet->bUsed == false)
 		{
-			if (g_pTexBuffEnemyBullet[type] == NULL)
-			{
-				D3DXCreateTextureFromFile(
-					pDevice,
-					g_aEnemyBulletFileName[type],
-					&g_pTexBuffEnemyBullet[type]
-				);
-			}
-
 			memset(pEnemyBullet, 0, sizeof(ENEMYBULLET));
 			pEnemyBullet->bUsed = true;
 			pEnemyBullet->obj.pos = pos;

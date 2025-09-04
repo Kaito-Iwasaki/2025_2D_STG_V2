@@ -23,26 +23,30 @@
 
 #include "util.h"
 #include "score.h"
+#include "ranking.h"
 
 //*********************************************************************
 // 
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-
+#define FADE_START			(600)
 
 //*********************************************************************
 // 
 // ***** グローバル変数 *****
 // 
 //*********************************************************************
+int g_nCountStateResult = 0;
+
 
 //=====================================================================
 // 初期化処理
 //=====================================================================
 void InitResult(void)
 {
-	char aMessage[MAX_PATH];
+	char aMessage[MAX_PATH] = {};
+	g_nCountStateResult = 0;
 
 	InitDecal();
 	InitFont();
@@ -57,6 +61,8 @@ void InitResult(void)
 
 	if (GetPlayer()->fLife > 0)
 	{
+		SaveScore(GetScore());
+
 		sprintf(aMessage, "YOUR SCORE : %d", GetScore());
 
 		SetFont(
@@ -105,7 +111,14 @@ void UpdateResult(void)
 {
 	if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START))
 	{
-		SetFade(SCENE_TITLE);
+		SetFade(SCENE_RANKING);
+	}
+
+	g_nCountStateResult++;
+
+	if (g_nCountStateResult > FADE_START)
+	{
+		SetFade(SCENE_RANKING);
 	}
 }
 

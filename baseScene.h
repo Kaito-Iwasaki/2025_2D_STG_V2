@@ -21,6 +21,8 @@
 //*********************************************************************
 #define GAME_SCREEN_WIDTH		(540.0f)
 #define GAME_SCREEN_HEIGHT		(720.0f)
+#define GAME_SCREEN_START		(SCREEN_CENTER - GAME_SCREEN_WIDTH / 2)
+#define GAME_SCREEN_END			(SCREEN_CENTER + GAME_SCREEN_WIDTH / 2)
 #define GAME_SCREEN_RECT		{ SCREEN_CENTER - GAME_SCREEN_WIDTH / 2, 0, SCREEN_CENTER + GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT};
 
 //*********************************************************************
@@ -33,6 +35,7 @@ typedef enum
 	SCENE_TITLE = 0,
 	SCENE_GAME,
 	SCENE_RESULT,
+	SCENE_RANKING,
 	SCENE_MAX
 }SCENE;		// ÉVÅ[ÉìóÒãìå^
 

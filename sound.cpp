@@ -35,11 +35,12 @@ DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 // サウンドの情報
 SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] = {
 	{"data\\BGM\\title00.wav", -1},
-	{"data\\BGM\\stage01.wav", -1, 25.561},
+	{"data\\BGM\\bgm00.wav", -1, 10.65f},
+	{"data\\BGM\\stage01.wav", -1, 25.561f},
 	{"data\\BGM\\stage02.wav", -1},
-	{"data\\BGM\\stage03.wav", -1, 2.130},
-	{"data\\BGM\\stage04.wav", -1, 12.780},
-	{"data\\BGM\\stage05.wav", -1, 9.585},
+	{"data\\BGM\\stage03.wav", -1, 2.130f},
+	{"data\\BGM\\stage04.wav", -1, 12.780f},
+	{"data\\BGM\\stage05.wav", -1, 9.585f},
 	{"data\\SE\\pause000.wav", 0},
 	{"data\\SE\\shoot000.wav", 0},
 	{"data\\SE\\hit000.wav", 0},

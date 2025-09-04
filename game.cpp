@@ -36,6 +36,7 @@
 #define MAX_WAVE		(8)
 #define WAVE_START		(4)
 #define WAVE_INTERVAL	(10)
+#define FADE_START		(120)
 
 //*********************************************************************
 // 
@@ -66,6 +67,7 @@ void InitGame(void)
 	g_stage.nCountGameState = 0;
 	g_stage.nCurrentWave = WAVE_START;
 	g_stage.nCountTimeline = 0;
+	g_stage.state = GAMESTATE_NORMAL;
 
 	PlaySound(g_CurrentSound);
 
@@ -137,25 +139,35 @@ void UpdateGame(void)
 			);
 		}
 
-		if (GetEnemyLeft() < 1)
+		switch (g_stage.state)
 		{
+		case GAMESTATE_NORMAL:
+			if (GetEnemyLeft() < 1)
+			{
+				g_stage.nCountGameState++;
+			}
+			else
+			{
+				g_stage.nCountGameState = 0;
+			}
+
+			g_stage.nCountTimeline++;
+
+			if (g_stage.nCountGameState > WAVE_INTERVAL)
+			{
+				SetWave(g_stage.nCurrentWave + 1);
+			}
+			break;
+
+		case GAMESTATE_END:
 			g_stage.nCountGameState++;
-		}
-		else
-		{
-			g_stage.nCountGameState = 0;
-		}
 
-		g_stage.nCountTimeline++;
+			if (g_stage.nCountGameState > FADE_START)
+			{
+				SetFade(SCENE_RESULT);
+			}
 
-		if (g_stage.nCountGameState > WAVE_INTERVAL)
-		{
-			SetWave(g_stage.nCurrentWave + 1);
-		}
-
-		if (GetPlayer()->state == PLAYERSTATE_END)
-		{
-			SetFade(SCENE_RESULT);
+			break;
 		}
 	}
 	else
@@ -184,11 +196,14 @@ void DrawGame(void)
 	}
 }
 
+//=====================================================================
+// ウェーブ設定処理
+//=====================================================================
 void SetWave(int nWave)
 {
 	if (nWave > MAX_WAVE)
 	{
-		SetFade(SCENE_RESULT);
+		g_stage.state = GAMESTATE_END;
 	}
 	else
 	{
@@ -198,8 +213,13 @@ void SetWave(int nWave)
 	}
 }
 
+//=====================================================================
+// ポーズ処理
+//=====================================================================
 void TogglePause(bool bPause)
 {
+	if (GetFade() != FADE_NONE) return;	// フェード中は処理しない
+
 	PlaySound(SOUND_LABEL_SE_PAUSE, 0.25f);
 	g_stage.bPaused = bPause;
 

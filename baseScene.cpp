@@ -19,6 +19,7 @@
 #include "game.h"
 #include "decal.h"
 #include "result.h"
+#include "ranking.h"
 
 //*********************************************************************
 // 
@@ -66,6 +67,9 @@ void UpdateScene(void)
 		UpdateResult();
 		break;
 
+	case SCENE_RANKING:
+		UpdateRanking();
+		break;
 	}
 
 	UpdateFade();
@@ -98,6 +102,10 @@ void DrawScene(void)
 	case SCENE_RESULT:
 		DrawResult();
 		break;
+
+	case SCENE_RANKING:
+		DrawRanking();
+		break;
 	}
 
 	DrawFade();
@@ -125,6 +133,10 @@ SCENE SetScene(SCENE nextScene, bool bStopSound)
 	case SCENE_RESULT:
 		UninitResult();
 		break;
+
+	case SCENE_RANKING:
+		UninitRanking();
+		break;
 	}
 
 	if (bStopSound)
@@ -145,6 +157,10 @@ SCENE SetScene(SCENE nextScene, bool bStopSound)
 
 	case SCENE_RESULT:
 		InitResult();
+		break;
+
+	case SCENE_RANKING:
+		InitRanking();
 		break;
 	}
 

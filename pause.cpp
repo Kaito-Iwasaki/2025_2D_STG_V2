@@ -52,6 +52,7 @@ void InitPause(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイスへのポインタ
 
+	memset(&g_menu, 0, sizeof(PAUSE));
 	g_menu.obj.pos = D3DXVECTOR3(TEXTURE_POS_X, TEXTURE_POS_Y, 0.0f);
 	g_menu.nSelect = 0;
 
@@ -103,6 +104,8 @@ void UninitPause(void)
 //=====================================================================
 void UpdatePause(void)
 {
+	if (GetFade() != FADE_NONE) return;	// フェード中は処理しない
+
 	if (GetKeyboardTrigger(DIK_RETURN) ||
 		GetJoypadTrigger(JOYKEY_A)
 		)

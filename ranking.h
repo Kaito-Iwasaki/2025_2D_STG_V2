@@ -23,5 +23,6 @@ void InitRanking(void);
 void UninitRanking(void);
 void UpdateRanking(void);
 void DrawRanking(void);
+void SaveScore(int nScore);
 
 #endif

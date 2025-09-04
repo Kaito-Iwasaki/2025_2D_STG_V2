@@ -12,8 +12,8 @@
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
-#include "baseObject.h"
 #include "main.h"
+#include "baseObject.h"
 
 //*********************************************************************
 // 
@@ -42,5 +42,6 @@ void UninitBackground(void);
 void UpdateBackground(void);
 void DrawBackground(void);
 BACKGROUND* GetBackground(void);
+void SetBackgroundSpeed(float fSpeed);
 
 #endif

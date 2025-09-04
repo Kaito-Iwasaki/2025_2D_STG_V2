@@ -43,6 +43,8 @@ const char* g_aDecalFileName[DECAL_LABEL_MAX] = {
 	"data\\TEXTURE\\bg101.png",
 	"data\\TEXTURE\\bg102.png",
 	"data\\TEXTURE\\wallpaper01.png",
+	"data\\TEXTURE\\player001.png",
+	"data\\TEXTURE\\logo000.png",
 };
 
 //=====================================================================
@@ -73,6 +75,8 @@ void InitDecal(void)
 //=====================================================================
 void UninitDecal(void)
 {
+	memset(&g_aDecal[0], 0, sizeof(DECAL) * MAX_DECAL);
+
 	if (g_pVtxBuffDecal != NULL)
 	{// 頂点バッファの破棄
 		g_pVtxBuffDecal->Release();
@@ -162,7 +166,7 @@ DECAL* GetDecal(void)
 //=====================================================================
 // 画像の設定処理
 //=====================================================================
-int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
+DECAL* SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -189,11 +193,11 @@ int SetDecal(DECAL_LABEL label, D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 r
 			pDecal->nID = nCount;
 			pDecal->obj.bVisible = true;
 
-			return nCount;
+			return pDecal;
 		}
 	}
 
-	return -1;
+	return NULL;
 }
 
 //=====================================================================

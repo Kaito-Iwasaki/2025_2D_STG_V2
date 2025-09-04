@@ -43,7 +43,7 @@ typedef enum
 	JOYKEY_B,			// B
 	JOYKEY_X,			// X
 	JOYKEY_Y,			// Y
-	JOYKEY_MAX			// è\éöÉLÅ[è„
+	JOYKEY_MAX
 }JOYKEY;
 
 //*********************************************************************
