@@ -55,6 +55,12 @@
     <Filter Include="ソース ファイル\GameObject\Effect">
       <UniqueIdentifier>{61f199d6-fa39-402a-9f16-2188370aab79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject\Enemy">
+      <UniqueIdentifier>{368bc7ec-c289-4a83-97c4-100b2dd31ff3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject\Enemy">
+      <UniqueIdentifier>{267fc9de-3ab4-419c-9ba1-1c32c2d8de20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sound.cpp">
@@ -127,6 +133,12 @@
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="ranking.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="healthbar.cpp">
+      <Filter>ソース ファイル\GameObject\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -204,6 +216,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="ranking.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="healthbar.h">
+      <Filter>ヘッダー ファイル\GameObject\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>

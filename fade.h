@@ -24,7 +24,7 @@ void UninitFade(void);
 void UpdateFade(void);
 void DrawFade(void);
 
-void SetFade(SCENE modeNext);
+void SetFade(SCENE modeNext, bool bStopSound = true);
 FADE GetFade(void);
 float GetFadeAlpha(void);
 

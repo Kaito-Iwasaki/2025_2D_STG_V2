@@ -27,6 +27,7 @@
 #include "score.h"
 #include "pause.h"
 #include "bg.h"
+#include "healthbar.h"
 
 //*********************************************************************
 // 
@@ -34,6 +35,7 @@
 // 
 //*********************************************************************
 #define MAX_WAVE		(10)
+#define GAME_START		(120)
 #define WAVE_START		(0)
 #define WAVE_INTERVAL	(10)
 #define FADE_START		(120)
@@ -62,13 +64,14 @@ void InitGame(void)
 	InitScore();
 	InitPause();
 	InitBackground();
+	InitHealthbar();
 
 	g_stage.bPaused = false;
 	g_stage.nCountGameState = 0;
 	g_stage.nCurrentWave = WAVE_START;
 	g_stage.nCountTimeline = 0;
-	g_stage.state = GAMESTATE_NORMAL;
-	SOUND_LABEL g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
+	g_stage.state = GAMESTATE_READY;
+	g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
 
 	PlaySound(g_CurrentSound);
 
@@ -98,6 +101,7 @@ void UninitGame(void)
 	UninitScore();
 	UninitPause();
 	UninitBackground();
+	UninitHealthbar();
 }
 
 //=====================================================================
@@ -127,9 +131,11 @@ void UpdateGame(void)
 		UpdateSpriteEffect();
 		UpdateScore();
 		UpdateBackground();
+		UpdateHealthbar();
 
 		for (int nCount = 0; nCount < MAX_TIMELINE; nCount++)
 		{
+			if (g_stage.state == GAMESTATE_READY) break;
 			if (g_timeline[nCount].bSet == false) continue;
 			if (g_timeline[nCount].nWave != g_stage.nCurrentWave) continue;
 			if (g_timeline[nCount].nCountTime != g_stage.nCountTimeline) continue;
@@ -142,6 +148,16 @@ void UpdateGame(void)
 
 		switch (g_stage.state)
 		{
+		case GAMESTATE_READY:
+			g_stage.nCountGameState++;
+			if (g_stage.nCountGameState > GAME_START)
+			{
+				g_stage.state = GAMESTATE_NORMAL;
+				g_stage.nCountGameState = 0;
+
+			}
+			break;
+
 		case GAMESTATE_NORMAL:
 			if (GetEnemyLeft() < 1)
 			{
@@ -190,6 +206,7 @@ void DrawGame(void)
 	DrawPlayer();
 	DrawFont();
 	DrawScore();
+	DrawHealthbar();
 
 	if (g_stage.bPaused)
 	{

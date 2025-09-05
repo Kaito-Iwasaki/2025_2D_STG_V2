@@ -28,7 +28,8 @@
 //*********************************************************************
 typedef enum
 {
-	GAMESTATE_NORMAL = 0,
+	GAMESTATE_READY = 0,
+	GAMESTATE_NORMAL,
 	GAMESTATE_END,
 	GAMESTATE_MAX
 }GAMESTATE;

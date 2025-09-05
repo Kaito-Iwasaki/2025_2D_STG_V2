@@ -20,6 +20,7 @@
 #include "decal.h"
 #include "result.h"
 #include "ranking.h"
+#include "tutorial.h"
 
 //*********************************************************************
 // 
@@ -59,6 +60,10 @@ void UpdateScene(void)
 		UpdateTitle();
 		break;
 
+	case SCENE_TUTORIAL:
+		UpdateTutorial();
+		break;
+
 	case SCENE_GAME:
 		UpdateGame();
 		break;
@@ -95,6 +100,10 @@ void DrawScene(void)
 		DrawTitle();
 		break;
 
+	case SCENE_TUTORIAL:
+		DrawTutorial();
+		break;
+
 	case SCENE_GAME:
 		DrawGame();
 		break;
@@ -126,6 +135,10 @@ SCENE SetScene(SCENE nextScene, bool bStopSound)
 		UninitTitle();
 		break;
 
+	case SCENE_TUTORIAL:
+		UninitTutorial();
+		break;
+
 	case SCENE_GAME:
 		UninitGame();
 		break;
@@ -149,6 +162,10 @@ SCENE SetScene(SCENE nextScene, bool bStopSound)
 	{
 	case SCENE_TITLE:
 		InitTitle();
+		break;
+
+	case SCENE_TUTORIAL:
+		InitTutorial();
 		break;
 
 	case SCENE_GAME:

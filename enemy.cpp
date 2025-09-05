@@ -466,7 +466,7 @@ void HitEnemy(ENEMY* pEnemy)
 	{
 		PlaySound(SOUND_LABEL_SE_HIT00);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 1.0f);
-		AddScore(pEnemy->nScore * (pEnemy->nShootLeft + 1));
+		AddScore(pEnemy->nScore);
 		pEnemy->bUsed = false;
 	}
 	else

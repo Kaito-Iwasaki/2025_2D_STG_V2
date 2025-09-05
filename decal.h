@@ -30,7 +30,6 @@
 typedef enum
 {
 	DECAL_LABEL_NULL = -1,
-	DECAL_LABEL_TITLE,
 	DECAL_LABEL_TUTORIAL,
 	DECAL_LABEL_BG000,
 	DECAL_LABEL_BG001,
@@ -59,7 +58,7 @@ typedef struct
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitDecal(void);
+void InitDecal(bool bPreload = false);
 void UninitDecal(void);
 void UpdateDecal(void);
 void DrawDecal(void);

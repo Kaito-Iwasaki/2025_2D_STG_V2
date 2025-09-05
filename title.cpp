@@ -30,7 +30,7 @@
 // 
 //*********************************************************************
 #define FADE_START					(800)
-#define INTRO_END					(300)
+#define INTRO_END					(310)
 
 #define PLAYER_START_Y		(SCREEN_HEIGHT + 50)
 #define PLAYER_GOAL_Y		(SCREEN_VCENTER + 100)
@@ -165,7 +165,7 @@ void UpdateTitle(void)
 
 		if (g_nCountStateTitle > 60)
 		{
-			SetFade(SCENE_GAME);
+			SetFade(SCENE_TUTORIAL, false);
 		}
 
 		g_DecalPlayer->obj.pos.y -= 15.0f;

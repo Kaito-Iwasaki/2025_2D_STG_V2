@@ -1,34 +1,25 @@
 //=====================================================================
-//
-// player.cppのヘッダファイル [player.h]
-// Author : Kaito Iwasaki
 // 
+// healthbar.cppのヘッダファイル [healthbar.h]
+// Author:岩崎桧翔
+//
 //=====================================================================
-#ifndef _PLAYER_H_
-#define _PLAYER_H_
+#ifndef _HEALTHBAR_H_
+#define _HEALTHBAR_H_		// 二重インクルード防止のマクロ
 
 //*********************************************************************
 // 
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
-#include "baseObject.h"
 #include "main.h"
+#include "baseObject.h"
 
 //*********************************************************************
 // 
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-#define INIT_PLAYER_SPEED		(8.0f)
-#define INIT_SHOOT_SPEED		(35.0f)
-#define INIT_SHOOT_INTERVAL		(5)
-#define INIT_PLAYER_LIFE		(3)
-#define INIT_PLAYER_CHARGE		(0)
-
-#define PLAYER_HEAL_MAX			(3)
-#define PLAYER_HEAL_SCALE		(0.0001f)
-#define PLAYER_HITBOX_SIZE		D3DXVECTOR3(24.0f, 24.0f, 0.0f)
 
 
 //*********************************************************************
@@ -36,15 +27,7 @@
 // ***** 列挙型 *****
 // 
 //*********************************************************************
-typedef enum
-{
-	PLAYERSTATE_NORMAL = 0,
-	PLAYERSTATE_APPEAR,
-	PLAYERSTATE_DAMAGED,
-	PLAYERSTATE_DIED,
-	PLAYERSTATE_END,
-	PLAYERSTATE_MAX
-}PLAYERSTATE;
+
 
 //*********************************************************************
 // 
@@ -54,31 +37,19 @@ typedef enum
 typedef struct
 {
 	BASEOBJECT obj;
-	int nTexPattern;
-	int nCounterPattern;
-	
-	PLAYERSTATE state;
-	float fSpeed;
-	float fShootSpeed;
-	float fLife;
-	float fCharge;
-	D3DXVECTOR3 hitBoxSize;
 
-	int nCounterState;
-	int nCounterShoot;
-
-}PLAYER;
+	int nCountTime;
+	int fRemain;
+}HEALTHBAR;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitPlayer(void);
-void UninitPlayer(void);
-void UpdatePlayer(void);
-void DrawPlayer(void);
-PLAYER* GetPlayer(void);
-void HitPlayer(void);
+void InitHealthbar(void);
+void UninitHealthbar(void);
+void UpdateHealthbar(void);
+void DrawHealthbar(void);
 
 #endif

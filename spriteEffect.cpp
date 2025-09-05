@@ -49,7 +49,7 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffSpriteEffect = NULL;
 LPDIRECT3DTEXTURE9 g_pTexBuffSpriteEffect[MAX_SPRITEEFFECT] = {};
 SPRITEEFFECT g_aSpriteEffect[MAX_SPRITEEFFECT];
 
-SPRITEEFFECT_INFO g_aSpriteEffectInfo[MAX_SPRITEEFFECT] = {
+SPRITEEFFECT_INFO g_aSpriteEffectInfo[SPRITEEFFECTTYPE_MAX] = {
 	{"data\\TEXTURE\\explosion000.png", 5, 3},
 };
 
@@ -64,6 +64,15 @@ void InitSpriteEffect(void)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	memset(&g_aSpriteEffect[0], 0, sizeof(SPRITEEFFECT) * MAX_SPRITEEFFECT);
+
+	for (int nCount = 0; nCount < SPRITEEFFECTTYPE_MAX; nCount++)
+	{
+		D3DXCreateTextureFromFile(
+			pDevice,
+			g_aSpriteEffectInfo[nCount].aSpriteEffectFilename,
+			&g_pTexBuffSpriteEffect[nCount]
+		);
+	}
 
 	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(
@@ -190,15 +199,6 @@ void SetSpriteEffect(SPRITEEFFECTTYPE type, D3DXVECTOR3 pos, float fScale)
 		if (pSpriteEffect->bUsed == true) continue;
 
 		memset(&g_aSpriteEffect[0], 0, sizeof(SPRITEEFFECT) * MAX_SPRITEEFFECT);
-
-		if (g_pTexBuffSpriteEffect[type] == NULL)
-		{
-			D3DXCreateTextureFromFile(
-				pDevice,
-				&g_aSpriteEffectInfo[type].aSpriteEffectFilename[0],
-				&g_pTexBuffSpriteEffect[type]
-			);
-		}
 
 		pSpriteEffect->bUsed = true;
 		pSpriteEffect->type = type;

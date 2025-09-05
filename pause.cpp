@@ -126,11 +126,11 @@ void UpdatePause(void)
 		}
 	}
 
-	if (GetKeyboardRepeat(DIK_W) || GetJoypadRepeat(JOYKEY_UP))
+	if (GetKeyboardRepeat(DIK_W) || GetJoypadRepeat(JOYKEY_UP) || GetJoystickRepeat(JOYSTICK_L_UP))
 	{
 		g_menu.nSelect--;
 	}
-	if (GetKeyboardRepeat(DIK_S) || GetJoypadRepeat(JOYKEY_DOWN))
+	if (GetKeyboardRepeat(DIK_S) || GetJoypadRepeat(JOYKEY_DOWN) || GetJoystickRepeat(JOYSTICK_L_DOWN))
 	{
 		g_menu.nSelect++;
 	}

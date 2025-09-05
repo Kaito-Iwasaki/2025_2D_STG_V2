@@ -37,8 +37,7 @@ LPDIRECT3DTEXTURE9 g_pTexBuffDecal[DECAL_LABEL_MAX] = {};
 DECAL g_aDecal[MAX_DECAL] = {};
 
 const char* g_aDecalFileName[DECAL_LABEL_MAX] = {
-	"data\\TEXTURE\\title000.jpg",
-	"data\\TEXTURE\\title001.png",
+	"data\\TEXTURE\\tutorial000.jpg",
 	"data\\TEXTURE\\bg100.png",
 	"data\\TEXTURE\\bg101.png",
 	"data\\TEXTURE\\bg102.png",
@@ -50,7 +49,7 @@ const char* g_aDecalFileName[DECAL_LABEL_MAX] = {
 //=====================================================================
 // 初期化処理
 //=====================================================================
-void InitDecal(void)
+void InitDecal(bool bPreload)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイス
 	VERTEX_2D* pVtx;							// 頂点情報
@@ -58,6 +57,19 @@ void InitDecal(void)
 
 	// 構造体の初期化
 	memset(pDecal, 0, sizeof(DECAL) * MAX_DECAL);
+
+	if (bPreload == true)
+	{// テクスチャのプリロード
+		for (int nCount = 0; nCount < DECAL_LABEL_MAX; nCount++)
+		{
+			D3DXCreateTextureFromFile(
+				pDevice,
+				g_aDecalFileName[nCount],
+				&g_pTexBuffDecal[nCount]
+			);
+		}
+	}
+
 
 	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(

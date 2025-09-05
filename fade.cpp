@@ -11,7 +11,7 @@
 #define TEXTURE_POS_X			(SCREEN_WIDTH / 2)
 #define TEXTURE_POS_Y			(SCREEN_HEIGHT / 2)
 
-#define FADE_SCALE				(0.05f)
+#define FADE_SCALE				(0.025f)
 
 // グローバル変数宣言
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffFade = NULL;				// 頂点バッファへのポインタ
@@ -19,6 +19,7 @@ FADE g_fade;
 SCENE g_sceneNext;
 D3DXCOLOR g_colorFade;
 float g_fFadeScale;
+bool g_bStopSound = true;
 
 //=====================================================================
 // 初期化処理
@@ -130,7 +131,7 @@ void UpdateFade(void)
 				g_colorFade.a = 1.0f;
 				g_fade = FADE_IN;
 
-				SetScene(g_sceneNext);
+				SetScene(g_sceneNext, g_bStopSound);
 			}
 		}
 
@@ -177,7 +178,7 @@ void DrawFade(void)
 //=====================================================================
 // フェード切り替え処理
 //=====================================================================
-void SetFade(SCENE sceneNext)
+void SetFade(SCENE sceneNext, bool bStopSound)
 {
 	if (g_fade == FADE_NONE)
 	{
@@ -185,6 +186,7 @@ void SetFade(SCENE sceneNext)
 		g_sceneNext = sceneNext;
 		g_colorFade = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 		g_fFadeScale = FADE_SCALE;
+		g_bStopSound = bStopSound;
 	}
 }
 

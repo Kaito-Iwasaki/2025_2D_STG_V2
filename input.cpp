@@ -38,6 +38,7 @@ XINPUT_STATE g_joyKeyState;
 XINPUT_STATE g_joyKeyTriggerState;
 XINPUT_STATE g_joyKeyReleaseState;
 int g_aJoyKeyRepeatState[JOYKEY_MAX];
+int g_aJoystickState[JOYSTICK_MAX];
 XINPUT_VIBRATION g_vibration;
 int g_nCountVibration = 0;
 
@@ -62,7 +63,7 @@ HRESULT InitKeyboard(HINSTANCE hInstance, HWND hWnd)
 	{
 		return E_FAIL;
 	}
-
+	
 	// 入力デバイスの生成
 	if (FAILED(g_pInput->CreateDevice(
 		GUID_SysKeyboard,
@@ -216,10 +217,14 @@ void UninitJoypad(void)
 void UpdateJoypad(void)
 {
 	XINPUT_STATE joyKeyState;
+	XINPUT_GAMEPAD gamepad;
 
 	// ジョイパッドの状態
 	if (XInputGetState(0, &joyKeyState) == ERROR_SUCCESS)
 	{
+		// ジョイキー
+		gamepad = joyKeyState.Gamepad;
+
 		g_joyKeyTriggerState.Gamepad.wButtons = (g_joyKeyState.Gamepad.wButtons ^ joyKeyState.Gamepad.wButtons)
 			& joyKeyState.Gamepad.wButtons;
 		g_joyKeyReleaseState.Gamepad.wButtons = g_joyKeyState.Gamepad.wButtons & (g_joyKeyState.Gamepad.wButtons
@@ -237,8 +242,82 @@ void UpdateJoypad(void)
 				g_aJoyKeyRepeatState[nCntKey] = 0;
 			}
 		}
+
+		// スティック
+		if (gamepad.sThumbLX < -INPUT_DEADZONE)
+		{// L左
+			g_aJoystickState[JOYSTICK_L_LEFT]++;
+		}
+		else
+		{
+			g_aJoystickState[JOYSTICK_L_LEFT] = 0;
+		}
+
+		if (gamepad.sThumbLX > INPUT_DEADZONE)
+		{// L右
+			g_aJoystickState[JOYSTICK_L_RIGHT]++;
+		}
+		else
+		{
+			g_aJoystickState[JOYSTICK_L_RIGHT] = 0;
+		}
+
+		if (gamepad.sThumbLY < -INPUT_DEADZONE)
+		{// L下
+			g_aJoystickState[JOYSTICK_L_DOWN]++;
+		}
+		else
+		{
+			g_aJoystickState[JOYSTICK_L_DOWN] = 0;
+		}
+
+		if (gamepad.sThumbLY > INPUT_DEADZONE)
+		{// L上
+			g_aJoystickState[JOYSTICK_L_UP]++;
+		}
+		else
+		{
+			g_aJoystickState[JOYSTICK_L_UP] = 0;
+		}
+
+		if (gamepad.sThumbLY < -INPUT_DEADZONE)
+		{// R左
+			g_aJoystickState[JOYSTICK_R_LEFT]++;
+		}
+		else
+		{
+			g_aJoystickState[JOYSTICK_R_LEFT] = 0;
+		}
+
+		if (gamepad.sThumbLY > INPUT_DEADZONE)
+		{// R右
+			g_aJoystickState[JOYSTICK_R_RIGHT]++;
+		}
+		else
+		{
+			g_aJoystickState[JOYSTICK_R_RIGHT] = 0;
+		}
+
+		if (gamepad.sThumbLY < -INPUT_DEADZONE)
+		{// R下
+			g_aJoystickState[JOYSTICK_R_DOWN]++;
+		}
+		else
+		{
+			g_aJoystickState[JOYSTICK_R_DOWN] = 0;
+		}
+
+		if (gamepad.sThumbLY > INPUT_DEADZONE)
+		{// R上
+			g_aJoystickState[JOYSTICK_R_UP]++;
+		}
+		else
+		{
+			g_aJoystickState[JOYSTICK_R_UP] = 0;
+		}
 	}
 
+	// 振動情報の更新
 	if (g_nCountVibration > -1) g_nCountVibration--;
 	if (g_nCountVibration == 0)
 	{
@@ -289,6 +368,20 @@ bool GetJoypadRepeat(JOYKEY key)
 		g_aJoyKeyRepeatState[key] == 1 ||
 		g_aJoyKeyRepeatState[key] >= REPEAT_START &&
 		g_aJoyKeyRepeatState[key] % REPEAT_INTERVAL == 0
+		) ? true : false;
+}
+
+bool GetJoystickPress(JOYSTICK stick)
+{
+	return g_aJoystickState[stick] > 0;
+}
+
+bool GetJoystickRepeat(JOYSTICK stick)
+{
+	return (
+		g_aJoystickState[stick] == 1 ||
+		g_aJoystickState[stick] >= REPEAT_START &&
+		g_aJoystickState[stick] % REPEAT_INTERVAL == 0
 		) ? true : false;
 }
 

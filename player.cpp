@@ -34,17 +34,6 @@
 #define INIT_SIZE				{64.0f, 64.0f, 0.0f}
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 
-#define INIT_PLAYER_SPEED		(8.0f)
-#define INIT_SHOOT_SPEED		(35.0f)
-#define INIT_SHOOT_INTERVAL		(5)
-#define INIT_PLAYER_LIFE		(3)
-#define INIT_PLAYER_CHARGE		(0)
-
-#define PLAYER_HEAL_MAX			(3)
-#define PLAYER_HEAL_SCALE		(0)
-//#define PLAYER_HEAL_SCALE		(0.0001f)
-#define PLAYER_HITBOX_SIZE		D3DXVECTOR3(24.0f, 24.0f, 0.0f)
-
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
@@ -75,7 +64,7 @@ void InitPlayer(void)
 	g_player.obj.color = INIT_COLOR;
 	g_player.obj.bVisible = true;
 
-	g_player.state = PLAYERSTATE_APPEAR;
+	g_player.state = PLAYERSTATE_DAMAGED;
 	g_player.fSpeed = INIT_PLAYER_SPEED;
 	g_player.fShootSpeed = INIT_SHOOT_SPEED;
 	g_player.fLife = INIT_PLAYER_LIFE;
@@ -176,39 +165,21 @@ void UpdatePlayer(void)
 	}
 
 	// ***** 移動 *****
-	// ジョイパッド（スティック）操作
-	if (pGamepad->sThumbLX < -INPUT_DEADZONE)
+	// キーボード&ジョイパッド操作
+	if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_LEFT) || GetJoystickPress(JOYSTICK_L_LEFT))
 	{// 左
 		direction.x -= 1;
 	}
-	if (pGamepad->sThumbLX > INPUT_DEADZONE)
-	{// 右
-		direction.x += 1;
-	}
-	if (pGamepad->sThumbLY > INPUT_DEADZONE)
-	{// 上
-		direction.y -= 1;
-	}
-	if (pGamepad->sThumbLY < -INPUT_DEADZONE)
-	{// 下
-		direction.y += 1;
-	}
-
-	// キーボード&ジョイパッド（十字キー）操作
-	if (GetKeyboardPress(DIK_A) || GetJoypadPress(JOYKEY_LEFT))
-	{// 左
-		direction.x -= 1;
-	}
-	if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGHT))
+	if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGHT) || GetJoystickPress(JOYSTICK_L_RIGHT))
 	{// 右
 		direction.x += 1;
 		//g_player.obj.bInversed = false;
 	}
-	if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_UP))
+	if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_UP) || GetJoystickPress(JOYSTICK_L_UP))
 	{// 上
 		direction.y -= 1;
 	}
-	if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_DOWN))
+	if (GetKeyboardPress(DIK_S) || GetJoypadPress(JOYKEY_DOWN) || GetJoystickPress(JOYSTICK_L_DOWN))
 	{// 下
 		direction.y += 1;
 	}

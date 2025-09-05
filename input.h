@@ -46,6 +46,19 @@ typedef enum
 	JOYKEY_MAX
 }JOYKEY;
 
+typedef enum
+{
+	JOYSTICK_L_UP = 0,	// 左ジョイスティック上
+	JOYSTICK_L_DOWN,		// 左ジョイスティック下
+	JOYSTICK_L_LEFT,		// 左ジョイスティック左
+	JOYSTICK_L_RIGHT,	// 左ジョイスティック右
+	JOYSTICK_R_UP,		// 右ジョイスティック上
+	JOYSTICK_R_DOWN,	// 右ジョイスティック下
+	JOYSTICK_R_LEFT,	// 右ジョイスティック左
+	JOYSTICK_R_RIGHT,	// 右ジョイスティック右
+	JOYSTICK_MAX
+}JOYSTICK;
+
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
@@ -72,6 +85,8 @@ bool GetJoypadPress(JOYKEY key);
 bool GetJoypadTrigger(JOYKEY key);
 bool GetJoypadRelease(JOYKEY key);
 bool GetJoypadRepeat(JOYKEY key);
+bool GetJoystickPress(JOYSTICK stick);
+bool GetJoystickRepeat(JOYSTICK stick);
 void SetVibration(WORD wLeftMotorSpeed, WORD wRightMotorSpeed, int nCountVibration = -1);
 
 #endif
