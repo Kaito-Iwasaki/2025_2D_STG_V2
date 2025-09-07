@@ -39,7 +39,7 @@
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void SetPlayerState(PLAYERSTATE state);
+void _SetPlayerState(PLAYERSTATE state);
 
 //*********************************************************************
 // 
@@ -64,7 +64,7 @@ void InitPlayer(void)
 	g_player.obj.color = INIT_COLOR;
 	g_player.obj.bVisible = true;
 
-	g_player.state = PLAYERSTATE_DAMAGED;
+	g_player.state = PLAYERSTATE_BLINK;
 	g_player.fSpeed = INIT_PLAYER_SPEED;
 	g_player.fShootSpeed = INIT_SHOOT_SPEED;
 	g_player.fLife = INIT_PLAYER_LIFE;
@@ -73,7 +73,7 @@ void InitPlayer(void)
 
 	// テクスチャの読み込み
 	if (TEXTURE_FILENAME)
-	{// テクスチャ作成
+	{
 		D3DXCreateTextureFromFile(
 			pDevice,
 			TEXTURE_FILENAME,
@@ -132,14 +132,7 @@ void UpdatePlayer(void)
 		}
 		break;
 
-	case PLAYERSTATE_APPEAR:
-		if (g_player.nCounterState > 60)
-		{
-			SetPlayerState(PLAYERSTATE_NORMAL);
-		}
-		break;
-
-	case PLAYERSTATE_DAMAGED:
+	case PLAYERSTATE_BLINK:
 		if (g_player.nCounterState % 3 == 0)
 		{
 			g_player.obj.bVisible ^= 1;
@@ -147,7 +140,7 @@ void UpdatePlayer(void)
 
 		if (g_player.nCounterState > 120)
 		{
-			SetPlayerState(PLAYERSTATE_NORMAL);
+			_SetPlayerState(PLAYERSTATE_NORMAL);
 		}
 		break;
 
@@ -155,7 +148,7 @@ void UpdatePlayer(void)
 		g_player.obj.bVisible = false;
 		if (g_player.nCounterState > 120)
 		{
-			SetPlayerState(PLAYERSTATE_END);
+			_SetPlayerState(PLAYERSTATE_END);
 		}
 		return;
 
@@ -202,7 +195,8 @@ void UpdatePlayer(void)
 
 	// ***** ショット *****
 	g_player.nCounterShoot++;
-	if ((GetKeyboardPress(DIK_SPACE) || GetJoypadPress(JOYKEY_A)) && g_player.nCounterShoot % INIT_SHOOT_INTERVAL == 0)
+	if ((GetKeyboardPress(DIK_SPACE) || GetJoypadPress(JOYKEY_A)) &&
+		g_player.nCounterShoot % INIT_SHOOT_INTERVAL == 0)
 	{// 弾撃ち
 		g_player.nCounterShoot = 0;
 		PlaySound(SOUND_LABEL_SE_SHOOT, 0.1f);
@@ -260,11 +254,13 @@ PLAYER* GetPlayer(void)
 	return &g_player;
 }
 
+//=====================================================================
+// プレイヤー衝突処理
+//=====================================================================
 void HitPlayer(void)
 {
 	// 以下の状態では判定しない
-	if (g_player.state == PLAYERSTATE_APPEAR)	return;		// 出現直後
-	if (g_player.state == PLAYERSTATE_DAMAGED)	return;		// ダメージ直後
+	if (g_player.state == PLAYERSTATE_BLINK)	return;		// 点滅状態
 	if (g_player.state == PLAYERSTATE_DIED)		return;		// 死亡状態
 	if (g_player.state == PLAYERSTATE_END)		return;		// ゲーム終了状態
 
@@ -275,17 +271,20 @@ void HitPlayer(void)
 		PlaySound(SOUND_LABEL_SE_HIT02);
 		SetVibration(60000, 60000, 50);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, g_player.obj.pos, 1.5f);
-		SetPlayerState(PLAYERSTATE_DIED);
+		_SetPlayerState(PLAYERSTATE_DIED);
 	}
 	else
 	{
 		PlaySound(SOUND_LABEL_SE_HIT01);
 		SetVibration(40000, 40000, 50);
-		SetPlayerState(PLAYERSTATE_DAMAGED);
+		_SetPlayerState(PLAYERSTATE_BLINK);
 	}
 }
 
-void SetPlayerState(PLAYERSTATE state)
+//=====================================================================
+// プレイヤー状態の設定処理
+//=====================================================================
+void _SetPlayerState(PLAYERSTATE state)
 {
 	g_player.state = state;
 	g_player.nCounterState = 0;

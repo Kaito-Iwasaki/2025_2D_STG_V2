@@ -78,6 +78,7 @@ typedef struct
 	D3DXVECTOR3 move;
 	
 	float fLife;
+	void (*shoot_function)(void);
 	int nShootLeft;
 	int nShootInterval;
 	int nScore;

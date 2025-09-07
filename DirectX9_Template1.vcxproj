@@ -178,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bg.cpp" />
+    <ClCompile Include="enemyact.cpp" />
     <ClCompile Include="healthbar.cpp" />
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="ranking.cpp" />
