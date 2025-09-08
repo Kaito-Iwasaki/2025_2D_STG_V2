@@ -151,205 +151,207 @@ void UpdateEnemy(void)
 		pEnemy->nCounterState++;
 		pEnemy->nCounterShoot++;
 
+		EnemyAct(pEnemy);
+
 		// “G‚Ìó‘Ô•Êˆ—
-		switch (pEnemy->state)
-		{
-		case ENEMYSTATE_NORMAL:
-			pEnemy->obj.color = ENEMY_COLOR_NORMAL;
-			break;
+		//switch (pEnemy->state)
+		//{
+		//case ENEMYSTATE_NORMAL:
+		//	pEnemy->obj.color = ENEMY_COLOR_NORMAL;
+		//	break;
 
-		case ENEMYSTATE_DAMAGED:
-			pEnemy->obj.color = ENEMY_COLOR_DAMAGED;
+		//case ENEMYSTATE_DAMAGED:
+		//	pEnemy->obj.color = ENEMY_COLOR_DAMAGED;
 
-			if (pEnemy->nCounterState % 1 == 0)
-			{
-				pEnemy->state = ENEMYSTATE_NORMAL;
-			}
-			break;
-		}
+		//	if (pEnemy->nCounterState % 1 == 0)
+		//	{
+		//		pEnemy->state = ENEMYSTATE_NORMAL;
+		//	}
+		//	break;
+		//}
 
-		// “G‚Ìs“®•Êˆ—
-		switch (pEnemy->type)
-		{
-		case ENEMYTYPE_000:
-			pEnemy->obj.pos += pEnemy->move;
+		//// “G‚Ìs“®•Êˆ—
+		//switch (pEnemy->type)
+		//{
+		//case ENEMYTYPE_000:
+		//	pEnemy->obj.pos += pEnemy->move;
 
-			if (pEnemy->nShootLeft < 1) break;
+		//	if (pEnemy->nShootLeft < 1) break;
 
-			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
-			{
-				pEnemy->nCounterShoot = 0;
-				pEnemy->fShootRot = RandRange(-100, 100) * 0.01f;
-				if (SetEnemyBullet(
-					ENEMYBULLET_TYPE_001,
-					pEnemy->obj.pos,
-					pEnemy->fShootSpeed,
-					pEnemy->fShootRot))
-				{
-					pEnemy->nShootLeft--;
-				}
-			}
-			break;
+		//	if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
+		//	{
+		//		pEnemy->nCounterShoot = 0;
+		//		pEnemy->fShootRot = RandRange(-100, 100) * 0.01f;
+		//		if (SetEnemyBullet(
+		//			ENEMYBULLET_TYPE_001,
+		//			pEnemy->obj.pos,
+		//			pEnemy->fShootSpeed,
+		//			pEnemy->fShootRot))
+		//		{
+		//			pEnemy->nShootLeft--;
+		//		}
+		//	}
+		//	break;
 
-		case ENEMYTYPE_001:
-			pEnemy->obj.pos.x = pEnemy->startPos.x + sin((float)pEnemy->nCounterState * pEnemy->move.x) * pEnemy->move.z;
-			pEnemy->obj.pos.y += pEnemy->move.y;
-			break;
+		//case ENEMYTYPE_001:
+		//	pEnemy->obj.pos.x = pEnemy->startPos.x + sin((float)pEnemy->nCounterState * pEnemy->move.x) * pEnemy->move.z;
+		//	pEnemy->obj.pos.y += pEnemy->move.y;
+		//	break;
 
-		case ENEMYTYPE_002:
-			pEnemy->move.y += (0.0f - pEnemy->move.y) * 0.05f;
-			pEnemy->obj.pos.y += pEnemy->move.y + 1.0f;
+		//case ENEMYTYPE_002:
+		//	pEnemy->move.y += (0.0f - pEnemy->move.y) * 0.05f;
+		//	pEnemy->obj.pos.y += pEnemy->move.y + 1.0f;
 
-			if (pEnemy->nShootLeft < 1) break;
+		//	if (pEnemy->nShootLeft < 1) break;
 
-			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
-			{
-				pEnemy->nCounterShoot = 0;
-				pEnemy->fShootRot = Direction(pEnemy->obj.pos, pPlayer->obj.pos);
-				if (SetEnemyBullet(
-					ENEMYBULLET_TYPE_002,
-					pEnemy->obj.pos,
-					pEnemy->fShootSpeed,
-					pEnemy->fShootRot))
-				{
-					SetEnemyBullet(
-						ENEMYBULLET_TYPE_002,
-						pEnemy->obj.pos,
-						pEnemy->fShootSpeed,
-						pEnemy->fShootRot + D3DX_PI / 2);
-					SetEnemyBullet(
-						ENEMYBULLET_TYPE_002,
-						pEnemy->obj.pos,
-						pEnemy->fShootSpeed,
-						pEnemy->fShootRot - D3DX_PI / 2);
-					pEnemy->nShootLeft--;
-				}
-			}
-			break;
+		//	if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
+		//	{
+		//		pEnemy->nCounterShoot = 0;
+		//		pEnemy->fShootRot = Direction(pEnemy->obj.pos, pPlayer->obj.pos);
+		//		if (SetEnemyBullet(
+		//			ENEMYBULLET_TYPE_002,
+		//			pEnemy->obj.pos,
+		//			pEnemy->fShootSpeed,
+		//			pEnemy->fShootRot))
+		//		{
+		//			SetEnemyBullet(
+		//				ENEMYBULLET_TYPE_002,
+		//				pEnemy->obj.pos,
+		//				pEnemy->fShootSpeed,
+		//				pEnemy->fShootRot + D3DX_PI / 2);
+		//			SetEnemyBullet(
+		//				ENEMYBULLET_TYPE_002,
+		//				pEnemy->obj.pos,
+		//				pEnemy->fShootSpeed,
+		//				pEnemy->fShootRot - D3DX_PI / 2);
+		//			pEnemy->nShootLeft--;
+		//		}
+		//	}
+		//	break;
 
-		case ENEMYTYPE_003:
-			if (pEnemy->nCounterState == 1)
-			{
-				pEnemy->obj.pos.x = RandRange(640 - 250, 640 + 250);
-				pEnemy->move.y += RandRange(pEnemy->move.y - 1, pEnemy->move.y + 1);
-			}
+		//case ENEMYTYPE_003:
+		//	if (pEnemy->nCounterState == 1)
+		//	{
+		//		pEnemy->obj.pos.x = RandRange(640 - 250, 640 + 250);
+		//		pEnemy->move.y += RandRange(pEnemy->move.y - 1, pEnemy->move.y + 1);
+		//	}
 
-			pEnemy->obj.pos.y += pEnemy->move.y;
-			break;
+		//	pEnemy->obj.pos.y += pEnemy->move.y;
+		//	break;
 
-		case ENEMYTYPE_004:
-			pEnemy->fShootRot = 4.0f;
-			pEnemy->fShootRot = Direction(pEnemy->obj.pos, pPlayer->obj.pos);
+		//case ENEMYTYPE_004:
+		//	pEnemy->fShootRot = 4.0f;
+		//	pEnemy->fShootRot = Direction(pEnemy->obj.pos, pPlayer->obj.pos);
 
-			switch (pEnemy->nMode)
-			{
-			case 0:
-				pEnemy->obj.pos.x += pEnemy->move.y * sinf(pEnemy->fShootRot);
-				pEnemy->obj.pos.y += pEnemy->move.y * cosf(pEnemy->fShootRot);
+		//	switch (pEnemy->nMode)
+		//	{
+		//	case 0:
+		//		pEnemy->obj.pos.x += pEnemy->move.y * sinf(pEnemy->fShootRot);
+		//		pEnemy->obj.pos.y += pEnemy->move.y * cosf(pEnemy->fShootRot);
 
-				if (pEnemy->nCounterState > 30)
-				{
-					pEnemy->nMode = 1;
-					pEnemy->nCounterState = 0;
-				}
-				break;
+		//		if (pEnemy->nCounterState > 30)
+		//		{
+		//			pEnemy->nMode = 1;
+		//			pEnemy->nCounterState = 0;
+		//		}
+		//		break;
 
-			case 1:
-				SetEnemyBullet(
-					ENEMYBULLET_TYPE_000,
-					pEnemy->obj.pos,
-					pEnemy->fShootSpeed,
-					pEnemy->fShootRot
-				);
-				SetEnemyBullet(
-					ENEMYBULLET_TYPE_000,
-					pEnemy->obj.pos,
-					pEnemy->fShootSpeed,
-					pEnemy->fShootRot + 0.4f
-				);
-				SetEnemyBullet(
-					ENEMYBULLET_TYPE_000,
-					pEnemy->obj.pos,
-					pEnemy->fShootSpeed,
-					pEnemy->fShootRot - 0.4f
-				);
-				pEnemy->nMode = 2;
-				pEnemy->nCounterState = 0;
-				break;
+		//	case 1:
+		//		SetEnemyBullet(
+		//			ENEMYBULLET_TYPE_000,
+		//			pEnemy->obj.pos,
+		//			pEnemy->fShootSpeed,
+		//			pEnemy->fShootRot
+		//		);
+		//		SetEnemyBullet(
+		//			ENEMYBULLET_TYPE_000,
+		//			pEnemy->obj.pos,
+		//			pEnemy->fShootSpeed,
+		//			pEnemy->fShootRot + 0.4f
+		//		);
+		//		SetEnemyBullet(
+		//			ENEMYBULLET_TYPE_000,
+		//			pEnemy->obj.pos,
+		//			pEnemy->fShootSpeed,
+		//			pEnemy->fShootRot - 0.4f
+		//		);
+		//		pEnemy->nMode = 2;
+		//		pEnemy->nCounterState = 0;
+		//		break;
 
-			case 2:
-				if (pEnemy->nCounterState > 30)
-				{
-					pEnemy->nMode = 0;
-					pEnemy->nCounterState = 0;
-				}
-				break;
-			}
-			break;
+		//	case 2:
+		//		if (pEnemy->nCounterState > 30)
+		//		{
+		//			pEnemy->nMode = 0;
+		//			pEnemy->nCounterState = 0;
+		//		}
+		//		break;
+		//	}
+		//	break;
 
-		case ENEMYTYPE_005:
-			if (pEnemy->obj.pos.y < 100.0f)
-			{
-				EnemyAct(pEnemy);
-			}
-			else
-			{
-				if (pEnemy->obj.pos.x < SCREEN_CENTER - 200 || pEnemy->obj.pos.x > SCREEN_CENTER + 200)
-				{
-					pEnemy->move *= -1;
-				}
-				pEnemy->obj.pos.x += pEnemy->move.x;
-			}
+		//case ENEMYTYPE_005:
+		//	if (pEnemy->obj.pos.y < 100.0f)
+		//	{
+		//		EnemyAct(pEnemy);
+		//	}
+		//	else
+		//	{
+		//		if (pEnemy->obj.pos.x < SCREEN_CENTER - 200 || pEnemy->obj.pos.x > SCREEN_CENTER + 200)
+		//		{
+		//			pEnemy->move *= -1;
+		//		}
+		//		pEnemy->obj.pos.x += pEnemy->move.x;
+		//	}
 
-			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
-			{
-				pEnemy->nShootLeft++;
+		//	if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
+		//	{
+		//		pEnemy->nShootLeft++;
 
-				if (pEnemy->nShootLeft % 10 == 0)
-				{
-					SetEnemyBullet(
-						ENEMYBULLET_TYPE_001,
-						pEnemy->obj.pos,
-						pEnemy->fShootSpeed + 2,
-						Direction(pEnemy->obj.pos, pPlayer->obj.pos),
-						30
-					);
-					SetEnemyBullet(
-						ENEMYBULLET_TYPE_001,
-						pEnemy->obj.pos,
-						pEnemy->fShootSpeed + 2,
-						Direction(pEnemy->obj.pos, pPlayer->obj.pos) + 0.4f,
-						30
-					);
-					SetEnemyBullet(
-						ENEMYBULLET_TYPE_001,
-						pEnemy->obj.pos,
-						pEnemy->fShootSpeed + 2,
-						Direction(pEnemy->obj.pos, pPlayer->obj.pos) - 0.4f,
-						30
-					);
-				}
+		//		if (pEnemy->nShootLeft % 10 == 0)
+		//		{
+		//			SetEnemyBullet(
+		//				ENEMYBULLET_TYPE_001,
+		//				pEnemy->obj.pos,
+		//				pEnemy->fShootSpeed + 2,
+		//				Direction(pEnemy->obj.pos, pPlayer->obj.pos),
+		//				30
+		//			);
+		//			SetEnemyBullet(
+		//				ENEMYBULLET_TYPE_001,
+		//				pEnemy->obj.pos,
+		//				pEnemy->fShootSpeed + 2,
+		//				Direction(pEnemy->obj.pos, pPlayer->obj.pos) + 0.4f,
+		//				30
+		//			);
+		//			SetEnemyBullet(
+		//				ENEMYBULLET_TYPE_001,
+		//				pEnemy->obj.pos,
+		//				pEnemy->fShootSpeed + 2,
+		//				Direction(pEnemy->obj.pos, pPlayer->obj.pos) - 0.4f,
+		//				30
+		//			);
+		//		}
 
-				pEnemy->nCounterShoot = 0;
-				pEnemy->fShootRot += 0.5f;
-				SetEnemyBullet(
-					ENEMYBULLET_TYPE_001,
-					pEnemy->obj.pos,
-					pEnemy->fShootSpeed,
-					pEnemy->fShootRot,
-					15
-				);
-				SetEnemyBullet(
-					ENEMYBULLET_TYPE_001,
-					pEnemy->obj.pos,
-					pEnemy->fShootSpeed,
-					pEnemy->fShootRot + D3DX_PI,
-					15
-				);
-			}
+		//		pEnemy->nCounterShoot = 0;
+		//		pEnemy->fShootRot += 0.5f;
+		//		SetEnemyBullet(
+		//			ENEMYBULLET_TYPE_001,
+		//			pEnemy->obj.pos,
+		//			pEnemy->fShootSpeed,
+		//			pEnemy->fShootRot,
+		//			15
+		//		);
+		//		SetEnemyBullet(
+		//			ENEMYBULLET_TYPE_001,
+		//			pEnemy->obj.pos,
+		//			pEnemy->fShootSpeed,
+		//			pEnemy->fShootRot + D3DX_PI,
+		//			15
+		//		);
+		//	}
 
-			break;
-		}
+		//	break;
+		//}
 	}
 }
 
@@ -490,4 +492,9 @@ void HitEnemy(ENEMY* pEnemy)
 		PlaySound(SOUND_LABEL_SE_HIT00, 0.25f);
 		pEnemy->state = ENEMYSTATE_DAMAGED;
 	}
+}
+
+void EnemyShoot(ENEMY* pEnemy)
+{
+
 }

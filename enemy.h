@@ -62,7 +62,7 @@ typedef struct
 	ENEMYSTATE state;
 	int nMode;
 	float fLife;
-	int nShootLeft;
+	int nShot;
 	int nShootInterval;
 	float fShootSpeed;
 	float fShootRot;
@@ -100,5 +100,6 @@ int GetEnemyLeft(void);
 ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos);
 ENEMY* SetEnemy(TIMELINE* pTimeline);
 void HitEnemy(ENEMY* pEnemy);
+void EnemyShoot(ENEMY* pEnemy);
 
 #endif
