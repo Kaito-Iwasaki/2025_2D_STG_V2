@@ -14,6 +14,18 @@
 #include "enemy.h"
 #include "player.h"
 
-void (*g_aShootFunction[ENEMYTYPE_MAX])(ENEMY* enemy) = {
+void EnemyAct_00(ENEMY* pEnemy);
 
+void (*g_aShootFunction[ENEMYTYPE_MAX])(ENEMY* pEnemy) = {
+	EnemyAct_00,
 };
+
+void EnemyAct(ENEMY* pEnemy)
+{
+	g_aShootFunction[0](pEnemy);
+}
+
+void EnemyAct_00(ENEMY* pEnemy)
+{
+	pEnemy->obj.pos.y += pEnemy->move.y;
+}

@@ -145,6 +145,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="enemyact.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="font.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="baseObject.h" />

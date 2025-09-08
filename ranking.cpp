@@ -78,7 +78,7 @@ void InitRanking(void)
 
 	for (int nCount = 0; nCount < MAX_PLACE; nCount++)
 	{
-		sprintf(&aString[0], "%d.   %05d", nCount + 1, g_aRanking[nCount]);
+		sprintf(&aString[0], "%d. %08d", nCount + 1, g_aRanking[nCount]);
 
 		SetFont(
 			D3DXVECTOR3(GAME_SCREEN_START, 250.0f + (nCount * 50.0f), 0.0f),

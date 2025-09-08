@@ -239,6 +239,9 @@
     <ClInclude Include="particle.h">
       <Filter>ヘッダー ファイル\GameObject\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="enemyact.h">
+      <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">

@@ -21,6 +21,7 @@
 #include "enemybullet.h"
 #include "spriteEffect.h"
 #include "score.h"
+#include "enemyact.h"
 
 //*********************************************************************
 // 
@@ -289,7 +290,7 @@ void UpdateEnemy(void)
 		case ENEMYTYPE_005:
 			if (pEnemy->obj.pos.y < 100.0f)
 			{
-				pEnemy->obj.pos.y += pEnemy->move.y;
+				EnemyAct(pEnemy);
 			}
 			else
 			{
