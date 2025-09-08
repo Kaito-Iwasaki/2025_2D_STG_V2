@@ -28,6 +28,8 @@
 #include "pause.h"
 #include "bg.h"
 #include "healthbar.h"
+#include "effect.h"
+#include "particle.h"
 
 //*********************************************************************
 // 
@@ -54,8 +56,6 @@ STAGE g_stage;
 //=====================================================================
 void InitGame(void)
 {
-	InitFont();
-	InitDecal();
 	InitPlayer();
 	InitBullet();
 	InitEnemy();
@@ -65,6 +65,8 @@ void InitGame(void)
 	InitPause();
 	InitBackground();
 	InitHealthbar();
+	InitEffect();
+	InitParticle();
 
 	g_stage.bPaused = false;
 	g_stage.nCountGameState = 0;
@@ -91,8 +93,6 @@ void InitGame(void)
 //=====================================================================
 void UninitGame(void)
 {
-	UninitFont();
-	UninitDecal();
 	UninitPlayer();
 	UninitBullet();
 	UninitEnemy();
@@ -102,6 +102,8 @@ void UninitGame(void)
 	UninitPause();
 	UninitBackground();
 	UninitHealthbar();
+	UninitEffect();
+	UninitParticle();
 }
 
 //=====================================================================
@@ -123,7 +125,6 @@ void UpdateGame(void)
 
 	if (g_stage.bPaused == false)
 	{
-		UpdateFont();
 		UpdatePlayer();
 		UpdateBullet();
 		UpdateEnemy();
@@ -132,6 +133,8 @@ void UpdateGame(void)
 		UpdateScore();
 		UpdateBackground();
 		UpdateHealthbar();
+		UpdateEffect();
+		UpdateParticle();
 
 		for (int nCount = 0; nCount < MAX_TIMELINE; nCount++)
 		{
@@ -203,10 +206,11 @@ void DrawGame(void)
 	DrawSpriteEffect();
 	DrawEnemyBullet();
 	DrawBullet();
+	DrawEffect();
 	DrawPlayer();
-	DrawFont();
 	DrawScore();
 	DrawHealthbar();
+	
 
 	if (g_stage.bPaused)
 	{

@@ -56,7 +56,6 @@ const char* g_aEnemyBulletFileName[ENEMYBULLET_TYPE_MAX] = {
 void InitEnemyBullet(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイス
-	VERTEX_2D* pVtx;							// 頂点情報
 	ENEMYBULLET* pEnemyBullet = &g_aEnemyBullet[0];
 
 	// 構造体の初期化

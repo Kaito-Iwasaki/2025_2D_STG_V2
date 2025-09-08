@@ -66,7 +66,7 @@ ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
 	{ INIT_SIZE, {0.0f, 10.0f, 0.0f},		10.0f,	1,	 30,100},
 	{ INIT_SIZE, {0.0f, 2.0f, 0.0f},		5.0f,	0,	 00,100},
 	{ INIT_SIZE * 1.2f, {0.0f, 3.0f, 0.0f},	25.0f,	0,	 0,	100},
-	{ INIT_SIZE * 3.0f, {0.0f, 3.0f, 0.0f},	500.0f,	0,	 3,	1000},
+	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f},	500.0f,	0,	 3,	1000},
 };
 
 //=====================================================================
@@ -291,12 +291,20 @@ void UpdateEnemy(void)
 			{
 				pEnemy->obj.pos.y += pEnemy->move.y;
 			}
+			else
+			{
+				if (pEnemy->obj.pos.x < SCREEN_CENTER - 200 || pEnemy->obj.pos.x > SCREEN_CENTER + 200)
+				{
+					pEnemy->move *= -1;
+				}
+				pEnemy->obj.pos.x += pEnemy->move.x;
+			}
 
 			if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
 			{
 				pEnemy->nShootLeft++;
 
-				if (pEnemy->nShootLeft % 30 == 0)
+				if (pEnemy->nShootLeft % 10 == 0)
 				{
 					SetEnemyBullet(
 						ENEMYBULLET_TYPE_001,
@@ -328,6 +336,13 @@ void UpdateEnemy(void)
 					pEnemy->obj.pos,
 					pEnemy->fShootSpeed,
 					pEnemy->fShootRot,
+					15
+				);
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos,
+					pEnemy->fShootSpeed,
+					pEnemy->fShootRot + D3DX_PI,
 					15
 				);
 			}

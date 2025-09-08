@@ -1,50 +1,33 @@
 //=====================================================================
-//
-// enemy.cppのヘッダファイル [enemy.h]
-// Author : Kaito Iwasaki
 // 
+// effect.cppのヘッダファイル [effect.h]
+// Author:
+//
 //=====================================================================
-#ifndef _ENEMY_H_
-#define _ENEMY_H_
+#ifndef _EFFECT_H_
+#define _EFFECT_H_		// 二重インクルード防止のマクロ
 
 //*********************************************************************
 // 
 // ***** インクルードファイル *****
 // 
 //*********************************************************************
-#include "baseObject.h"
 #include "main.h"
-#include "game.h"
+#include "baseObject.h"
 
 //*********************************************************************
 // 
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-#define MAX_ENEMY		(256)
+#define MAX_EFFECT			(256)
 
 //*********************************************************************
 // 
 // ***** 列挙型 *****
 // 
 //*********************************************************************
-typedef enum
-{
-	ENEMYTYPE_000 = 0,
-	ENEMYTYPE_001,
-	ENEMYTYPE_002,
-	ENEMYTYPE_003,
-	ENEMYTYPE_004,
-	ENEMYTYPE_005,
-	ENEMYTYPE_MAX
-}ENEMYTYPE;
 
-typedef enum
-{
-	ENEMYSTATE_NORMAL = 0,
-	ENEMYSTATE_DAMAGED,
-	ENEMYSTATE_MAX
-}ENEMYSTATE;
 
 //*********************************************************************
 // 
@@ -53,51 +36,33 @@ typedef enum
 //*********************************************************************
 typedef struct
 {
-	BASEOBJECT obj;
-	bool bUsed;
-	D3DXVECTOR3 startPos;
-
-	D3DXVECTOR3 move;
-	ENEMYTYPE type;
-	ENEMYSTATE state;
-	int nMode;
-	float fLife;
-	int nShootLeft;
-	int nShootInterval;
-	float fShootSpeed;
-	float fShootRot;
-	int nScore;
-
-	int nCounterState;
-	int nCounterShoot;
-
-	void (*shoot_function)(void);
-}ENEMY;
+	float fSpeed;
+	float fRotSpeed;
+	float fMaxScale;
+	int nMaxLife;
+	float fMaxAlpha;
+	D3DXCOLOR col;
+}EFFECTINFO;
 
 typedef struct
 {
-	D3DXVECTOR3 size;
-	D3DXVECTOR3 move;
-	
-	float fLife;
-	int nShootLeft;
-	int nShootInterval;
-	int nScore;
-}ENEMYINFO;
+	BASEOBJECT obj;
+	bool bUsed;
+	EFFECTINFO info;
+	float fDirection;
+	float fScale;
+	int nLife;
+}EFFECT;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitEnemy(void);
-void UninitEnemy(void);
-void UpdateEnemy(void);
-void DrawEnemy(void);
-ENEMY* GetEnemy(void);
-int GetEnemyLeft(void);
-ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos);
-ENEMY* SetEnemy(TIMELINE* pTimeline);
-void HitEnemy(ENEMY* pEnemy);
+void InitEffect(void);
+void UninitEffect(void);
+void UpdateEffect(void);
+void DrawEffect(void);
+void SetEffect(D3DXVECTOR3 pos, float fSpeed, float fRotSpeed, float fDirection, float fScale, int nLife, D3DXCOLOR col);
 
 #endif

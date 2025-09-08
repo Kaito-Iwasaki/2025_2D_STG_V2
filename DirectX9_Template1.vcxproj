@@ -140,6 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
+    <ClInclude Include="effect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="enemy.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="game.h" />
@@ -153,6 +157,10 @@
     <ClInclude Include="enemybullet.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="healthbar.h" />
+    <ClInclude Include="particle.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="score.h">
@@ -178,8 +186,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bg.cpp" />
+    <ClCompile Include="effect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="enemyact.cpp" />
     <ClCompile Include="healthbar.cpp" />
+    <ClCompile Include="particle.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="ranking.cpp" />
     <ClCompile Include="result.cpp" />

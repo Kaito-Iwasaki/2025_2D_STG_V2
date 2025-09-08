@@ -49,6 +49,7 @@ typedef struct
 // 
 //*********************************************************************
 void SetVertexPos(VERTEX_2D* pVtx, BASEOBJECT obj);
+void SetVertexPos(VERTEX_2D* pVtx, D3DXVECTOR3 pos, D3DXVECTOR3 size, float fRot = 0.0f);
 void SetVertexPos(VERTEX_2D* pVtx, D3DXVECTOR3 leftTop, D3DXVECTOR3 rightTop, D3DXVECTOR3 leftBottom, D3DXVECTOR3 rightBottom);
 void SetVertexRHW(VERTEX_2D* pVtx, float rhw);
 void SetVertexColor(VERTEX_2D* pVtx, D3DXCOLOR col);

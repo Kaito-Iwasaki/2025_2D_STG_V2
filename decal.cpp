@@ -52,7 +52,6 @@ const char* g_aDecalFileName[DECAL_LABEL_MAX] = {
 void InitDecal(bool bPreload)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイス
-	VERTEX_2D* pVtx;							// 頂点情報
 	DECAL* pDecal = &g_aDecal[0];
 
 	// 構造体の初期化

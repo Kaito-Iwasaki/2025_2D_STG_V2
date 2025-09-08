@@ -40,6 +40,31 @@ void SetVertexPos(VERTEX_2D* pVtx, BASEOBJECT obj)
 //=====================================================================
 // 頂点位置の設定処理（手動）
 //=====================================================================
+void SetVertexPos(VERTEX_2D* pVtx, D3DXVECTOR3 pos, D3DXVECTOR3 size, float fRot)
+{
+	float fLength = sqrtf(size.x * size.x + size.y * size.y) * 0.5f;
+	float fAngle = atan2f(size.x, size.y);
+
+	pVtx[0].pos.x = pos.x + sinf(fRot + D3DX_PI + fAngle) * fLength;
+	pVtx[0].pos.y = pos.y + cosf(fRot + D3DX_PI + fAngle) * fLength;
+	pVtx[0].pos.z = 0.0f;
+
+	pVtx[1].pos.x = pos.x + sinf(fRot + D3DX_PI - fAngle) * fLength;
+	pVtx[1].pos.y = pos.y + cosf(fRot + D3DX_PI - fAngle) * fLength;
+	pVtx[1].pos.z = 0.0f;
+
+	pVtx[2].pos.x = pos.x + sinf(fRot - fAngle) * fLength;
+	pVtx[2].pos.y = pos.y + cosf(fRot - fAngle) * fLength;
+	pVtx[2].pos.z = 0.0f;
+
+	pVtx[3].pos.x = pos.x + sinf(fRot + fAngle) * fLength;
+	pVtx[3].pos.y = pos.y + cosf(fRot + fAngle) * fLength;
+	pVtx[3].pos.z = 0.0f;
+}
+
+//=====================================================================
+// 頂点位置の設定処理（手動）
+//=====================================================================
 void SetVertexPos(VERTEX_2D* pVtx, D3DXVECTOR3 leftTop, D3DXVECTOR3 rightTop, D3DXVECTOR3 leftBottom, D3DXVECTOR3 rightBottom)
 {
 	pVtx[0].pos.x = leftTop.x;

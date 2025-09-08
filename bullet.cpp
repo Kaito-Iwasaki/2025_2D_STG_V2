@@ -21,6 +21,9 @@
 #include "enemy.h"
 #include "enemybullet.h"
 #include "spriteEffect.h"
+#include "effect.h"
+#include "player.h"
+#include "particle.h"
 
 //*********************************************************************
 // 
@@ -52,7 +55,6 @@ BULLET g_aBullet[MAX_BULLET] = {};
 void InitBullet(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();	// デバイス
-	VERTEX_2D* pVtx;							// 頂点情報
 	BULLET* pBullet = &g_aBullet[0];
 
 	// 構造体の初期化
@@ -109,15 +111,18 @@ void UninitBullet(void)
 void UpdateBullet(void)
 {
 	BULLET* pBullet = &g_aBullet[0];
+	PLAYER* pPlayer;
 	ENEMY* pEnemy;
 	ENEMYBULLET* pEnemyBullet;
 	RECT rectScreen = GAME_SCREEN_RECT;
+	EFFECTINFO info;
 
 	for (int nCountBullet = 0; nCountBullet < MAX_BULLET; nCountBullet++, pBullet++)
 	{
 		if (pBullet->bUsed == false) continue;		// 未使用の敵ならスキップ
 
-		// 敵を取得
+		// オブジェクトを取得
+		pPlayer = GetPlayer();
 		pEnemy = GetEnemy();
 		pEnemyBullet = GetEnemyBullet();
 
@@ -134,7 +139,25 @@ void UpdateBullet(void)
 		{
 			if (pEnemy->bUsed && BoxCollision(pBullet->obj, pEnemy->obj))
 			{
+				float fAngleEnemyToBullet = Direction(pEnemy->obj.pos, pBullet->obj.pos);
+
 				HitEnemy(pEnemy);
+
+				info.fSpeed = 5.0f;
+				info.fRotSpeed = 0.05f;
+				info.fMaxScale = 0.3f;
+				info.nMaxLife = 25;
+				info.col = D3DXCOLOR(0.9f, 0.4f, 0.0f, 0.8f);
+
+				SetParticle(
+					info,
+					pBullet->obj.pos,
+					Direction(pEnemy->obj.pos, pBullet->obj.pos),
+					0.3f,
+					1,
+					3
+				);
+
 				pBullet->bUsed = false;
 			}
 		}
@@ -145,7 +168,21 @@ void UpdateBullet(void)
 			if (pEnemyBullet->bUsed && BoxCollision(pBullet->obj, pEnemyBullet->obj))
 			{
 				HitEnemyBullet(pEnemyBullet);
-				pBullet->bUsed = false;
+
+				info.fSpeed = 3.0f;
+				info.fRotSpeed = 0.05f;
+				info.fMaxScale = 0.3f;
+				info.nMaxLife = 15;
+				info.col = D3DXCOLOR(0.7f, 0.3f, 0.0f, 0.7f);
+
+				SetParticle(
+					info,
+					pBullet->obj.pos,
+					Direction(pEnemyBullet->obj.pos, pBullet->obj.pos),
+					0.3f,
+					1,
+					3
+				);
 			}
 		}
 	}
