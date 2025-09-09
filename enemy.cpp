@@ -70,7 +70,7 @@ ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
 	{ INIT_SIZE,		{0.0f, 5.0f, 0.0f},		5.0f,	 00,	100},	// 003
 	{ INIT_SIZE * 1.2f,	{0.0f, 3.0f, 0.0f},		25.0f,	 0,		150},	// 004
 	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,		300},	// 005
-	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,		300},	// 006
+	{ INIT_SIZE * 2.0f,	{0.0f, 1.0f, 0.0f},		100.0f,	 3,		500},	// 006
 	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,		300},	// 007
 	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,		300},	// 008
 	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f}	,	600.0f,	 3,		1000},	// boss000
@@ -213,6 +213,7 @@ void DrawEnemy(void)
 	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
+	// テクスチャステージステートの適用
 	pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_ADD);
 
 	pEnemy = &g_aEnemy[0];
@@ -228,6 +229,7 @@ void DrawEnemy(void)
 		}
 	}
 
+	// テクスチャステージステートの解除
 	pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 
 }

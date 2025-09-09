@@ -198,6 +198,19 @@ END_TIMELINESET
 #=====================
 TIMELINESET
 	WAVE 11
+	TYPE 6
+	POS2 640 -50
+	POSOFFSET2 0 0
+	TIME 0
+	TIMEOFFSET 0
+	NUM 1
+END_TIMELINESET
+
+#=====================
+#ウェーブ12
+#=====================
+TIMELINESET
+	WAVE 12
 	TYPE 9
 	POS2 640 -300
 	POSOFFSET2 100 0

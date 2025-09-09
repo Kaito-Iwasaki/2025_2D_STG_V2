@@ -49,6 +49,9 @@
     <Filter Include="ソース ファイル\GameObject\Effect">
       <UniqueIdentifier>{61f199d6-fa39-402a-9f16-2188370aab79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Component\Enemy">
+      <UniqueIdentifier>{6cb0a4b4-b96e-428b-aa98-954a3f36bedc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sound.cpp">
@@ -224,11 +227,11 @@
     <ClInclude Include="particle.h">
       <Filter>ヘッダー ファイル\GameObject\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="enemyact.h">
-      <Filter>ヘッダー ファイル\Component</Filter>
-    </ClInclude>
     <ClInclude Include="baseObject.h">
       <Filter>ヘッダー ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyact.h">
+      <Filter>ヘッダー ファイル\Component\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
