@@ -36,7 +36,7 @@
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-#define MAX_WAVE		(10)
+#define MAX_WAVE		(11)
 #define GAME_START		(120)
 #define WAVE_START		(0)
 #define WAVE_INTERVAL	(10)
@@ -47,9 +47,8 @@
 // ***** グローバル変数 *****
 // 
 //*********************************************************************
-TIMELINE g_timeline[MAX_TIMELINE];
-SOUND_LABEL g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
 STAGE g_stage;
+SOUND_LABEL g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
 
 //=====================================================================
 // 初期化処理
@@ -72,6 +71,7 @@ void InitGame(void)
 	g_stage.nCountGameState = 0;
 	g_stage.nCurrentWave = WAVE_START;
 	g_stage.nCountTimeline = 0;
+	g_stage.nMaxWave = 0;
 	g_stage.state = GAMESTATE_READY;
 	g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
 
@@ -85,7 +85,7 @@ void InitGame(void)
 		D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f)
 	);
 
-	LoadStage("data/STAGE/stage01.txt", &g_timeline[0]);
+	LoadStage("data/STAGE/stage01.txt", &g_stage);
 }
 
 //=====================================================================
@@ -111,6 +111,8 @@ void UninitGame(void)
 //=====================================================================
 void UpdateGame(void)
 {
+	TIMELINE* pTimeline = &g_stage.timeline[0];
+
 #if _DEBUG
 	if (GetKeyboardTrigger(DIK_F1))
 	{
@@ -136,17 +138,24 @@ void UpdateGame(void)
 		UpdateEffect();
 		UpdateParticle();
 
-		for (int nCount = 0; nCount < MAX_TIMELINE; nCount++)
+		for (int nCount = 0; nCount < MAX_TIMELINE; nCount++, pTimeline++)
 		{
 			if (g_stage.state == GAMESTATE_READY) break;
-			if (g_timeline[nCount].bSet == false) continue;
-			if (g_timeline[nCount].nWave != g_stage.nCurrentWave) continue;
-			if (g_timeline[nCount].nCountTime != g_stage.nCountTimeline) continue;
+			if (pTimeline->bSet == false) continue;
+			if (pTimeline->nWave != g_stage.nCurrentWave) continue;
+			if (pTimeline->nCountTime != g_stage.nCountTimeline) continue;
 
-			SetEnemy(
-				(ENEMYTYPE)g_timeline[nCount].nType,
-				D3DXVECTOR3(g_timeline[nCount].pos.x, g_timeline[nCount].pos.y, 0.0f)
+			ENEMY* pEnemy;
+
+			pEnemy = SetEnemy(
+				(ENEMYTYPE)pTimeline->nType,
+				D3DXVECTOR3(pTimeline->pos.x, pTimeline->pos.y, 0.0f)
 			);
+
+			if (pTimeline->bInversed == true)
+			{
+				pEnemy->move.x *= -1;
+			}
 		}
 
 		switch (g_stage.state)
@@ -223,7 +232,7 @@ void DrawGame(void)
 //=====================================================================
 void SetWave(int nWave)
 {
-	if (nWave > MAX_WAVE)
+	if (nWave > g_stage.nMaxWave)
 	{
 		g_stage.state = GAMESTATE_END;
 	}
@@ -233,7 +242,7 @@ void SetWave(int nWave)
 		g_stage.nCountGameState = 0;
 		g_stage.nCountTimeline = 0;
 
-		if (nWave == MAX_WAVE)
+		if (nWave == g_stage.nMaxWave)
 		{
 			StopSound(g_CurrentSound);
 			g_CurrentSound = SOUND_LABEL_BGM_BOSS00;
@@ -261,4 +270,9 @@ void TogglePause(bool bPause)
 		UnPauseSound(g_CurrentSound);
 		SetPauseMenuCursor(0);
 	}
+}
+
+GAMESTATE GetGameState(void)
+{
+	return g_stage.state;
 }

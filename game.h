@@ -52,6 +52,7 @@ typedef struct
 	int nWave;
 	int nCountTime;
 	int nCountTimeOffset;
+	bool bInversed;
 }TIMELINE;
 
 typedef struct
@@ -60,7 +61,9 @@ typedef struct
 	int nCurrentWave;
 	int nCountGameState;
 	int nCountTimeline;
+	int nMaxWave;
 	GAMESTATE state;
+	TIMELINE timeline[MAX_TIMELINE];
 }STAGE;
 
 //*********************************************************************
@@ -74,5 +77,6 @@ void UpdateGame(void);
 void DrawGame(void);
 void SetWave(int nWave);
 void TogglePause(bool bPause);
+GAMESTATE GetGameState(void);
 
 #endif

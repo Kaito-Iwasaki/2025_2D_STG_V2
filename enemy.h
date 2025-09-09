@@ -36,6 +36,10 @@ typedef enum
 	ENEMYTYPE_003,
 	ENEMYTYPE_004,
 	ENEMYTYPE_005,
+	ENEMYTYPE_006,
+	ENEMYTYPE_007,
+	ENEMYTYPE_008,
+	ENEMYTYPE_BOSS000,
 	ENEMYTYPE_MAX
 }ENEMYTYPE;
 
@@ -51,7 +55,7 @@ typedef enum
 // ***** ç\ë¢ëÃ *****
 // 
 //*********************************************************************
-typedef struct
+typedef struct ENEMY
 {
 	BASEOBJECT obj;
 	bool bUsed;
@@ -70,8 +74,9 @@ typedef struct
 
 	int nCounterState;
 	int nCounterShoot;
+	int nCounterMode;
 
-	void (*shoot_function)(void);
+	void (*pfDied)(ENEMY* pEnemy);
 }ENEMY;
 
 typedef struct
@@ -80,7 +85,6 @@ typedef struct
 	D3DXVECTOR3 move;
 	
 	float fLife;
-	int nShootLeft;
 	int nShootInterval;
 	int nScore;
 }ENEMYINFO;

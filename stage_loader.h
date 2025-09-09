@@ -34,6 +34,6 @@
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void LoadStage(const char* aFileName, TIMELINE* pTimeline);
+void LoadStage(const char* aFileName, STAGE* pStage);
 
 #endif

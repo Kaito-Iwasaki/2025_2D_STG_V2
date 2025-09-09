@@ -61,6 +61,13 @@ typedef struct
 	int nCounterState;
 }ENEMYBULLET;
 
+typedef struct
+{
+	float fDamage;
+	float fLife;
+	ENEMYBULLET_TYPE type;
+}ENEMYBULLET_INFO;
+
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****

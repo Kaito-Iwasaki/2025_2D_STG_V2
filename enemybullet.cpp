@@ -50,6 +50,8 @@ const char* g_aEnemyBulletFileName[ENEMYBULLET_TYPE_MAX] = {
 	"data\\TEXTURE\\enemybullet002.png",
 };
 
+
+
 //=====================================================================
 // ‰Šú‰»ˆ—
 //=====================================================================
@@ -319,7 +321,7 @@ void HitEnemyBullet(ENEMYBULLET* pEnemyBullet)
 	{
 		PlaySound(SOUND_LABEL_SE_HIT00, 0.5f);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.75f);
-		AddScore(10);
+		//AddScore(10);
 		pEnemyBullet->bUsed = false;
 	}
 	else

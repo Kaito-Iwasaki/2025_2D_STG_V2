@@ -143,7 +143,7 @@ void UpdateTitle(void)
 			g_FontStart->obj.bVisible ^= 1;
 		}
 
-		if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START))
+		if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START) && GetFade() == FADE_NONE)
 		{
 			PlaySound(SOUND_LABEL_SE_HIT02);
 			g_nCountStateTitle = 0;

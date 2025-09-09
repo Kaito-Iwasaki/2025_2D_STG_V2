@@ -29,15 +29,13 @@
 
 
 //=====================================================================
-// 
 // ***** ステージ情報読み込み処理 *****
-// 
 //=====================================================================
-void LoadStage(const char* aFileName, TIMELINE* pTimeline)
+void LoadStage(const char* aFileName, STAGE* pStage)
 {
 	FILE* pFile;
 	char aStrFile[MAX_PATH];
-	TIMELINE timelineTemp;
+	TIMELINE* pTimeline = &pStage->timeline[0];
 
 	pFile = fopen(aFileName, "r");
 
@@ -45,8 +43,25 @@ void LoadStage(const char* aFileName, TIMELINE* pTimeline)
 
 	while (fscanf(pFile, "%s", &aStrFile[0]) != EOF)
 	{
-		if (strstr(&aStrFile[0], "TIMELINESET") != NULL)
+		if (strstr(&aStrFile[0], "STAGESET") != NULL)
+		{
+			do
+			{
+				if (fscanf(pFile, "%s", &aStrFile[0]) == EOF)
+				{
+					break;
+				}
+
+				if (strncmp(aStrFile, "MAX_WAVE", 8) == 0)
+				{
+					fscanf(pFile, "%d", &pStage->nMaxWave);
+				}
+
+			} while (strstr(&aStrFile[0], "END_STAGESET") == NULL);
+		}
+		else if (strstr(&aStrFile[0], "TIMELINESET") != NULL)
 		{// タイムライン情報読み込み
+			TIMELINE timelineTemp;
 
 			memset(&timelineTemp, 0, sizeof(TIMELINE));
 			timelineTemp.posOffset = D3DXVECTOR3(0.0f, -50.0f, 0.0f);
@@ -93,10 +108,15 @@ void LoadStage(const char* aFileName, TIMELINE* pTimeline)
 				{
 					fscanf(pFile, "%d", &timelineTemp.nCountTime);
 				}
-
 				else if (strncmp(aStrFile, "LIFE", 4) == 0)
 				{
 					fscanf(pFile, "%d", &timelineTemp.nLife);
+				}
+				else if (strncmp(aStrFile, "INVERSED", 8) == 0)
+				{
+					fscanf(pFile, "%s", &aStrFile[0]);
+
+					timelineTemp.bInversed = (strncmp(aStrFile, "TRUE", 4) == 0);
 				}
 			}while (strstr(&aStrFile[0], "END_TIMELINESET") == NULL);
 
@@ -109,6 +129,7 @@ void LoadStage(const char* aFileName, TIMELINE* pTimeline)
 				pTimeline->pos = timelineTemp.pos + timelineTemp.posOffset * nCount;
 				pTimeline->nCountTime = timelineTemp.nCountTime + (nCount * timelineTemp.nCountTimeOffset);
 				pTimeline->nWave = timelineTemp.nWave;
+				pTimeline->bInversed = timelineTemp.bInversed;
 			}
 
 			pTimeline++;

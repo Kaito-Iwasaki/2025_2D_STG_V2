@@ -31,8 +31,6 @@
 #define INIT_POS_X				(SCREEN_WIDTH / 2)
 #define INIT_POS_Y				(SCREEN_HEIGHT/ 2)
 #define INIT_SIZE				D3DXVECTOR3(48.0f, 48.0f, 0.0f)
-#define INIT_SIZE_X				(48.0f)
-#define INIT_SIZE_Y				(48.0f)
 #define INIT_COLOR				D3DXCOLOR(0.0f, 0.0f, 0.0f,1.0f)
 
 #define INIT_ENEMY_LIFE				(30)
@@ -57,17 +55,25 @@ const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 	"data\\TEXTURE\\enemy002.png",
 	"data\\TEXTURE\\enemy003.png",
 	"data\\TEXTURE\\enemy004.png",
-	"data\\TEXTURE\\enemy005.png"
+	"data\\TEXTURE\\enemy005.png",
+	"data\\TEXTURE\\enemy006.png",
+	"data\\TEXTURE\\enemy007.png",
+	"data\\TEXTURE\\enemy008.png",
+	"data\\TEXTURE\\boss000.png",
 };
 
-// 敵の情報[サイズ | 移動量 | 体力 | 弾数 | ショット間隔 | スコア]
+// 敵の情報[サイズ | 移動量 | 体力 | ショット間隔 | スコア]
 ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
-	{ INIT_SIZE, {0.0f, 1.0f, 0.0f},		10.0f,	10,	 5,	100},
-	{ INIT_SIZE, {0.05f, 2.0f, 100.0f},		2.0f,	0,	 0,	100},
-	{ INIT_SIZE, {0.0f, 10.0f, 0.0f},		10.0f,	1,	 30,100},
-	{ INIT_SIZE, {0.0f, 2.0f, 0.0f},		5.0f,	0,	 00,100},
-	{ INIT_SIZE * 1.2f, {0.0f, 3.0f, 0.0f},	25.0f,	0,	 0,	100},
-	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f},	500.0f,	0,	 3,	1000},
+	{ INIT_SIZE,		{0.0f, 1.0f, 0.0f},		10.0f,	 3,		150},	// 000
+	{ INIT_SIZE,		{0.05f, 2.0f, 100.0f},	2.0f,	 0,		100},	// 001
+	{ INIT_SIZE,		{0.0f, 10.0f, 0.0f},	10.0f,	 30,	200},	// 002
+	{ INIT_SIZE,		{0.0f, 5.0f, 0.0f},		5.0f,	 00,	100},	// 003
+	{ INIT_SIZE * 1.2f,	{0.0f, 3.0f, 0.0f},		25.0f,	 0,		150},	// 004
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,		300},	// 005
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,		300},	// 006
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,		300},	// 007
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,		300},	// 008
+	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f}	,	600.0f,	 3,		1000},	// boss000
 };
 
 //=====================================================================
@@ -150,208 +156,27 @@ void UpdateEnemy(void)
 
 		pEnemy->nCounterState++;
 		pEnemy->nCounterShoot++;
-
-		EnemyAct(pEnemy);
+		pEnemy->nCounterMode++;
 
 		// 敵の状態別処理
-		//switch (pEnemy->state)
-		//{
-		//case ENEMYSTATE_NORMAL:
-		//	pEnemy->obj.color = ENEMY_COLOR_NORMAL;
-		//	break;
+		switch (pEnemy->state)
+		{
+		case ENEMYSTATE_NORMAL:
+			pEnemy->obj.color = ENEMY_COLOR_NORMAL;
+			break;
 
-		//case ENEMYSTATE_DAMAGED:
-		//	pEnemy->obj.color = ENEMY_COLOR_DAMAGED;
+		case ENEMYSTATE_DAMAGED:
+			pEnemy->obj.color = ENEMY_COLOR_DAMAGED;
 
-		//	if (pEnemy->nCounterState % 1 == 0)
-		//	{
-		//		pEnemy->state = ENEMYSTATE_NORMAL;
-		//	}
-		//	break;
-		//}
+			if (pEnemy->nCounterState % 1 == 0)
+			{
+				pEnemy->state = ENEMYSTATE_NORMAL;
+			}
+			break;
+		}
 
-		//// 敵の行動別処理
-		//switch (pEnemy->type)
-		//{
-		//case ENEMYTYPE_000:
-		//	pEnemy->obj.pos += pEnemy->move;
-
-		//	if (pEnemy->nShootLeft < 1) break;
-
-		//	if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
-		//	{
-		//		pEnemy->nCounterShoot = 0;
-		//		pEnemy->fShootRot = RandRange(-100, 100) * 0.01f;
-		//		if (SetEnemyBullet(
-		//			ENEMYBULLET_TYPE_001,
-		//			pEnemy->obj.pos,
-		//			pEnemy->fShootSpeed,
-		//			pEnemy->fShootRot))
-		//		{
-		//			pEnemy->nShootLeft--;
-		//		}
-		//	}
-		//	break;
-
-		//case ENEMYTYPE_001:
-		//	pEnemy->obj.pos.x = pEnemy->startPos.x + sin((float)pEnemy->nCounterState * pEnemy->move.x) * pEnemy->move.z;
-		//	pEnemy->obj.pos.y += pEnemy->move.y;
-		//	break;
-
-		//case ENEMYTYPE_002:
-		//	pEnemy->move.y += (0.0f - pEnemy->move.y) * 0.05f;
-		//	pEnemy->obj.pos.y += pEnemy->move.y + 1.0f;
-
-		//	if (pEnemy->nShootLeft < 1) break;
-
-		//	if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
-		//	{
-		//		pEnemy->nCounterShoot = 0;
-		//		pEnemy->fShootRot = Direction(pEnemy->obj.pos, pPlayer->obj.pos);
-		//		if (SetEnemyBullet(
-		//			ENEMYBULLET_TYPE_002,
-		//			pEnemy->obj.pos,
-		//			pEnemy->fShootSpeed,
-		//			pEnemy->fShootRot))
-		//		{
-		//			SetEnemyBullet(
-		//				ENEMYBULLET_TYPE_002,
-		//				pEnemy->obj.pos,
-		//				pEnemy->fShootSpeed,
-		//				pEnemy->fShootRot + D3DX_PI / 2);
-		//			SetEnemyBullet(
-		//				ENEMYBULLET_TYPE_002,
-		//				pEnemy->obj.pos,
-		//				pEnemy->fShootSpeed,
-		//				pEnemy->fShootRot - D3DX_PI / 2);
-		//			pEnemy->nShootLeft--;
-		//		}
-		//	}
-		//	break;
-
-		//case ENEMYTYPE_003:
-		//	if (pEnemy->nCounterState == 1)
-		//	{
-		//		pEnemy->obj.pos.x = RandRange(640 - 250, 640 + 250);
-		//		pEnemy->move.y += RandRange(pEnemy->move.y - 1, pEnemy->move.y + 1);
-		//	}
-
-		//	pEnemy->obj.pos.y += pEnemy->move.y;
-		//	break;
-
-		//case ENEMYTYPE_004:
-		//	pEnemy->fShootRot = 4.0f;
-		//	pEnemy->fShootRot = Direction(pEnemy->obj.pos, pPlayer->obj.pos);
-
-		//	switch (pEnemy->nMode)
-		//	{
-		//	case 0:
-		//		pEnemy->obj.pos.x += pEnemy->move.y * sinf(pEnemy->fShootRot);
-		//		pEnemy->obj.pos.y += pEnemy->move.y * cosf(pEnemy->fShootRot);
-
-		//		if (pEnemy->nCounterState > 30)
-		//		{
-		//			pEnemy->nMode = 1;
-		//			pEnemy->nCounterState = 0;
-		//		}
-		//		break;
-
-		//	case 1:
-		//		SetEnemyBullet(
-		//			ENEMYBULLET_TYPE_000,
-		//			pEnemy->obj.pos,
-		//			pEnemy->fShootSpeed,
-		//			pEnemy->fShootRot
-		//		);
-		//		SetEnemyBullet(
-		//			ENEMYBULLET_TYPE_000,
-		//			pEnemy->obj.pos,
-		//			pEnemy->fShootSpeed,
-		//			pEnemy->fShootRot + 0.4f
-		//		);
-		//		SetEnemyBullet(
-		//			ENEMYBULLET_TYPE_000,
-		//			pEnemy->obj.pos,
-		//			pEnemy->fShootSpeed,
-		//			pEnemy->fShootRot - 0.4f
-		//		);
-		//		pEnemy->nMode = 2;
-		//		pEnemy->nCounterState = 0;
-		//		break;
-
-		//	case 2:
-		//		if (pEnemy->nCounterState > 30)
-		//		{
-		//			pEnemy->nMode = 0;
-		//			pEnemy->nCounterState = 0;
-		//		}
-		//		break;
-		//	}
-		//	break;
-
-		//case ENEMYTYPE_005:
-		//	if (pEnemy->obj.pos.y < 100.0f)
-		//	{
-		//		EnemyAct(pEnemy);
-		//	}
-		//	else
-		//	{
-		//		if (pEnemy->obj.pos.x < SCREEN_CENTER - 200 || pEnemy->obj.pos.x > SCREEN_CENTER + 200)
-		//		{
-		//			pEnemy->move *= -1;
-		//		}
-		//		pEnemy->obj.pos.x += pEnemy->move.x;
-		//	}
-
-		//	if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
-		//	{
-		//		pEnemy->nShootLeft++;
-
-		//		if (pEnemy->nShootLeft % 10 == 0)
-		//		{
-		//			SetEnemyBullet(
-		//				ENEMYBULLET_TYPE_001,
-		//				pEnemy->obj.pos,
-		//				pEnemy->fShootSpeed + 2,
-		//				Direction(pEnemy->obj.pos, pPlayer->obj.pos),
-		//				30
-		//			);
-		//			SetEnemyBullet(
-		//				ENEMYBULLET_TYPE_001,
-		//				pEnemy->obj.pos,
-		//				pEnemy->fShootSpeed + 2,
-		//				Direction(pEnemy->obj.pos, pPlayer->obj.pos) + 0.4f,
-		//				30
-		//			);
-		//			SetEnemyBullet(
-		//				ENEMYBULLET_TYPE_001,
-		//				pEnemy->obj.pos,
-		//				pEnemy->fShootSpeed + 2,
-		//				Direction(pEnemy->obj.pos, pPlayer->obj.pos) - 0.4f,
-		//				30
-		//			);
-		//		}
-
-		//		pEnemy->nCounterShoot = 0;
-		//		pEnemy->fShootRot += 0.5f;
-		//		SetEnemyBullet(
-		//			ENEMYBULLET_TYPE_001,
-		//			pEnemy->obj.pos,
-		//			pEnemy->fShootSpeed,
-		//			pEnemy->fShootRot,
-		//			15
-		//		);
-		//		SetEnemyBullet(
-		//			ENEMYBULLET_TYPE_001,
-		//			pEnemy->obj.pos,
-		//			pEnemy->fShootSpeed,
-		//			pEnemy->fShootRot + D3DX_PI,
-		//			15
-		//		);
-		//	}
-
-		//	break;
-		//}
+		// 敵の行動別処理
+		EnemyAct(pEnemy);
 	}
 }
 
@@ -457,11 +282,10 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 			pEnemy->obj.bVisible = true;
 
 			pEnemy->fLife = g_aEnemyInfo[type].fLife;
-			pEnemy->nShootLeft = g_aEnemyInfo[type].nShootLeft;
-			pEnemy->nShootInterval = g_aEnemyInfo[type].nShootInterval;
+			pEnemy->nShootInterval = Clamp(g_aEnemyInfo[type].nShootInterval, 1, g_aEnemyInfo[type].nShootInterval);
 			pEnemy->fShootSpeed = 2.0f;
 			pEnemy->fShootRot = 0;
-			pEnemy->nScore = 100;
+			pEnemy->nScore = g_aEnemyInfo[type].nScore;
 			pEnemy->type = type;
 
 			return pEnemy;
@@ -473,7 +297,7 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 
 void HitEnemy(ENEMY* pEnemy)
 {
-	if (IsObjectOutOfScreen(pEnemy->obj))
+	if (IsObjectOutOfScreen(pEnemy->obj) || pEnemy->fLife <= 0.0f)
 	{
 		return;
 	}
@@ -482,6 +306,12 @@ void HitEnemy(ENEMY* pEnemy)
 	
 	if (pEnemy->fLife <= 0)
 	{
+		if (pEnemy->pfDied != NULL)
+		{
+			pEnemy->pfDied(pEnemy);
+			return;
+		}
+
 		PlaySound(SOUND_LABEL_SE_HIT00);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 1.0f);
 		AddScore(pEnemy->nScore);

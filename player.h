@@ -20,14 +20,11 @@
 // ***** É}ÉNÉçíËã` *****
 // 
 //*********************************************************************
-#define INIT_PLAYER_SPEED		(8.0f)
-#define INIT_SHOOT_SPEED		(35.0f)
-#define INIT_SHOOT_INTERVAL		(5)
-#define INIT_PLAYER_LIFE		(3)
-#define INIT_PLAYER_CHARGE		(0)
-
-#define PLAYER_HEAL_MAX			(3)
-#define PLAYER_HEAL_SCALE		(0.00025f)
+#define PLAYER_SPEED			(8.0f)
+#define PLAYER_SHOOT_SPEED		(35.0f)
+#define PLAYER_SHOOT_INTERVAL	(5)
+#define PLAYER_HEAL_MAX			(2)
+#define PLAYER_HEAL_SCALE		(0.0005f)
 #define PLAYER_HITBOX_SIZE		D3DXVECTOR3(24.0f, 24.0f, 0.0f)
 
 

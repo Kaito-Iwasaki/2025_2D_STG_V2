@@ -21,6 +21,7 @@
 #include "enemybullet.h"
 #include "spriteEffect.h"
 #include "fade.h"
+#include "game.h"
 
 //*********************************************************************
 // 
@@ -33,6 +34,8 @@
 #define INIT_POS				{SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2 + 200, 0.0f}
 #define INIT_SIZE				{64.0f, 64.0f, 0.0f}
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+
+#define INIT_PLAYER_CHARGE		(0)
 
 //*********************************************************************
 // 
@@ -65,9 +68,9 @@ void InitPlayer(void)
 	g_player.obj.bVisible = true;
 
 	g_player.state = PLAYERSTATE_BLINK;
-	g_player.fSpeed = INIT_PLAYER_SPEED;
-	g_player.fShootSpeed = INIT_SHOOT_SPEED;
-	g_player.fLife = INIT_PLAYER_LIFE;
+	g_player.fSpeed = PLAYER_SPEED;
+	g_player.fShootSpeed = PLAYER_SHOOT_SPEED;
+	g_player.fLife = PLAYER_HEAL_MAX;
 	g_player.fCharge = INIT_PLAYER_CHARGE;
 	g_player.hitBoxSize = PLAYER_HITBOX_SIZE;
 
@@ -196,7 +199,7 @@ void UpdatePlayer(void)
 	// ***** ショット *****
 	g_player.nCounterShoot++;
 	if ((GetKeyboardPress(DIK_SPACE) || GetJoypadPress(JOYKEY_A)) &&
-		g_player.nCounterShoot % INIT_SHOOT_INTERVAL == 0)
+		g_player.nCounterShoot % PLAYER_SHOOT_INTERVAL == 0)
 	{// 弾撃ち
 		g_player.nCounterShoot = 0;
 		PlaySound(SOUND_LABEL_SE_SHOOT, 0.1f);
@@ -263,6 +266,7 @@ void HitPlayer(void)
 	if (g_player.state == PLAYERSTATE_BLINK)	return;		// 点滅状態
 	if (g_player.state == PLAYERSTATE_DIED)		return;		// 死亡状態
 	if (g_player.state == PLAYERSTATE_END)		return;		// ゲーム終了状態
+	if (GetGameState() == GAMESTATE_END)		return;		// ゲーム終了状態
 
 	g_player.fLife -= 1;
 
