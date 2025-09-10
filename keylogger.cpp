@@ -100,7 +100,12 @@ void SaveKeyLog(void)
 // ***** ÉLÅ[èÓïÒï€ë∂ÇÃí‚é~èàóù *****
 // 
 //=====================================================================
-bool* GetKeyLog(void)
+void LoadKeyLog(void)
 {
-	return &g_aKeylog[0][0];
+	LoadBin(KEYLOG_FILENAME, &g_aKeylog[0][0], sizeof(bool), MAX_FRAME_LOG * KEYLOGTYPE_MAX);
+}
+
+bool GetKeyLog(int nCountTime, KEYLOGTYPE key)
+{
+	return g_aKeylog[nCountTime][key];
 }

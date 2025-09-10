@@ -51,6 +51,7 @@ typedef enum
 void InitKeyLogger(void);
 void LogKey(int nCountFrame);
 void SaveKeyLog(void);
-bool* GetKeyLog(void);
+void LoadKeyLog(void);
+bool GetKeyLog(int nCountTime, KEYLOGTYPE key);
 
 #endif
