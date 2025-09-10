@@ -19,6 +19,7 @@
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
+#define NUM_KEY_MAX		(256)	// 最大キー数
 #define INPUT_MAX_MAGNITUDE		(32767)		// スティックの最大移動量
 #define INPUT_DEADZONE			(10000)		// スティックのデッドゾーン（0～32767）
 
@@ -74,6 +75,7 @@ bool GetKeyboardPress(int nKey);
 bool GetKeyboardTrigger(int nKey);
 bool GetKeyboardRelease(int nKey);
 bool GetKeyboardRepeat(int nKey);
+BYTE* GetKeyState(void);
 //*********************************************************************
 // ジョイパッド
 //*********************************************************************

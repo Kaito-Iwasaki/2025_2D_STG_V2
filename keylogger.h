@@ -1,11 +1,11 @@
 //=====================================================================
-//
-// game.cppのヘッダファイル [game.h]
-// Author : Kaito Iwasaki
 // 
+// keylogger.cppのヘッダファイル [keylogger.h]
+// Author : Kaito Iwasaki
+//
 //=====================================================================
-#ifndef _GAME_H_
-#define _GAME_H_
+#ifndef _KEYLOGGER_H_
+#define _KEYLOGGER_H_		// 二重インクルード防止のマクロ
 
 //*********************************************************************
 // 
@@ -19,65 +19,38 @@
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-#define MAX_TIMELINE		(512)
+#define MAX_FRAME_LOG		(4096)
 
 //*********************************************************************
 // 
-// ***** 列挙型定義 *****
+// ***** 列挙型 *****
 // 
 //*********************************************************************
 typedef enum
 {
-	GAMESTATE_READY = 0,
-	GAMESTATE_NORMAL,
-	GAMESTATE_END,
-	GAMESTATE_MAX
-}GAMESTATE;
+	KEYLOGTYPE_W = 0,
+	KEYLOGTYPE_S,
+	KEYLOGTYPE_A,
+	KEYLOGTYPE_D,
+	KEYLOGTYPE_SPACE,
+	KEYLOGTYPE_MAX
+}KEYLOGTYPE;
 
 //*********************************************************************
 // 
-// ***** 構造体定義 *****
+// ***** 構造体 *****
 // 
 //*********************************************************************
-typedef struct
-{
-	bool bSet;
 
-	int nType;
-	int nNumEnemy;
-	D3DXVECTOR3 pos;
-	D3DXVECTOR3 posOffset;
-	D3DXVECTOR3 move;
-	int nLife;
-	int nWave;
-	int nCountTime;
-	int nCountTimeOffset;
-	bool bInversed;
-}TIMELINE;
-
-typedef struct
-{
-	bool bPaused;
-	int nCurrentWave;
-	int nCountGameState;
-	int nCountTimeline;
-	int nMaxWave;
-	int nWaveInterval;
-	GAMESTATE state;
-	TIMELINE timeline[MAX_TIMELINE];
-}STAGE;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitGame(void);
-void UninitGame(void);
-void UpdateGame(void);
-void DrawGame(void);
-void SetWave(int nWave);
-void TogglePause(bool bPause);
-GAMESTATE GetGameState(void);
+void InitKeyLogger(void);
+void LogKey(int nCountFrame);
+void SaveKeyLog(void);
+bool* GetKeyLog(void);
 
 #endif

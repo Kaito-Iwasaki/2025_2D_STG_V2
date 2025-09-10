@@ -51,10 +51,17 @@ void LoadStage(const char* aFileName, STAGE* pStage)
 				{
 					break;
 				}
-
-				if (strncmp(aStrFile, "MAX_WAVE", 8) == 0)
+				else if (strncmp(aStrFile, "WAVE_MAX", 8) == 0)
 				{
 					fscanf(pFile, "%d", &pStage->nMaxWave);
+				}
+				else if (strncmp(aStrFile, "WAVE_START", 10) == 0)
+				{
+					fscanf(pFile, "%d", &pStage->nCurrentWave);
+				}
+				else if (strncmp(aStrFile, "WAVE_INTERVAL", 13) == 0)
+				{
+					fscanf(pFile, "%d", &pStage->nWaveInterval);
 				}
 
 			} while (strstr(&aStrFile[0], "END_STAGESET") == NULL);
@@ -72,8 +79,7 @@ void LoadStage(const char* aFileName, STAGE* pStage)
 				{
 					break;
 				}
-
-				if (strncmp(aStrFile, "TYPE", 4) == 0)
+				else if (strncmp(aStrFile, "TYPE", 4) == 0)
 				{
 					fscanf(pFile, "%d", &timelineTemp.nType);
 				}

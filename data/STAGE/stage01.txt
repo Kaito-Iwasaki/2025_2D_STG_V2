@@ -1,5 +1,10 @@
+#=====================
+# ステージ設定処理
+#=====================
 STAGESET
-	MAX_WAVE 11
+	WAVE_MAX 12
+	WAVE_START 11
+	WAVE_INTERVAL 0
 END_STAGESET
 
 #=====================
@@ -13,6 +18,7 @@ TIMELINESET
 	TIME 0
 	TIMEOFFSET 10
 	NUM 10
+	INVERSED TRUE
 END_TIMELINESET
 
 #=====================
@@ -26,7 +32,6 @@ TIMELINESET
 	TIME 0
 	TIMEOFFSET 10
 	NUM 10
-	INVERSED TRUE
 END_TIMELINESET
 
 #=====================
@@ -204,6 +209,16 @@ TIMELINESET
 	TIME 0
 	TIMEOFFSET 0
 	NUM 1
+END_TIMELINESET
+
+TIMELINESET
+	WAVE 11
+	TYPE 6
+	POS2 440 -200
+	POSOFFSET2 400 -150
+	TIME 0
+	TIMEOFFSET 0
+	NUM 2
 END_TIMELINESET
 
 #=====================

@@ -198,8 +198,7 @@ void SetSpriteEffect(SPRITEEFFECTTYPE type, D3DXVECTOR3 pos, float fScale)
 	{
 		if (pSpriteEffect->bUsed == true) continue;
 
-		memset(&g_aSpriteEffect[0], 0, sizeof(SPRITEEFFECT) * MAX_SPRITEEFFECT);
-
+		memset(pSpriteEffect, 0, sizeof(SPRITEEFFECT));
 		pSpriteEffect->bUsed = true;
 		pSpriteEffect->type = type;
 		pSpriteEffect->obj.pos = pos;

@@ -17,7 +17,6 @@
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-#define NUM_KEY_MAX		(256)	// 最大キー数
 #define REPEAT_START	(20)	// リピート開始までのカウント
 #define REPEAT_INTERVAL	(8)		// リピート毎のカウント
 
@@ -179,6 +178,14 @@ bool GetKeyboardRelease(int nKey)
 bool GetKeyboardRepeat(int nKey)
 {
 	return (g_aKeyRepeatState[nKey] == 1 || g_aKeyRepeatState[nKey] >= REPEAT_START && g_aKeyRepeatState[nKey] % REPEAT_INTERVAL == 0) ? true : false;
+}
+
+//=====================================================================
+// キーボードの状態を取得
+//=====================================================================
+BYTE* GetKeyState(void)
+{
+	return &g_aKeyState[0];
 }
 
 //=====================================================================

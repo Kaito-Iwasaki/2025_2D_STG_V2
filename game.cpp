@@ -30,16 +30,14 @@
 #include "healthbar.h"
 #include "effect.h"
 #include "particle.h"
+#include "keylogger.h"
 
 //*********************************************************************
 // 
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-#define MAX_WAVE		(11)
 #define GAME_START		(120)
-#define WAVE_START		(0)
-#define WAVE_INTERVAL	(10)
 #define FADE_START		(120)
 
 //*********************************************************************
@@ -49,6 +47,7 @@
 //*********************************************************************
 STAGE g_stage;
 SOUND_LABEL g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
+int g_elapsedFrame = 0;
 
 //=====================================================================
 // 初期化処理
@@ -69,11 +68,12 @@ void InitGame(void)
 
 	g_stage.bPaused = false;
 	g_stage.nCountGameState = 0;
-	g_stage.nCurrentWave = WAVE_START;
+	g_stage.nCurrentWave = 0;
 	g_stage.nCountTimeline = 0;
 	g_stage.nMaxWave = 0;
 	g_stage.state = GAMESTATE_READY;
 	g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
+	g_elapsedFrame = 0;
 
 	PlaySound(g_CurrentSound);
 
@@ -138,6 +138,10 @@ void UpdateGame(void)
 		UpdateEffect();
 		UpdateParticle();
 
+#if _DEBUG
+		LogKey(g_elapsedFrame);
+#endif
+
 		for (int nCount = 0; nCount < MAX_TIMELINE; nCount++, pTimeline++)
 		{
 			if (g_stage.state == GAMESTATE_READY) break;
@@ -182,7 +186,7 @@ void UpdateGame(void)
 
 			g_stage.nCountTimeline++;
 
-			if (g_stage.nCountGameState > WAVE_INTERVAL)
+			if (g_stage.nCountGameState > g_stage.nWaveInterval)
 			{
 				SetWave(g_stage.nCurrentWave + 1);
 			}
@@ -195,9 +199,10 @@ void UpdateGame(void)
 			{
 				SetFade(SCENE_RESULT);
 			}
-
 			break;
 		}
+
+		g_elapsedFrame++;
 	}
 	else
 	{
@@ -219,7 +224,6 @@ void DrawGame(void)
 	DrawPlayer();
 	DrawScore();
 	DrawHealthbar();
-	
 
 	if (g_stage.bPaused)
 	{
@@ -244,6 +248,7 @@ void SetWave(int nWave)
 
 		if (nWave == g_stage.nMaxWave)
 		{
+			SetBackgroundSpeed(10.0f);
 			StopSound(g_CurrentSound);
 			g_CurrentSound = SOUND_LABEL_BGM_BOSS00;
 			PlaySound(g_CurrentSound);
@@ -272,6 +277,9 @@ void TogglePause(bool bPause)
 	}
 }
 
+//=====================================================================
+// ゲーム状態設定処理
+//=====================================================================
 GAMESTATE GetGameState(void)
 {
 	return g_stage.state;
