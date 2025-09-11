@@ -18,6 +18,7 @@
 #include "util.h"
 #include "spriteEffect.h"
 #include "sound.h"
+#include "particle.h"
 
 //*********************************************************************
 // 
@@ -382,6 +383,12 @@ void Boss000_Died(ENEMY* pEnemy)
 {
 	float fRandX = RandRange(-60, 60);
 	float fRandY = RandRange(-60, 60);
+	EFFECTINFO info;
+	info.fSpeed = 5.0f;
+	info.fRotSpeed = 0.05f;
+	info.fMaxScale = 0.5f;
+	info.nMaxLife = 40;
+	info.col = D3DXCOLOR(0.9f, 0.4f, 0.0f, 1.0f);
 
 	pEnemy->obj.color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 
@@ -392,9 +399,28 @@ void Boss000_Died(ENEMY* pEnemy)
 	
 	SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos + D3DXVECTOR3(fRandX, fRandY, 0.0f), 1.0f);
 
+
+	SetParticle(
+		info,
+		pEnemy->obj.pos,
+		0,
+		D3DX_PI * 2,
+		1,
+		10
+	);
+
 	if (pEnemy->nCounterState > 120)
 	{
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 4.0f);
+		SetParticle(
+			info,
+			pEnemy->obj.pos,
+			0,
+			D3DX_PI * 2,
+			1,
+			30
+		);
+
 		pEnemy->bUsed = false;
 	}
 }

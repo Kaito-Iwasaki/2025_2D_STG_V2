@@ -149,6 +149,7 @@ void UpdateTitle(void)
 			PlaySound(SOUND_LABEL_SE_HIT02);
 			g_nCountStateTitle = 0;
 			g_stateTitle = TITLESTATE_START;
+			SetVibration(30000, 30000, 60);
 		}
 
 		if (g_nCountStateTitle > FADE_START)
