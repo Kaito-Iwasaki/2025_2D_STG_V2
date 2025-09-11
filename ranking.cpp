@@ -30,7 +30,7 @@
 // 
 //*********************************************************************
 #define RANKING_FILEPATH		"data\\ranking.bin"
-#define MAX_PLACE				(5)
+#define MAX_PLACE				(10)
 
 #define INIT_RANKING			{ 10000, 5000, 3000, 2000, 1000 }
 
@@ -50,6 +50,8 @@ int compare(const void* arg1, const void* arg2);
 //*********************************************************************
 int g_aRanking[MAX_PLACE] = INIT_RANKING;
 int g_nCountStateRanking = 0;
+int g_nHighlight = -1;
+FONT* g_apFontNum[MAX_PLACE] = {};
 
 //=====================================================================
 // èâä˙âªèàóù
@@ -58,6 +60,7 @@ void InitRanking(void)
 {
 	char aString[MAX_PATH] = {};
 	g_nCountStateRanking = 0;
+	memset(g_apFontNum, 0, sizeof(FONT) * MAX_PLACE);
 
 	InitBackground();
 	InitFont();
@@ -69,21 +72,23 @@ void InitRanking(void)
 	qsort(&g_aRanking[0], MAX_PLACE, sizeof(int), compare);
 
 	SetFont(
-		D3DXVECTOR3(GAME_SCREEN_START, 100.0f, 0.0f),
+		D3DXVECTOR3(GAME_SCREEN_START, 75.0f, 0.0f),
 		D3DXVECTOR3(GAME_SCREEN_WIDTH, 100.0f, 0.0f),
 		D3DXVECTOR3_ZERO,
+		D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
 		"RANKING",
 		DT_CENTER
 	);
 
 	for (int nCount = 0; nCount < MAX_PLACE; nCount++)
 	{
-		sprintf(&aString[0], "%d. %08d", nCount + 1, g_aRanking[nCount]);
+		sprintf(&aString[0], "%2d, %08d", nCount + 1, g_aRanking[nCount]);
 
-		SetFont(
-			D3DXVECTOR3(GAME_SCREEN_START, 250.0f + (nCount * 50.0f), 0.0f),
+		g_apFontNum[nCount] = SetFont(
+			D3DXVECTOR3(GAME_SCREEN_START, 125.0f + (nCount * 50.0f), 0.0f),
 			D3DXVECTOR3(GAME_SCREEN_WIDTH, 100.0f, 0.0f),
 			D3DXVECTOR3_ZERO,
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 			&aString[0],
 			DT_CENTER
 		);
@@ -95,6 +100,9 @@ void InitRanking(void)
 //=====================================================================
 void UninitRanking(void)
 {
+	g_nHighlight = -1;
+	memset(g_apFontNum, 0, sizeof(FONT) * MAX_PLACE);
+
 	UninitBackground();
 	UninitFont();
 }
@@ -106,6 +114,18 @@ void UpdateRanking(void)
 {
 	UpdateBackground();
 	UpdateFont();
+
+	if (g_nHighlight != -1 && g_nCountStateRanking % 5 == 0)
+	{
+		if (g_nCountStateRanking % 10 == 0)
+		{
+			g_apFontNum[g_nHighlight]->obj.color = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
+		}
+		else
+		{
+			g_apFontNum[g_nHighlight]->obj.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+	}
 
 	if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START))
 	{
@@ -141,6 +161,15 @@ void SaveScore(int nScore)
 	}
 
 	qsort(&g_aRanking[0], MAX_PLACE, sizeof(int), compare);
+
+	for (int nCount = MAX_PLACE - 1; nCount >= 0; nCount--)
+	{
+		if (g_aRanking[nCount] == nScore)
+		{
+			g_nHighlight = nCount;
+			break;
+		}
+	}
 
 	SaveBin(RANKING_FILEPATH, &g_aRanking[0], sizeof(int), MAX_PLACE);
 }

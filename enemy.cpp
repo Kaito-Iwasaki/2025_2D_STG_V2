@@ -70,7 +70,7 @@ ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
 	{ INIT_SIZE,		{0.0f, 7.0f, 0.0f},		4.0f,	 00,2.0f, 100},					// 003
 	{ INIT_SIZE * 1.2f,	{0.0f, 5.0f, 0.0f},		25.0f,	 0,	4.0f, 1000},					// 004
 	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	7.0f, 300},					// 005
-	{ INIT_SIZE * 2.0f,	{0.0f, 1.5f, 0.0f},		110.0f,	 60,	2.0f, 500},					// 006
+	{ INIT_SIZE * 2.0f,	{0.0f, 1.5f, 0.0f},		100.0f,	 70,	2.0f, 500},					// 006
 	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	2.0f, 300},					// 007
 	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	2.0f, 300},					// 008
 	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f}	,	700.0f,	 3,	2.0f, 5000, Boss000_Died},	// boss000
@@ -255,7 +255,7 @@ int GetEnemyLeft(void)
 
 	for (int nCount = 0; nCount < MAX_ENEMY; nCount++, pEnemy++)
 	{
-		if (pEnemy->bUsed == true)
+		if (pEnemy->bUsed == true && pEnemy->state != ENEMYSTATE_DIED)
 		{
 			nLeft++;
 		}

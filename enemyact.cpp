@@ -280,6 +280,25 @@ void Enemy006_Act(ENEMY* pEnemy)
 	}
 }
 
+void Enemy006_Died(ENEMY* pEnemy)
+{
+	pEnemy->obj.pos.y += pEnemy->move.y;
+
+	if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
+	{
+		pEnemy->fShootRot += (D3DX_PI / 12.0f);
+		for (int nCount = 0; nCount < 12; nCount++)
+		{
+			SetEnemyBullet(
+				ENEMYBULLET_TYPE_000,
+				pEnemy->obj.pos,
+				pEnemy->fShootSpeed,
+				pEnemy->fShootRot + (D3DX_PI * 2 / 12.0f) * nCount
+			);
+		}
+	}
+}
+
 //=====================================================================
 // ‚¨‚Á‚³‚ñ
 //=====================================================================
@@ -361,16 +380,21 @@ void Boss000_Act(ENEMY* pEnemy)
 
 void Boss000_Died(ENEMY* pEnemy)
 {
-	float fRandX = RandRange(-100, 100);
-	float fRandY = RandRange(-100, 100);
+	float fRandX = RandRange(-60, 60);
+	float fRandY = RandRange(-60, 60);
 
 	pEnemy->obj.color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 
-	PlaySound(SOUND_LABEL_SE_HIT00);
+	if (pEnemy->nCounterState % 10 == 0)
+	{
+		PlaySound(SOUND_LABEL_SE_HIT02);
+	}
+	
 	SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos + D3DXVECTOR3(fRandX, fRandY, 0.0f), 1.0f);
 
 	if (pEnemy->nCounterState > 120)
 	{
+		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 4.0f);
 		pEnemy->bUsed = false;
 	}
 }
