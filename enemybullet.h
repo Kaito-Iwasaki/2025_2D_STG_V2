@@ -52,7 +52,7 @@ typedef struct
 	BASEOBJECT obj;
 	bool bUsed;
 	float fSpeed;
-	float fDirection;
+	float fAngle;
 	float fDamage;
 	float fLife;
 	ENEMYBULLET_TYPE type;
@@ -78,7 +78,7 @@ void UninitEnemyBullet(void);
 void UpdateEnemyBullet(void);
 void DrawEnemyBullet(void);
 ENEMYBULLET* GetEnemyBullet(void);
-bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fDirection, float fLife = 0);
+bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fAngle, float fLife = 0);
 void HitEnemyBullet(ENEMYBULLET* pEnemyBullet);
 
 #endif

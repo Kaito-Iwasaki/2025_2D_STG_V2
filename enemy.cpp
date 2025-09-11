@@ -62,18 +62,18 @@ const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 	"data\\TEXTURE\\boss000.png",
 };
 
-// 敵の情報[サイズ | 移動量 | 体力 | ショット間隔 | スコア]
+// 敵の情報[サイズ | 移動量 | 体力 | ショット間隔 | ショット速度 | スコア]
 ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
-	{ INIT_SIZE,		{0.0f, 1.0f, 0.0f},		10.0f,	 3,		150},	// 000
-	{ INIT_SIZE,		{0.05f, 2.0f, 100.0f},	2.0f,	 0,		100},	// 001
-	{ INIT_SIZE,		{0.0f, 10.0f, 0.0f},	10.0f,	 30,	200},	// 002
-	{ INIT_SIZE,		{0.0f, 5.0f, 0.0f},		5.0f,	 00,	100},	// 003
-	{ INIT_SIZE * 1.2f,	{0.0f, 3.0f, 0.0f},		25.0f,	 0,		150},	// 004
-	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,		300},	// 005
-	{ INIT_SIZE * 2.0f,	{0.0f, 1.0f, 0.0f},		100.0f,	 3,		500},	// 006
-	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,		300},	// 007
-	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,		300},	// 008
-	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f}	,	600.0f,	 3,		1000},	// boss000
+	{ INIT_SIZE,		{0.0f, 2.0f, 0.0f},		10.0f,	 3,	2.0f, 150},					// 000
+	{ INIT_SIZE,		{0.05f, 2.0f, 100.0f},	2.0f,	 0,	2.0f, 100},					// 001
+	{ INIT_SIZE,		{0.0f, 10.0f, 0.0f},	10.0f,	 30,7.0f, 200},					// 002
+	{ INIT_SIZE,		{0.0f, 7.0f, 0.0f},		4.0f,	 00,2.0f, 100},					// 003
+	{ INIT_SIZE * 1.2f,	{0.0f, 5.0f, 0.0f},		25.0f,	 0,	4.0f, 1000},					// 004
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	7.0f, 300},					// 005
+	{ INIT_SIZE * 2.0f,	{0.0f, 1.5f, 0.0f},		110.0f,	 60,	2.0f, 500},					// 006
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	2.0f, 300},					// 007
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	2.0f, 300},					// 008
+	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f}	,	700.0f,	 3,	2.0f, 5000, Boss000_Died},	// boss000
 };
 
 //=====================================================================
@@ -143,7 +143,7 @@ void UpdateEnemy(void)
 	{
 		if (pEnemy->bUsed == false) continue;
 
-		if (IsObjectOutOfScreen(pEnemy->obj, rectScreen, OOS_BOTTOM))
+		if (IsObjectOutOfScreen(pEnemy->obj, rectScreen, pEnemy->disapperFlags))
 		{// 画面外に出たら削除
 			pEnemy->bUsed = false;
 			continue;
@@ -167,16 +167,19 @@ void UpdateEnemy(void)
 
 		case ENEMYSTATE_DAMAGED:
 			pEnemy->obj.color = ENEMY_COLOR_DAMAGED;
+			pEnemy->state = ENEMYSTATE_NORMAL;
+			break;
 
-			if (pEnemy->nCounterState % 1 == 0)
-			{
-				pEnemy->state = ENEMYSTATE_NORMAL;
-			}
+		case ENEMYSTATE_DIED:
+			pEnemy->pfDied(pEnemy);
 			break;
 		}
 
 		// 敵の行動別処理
-		EnemyAct(pEnemy);
+		if (pEnemy->state != ENEMYSTATE_DIED)
+		{
+			EnemyAct(pEnemy);
+		}
 	}
 }
 
@@ -285,10 +288,12 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 
 			pEnemy->fLife = g_aEnemyInfo[type].fLife;
 			pEnemy->nShootInterval = Clamp(g_aEnemyInfo[type].nShootInterval, 1, g_aEnemyInfo[type].nShootInterval);
-			pEnemy->fShootSpeed = 2.0f;
+			pEnemy->fShootSpeed = g_aEnemyInfo[type].nShootSpeed;
 			pEnemy->fShootRot = 0;
 			pEnemy->nScore = g_aEnemyInfo[type].nScore;
 			pEnemy->type = type;
+			pEnemy->disapperFlags = OOS_BOTTOM;
+			pEnemy->pfDied = g_aEnemyInfo[type].pfDied;
 
 			return pEnemy;
 		}
@@ -308,15 +313,17 @@ void HitEnemy(ENEMY* pEnemy)
 	
 	if (pEnemy->fLife <= 0)
 	{
+		AddScore(pEnemy->nScore);
+
 		if (pEnemy->pfDied != NULL)
 		{
-			pEnemy->pfDied(pEnemy);
+			pEnemy->state = ENEMYSTATE_DIED;
+			pEnemy->nCounterState = 0;
 			return;
 		}
 
 		PlaySound(SOUND_LABEL_SE_HIT00);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 1.0f);
-		AddScore(pEnemy->nScore);
 		pEnemy->bUsed = false;
 	}
 	else

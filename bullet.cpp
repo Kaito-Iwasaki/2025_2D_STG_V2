@@ -126,7 +126,8 @@ void UpdateBullet(void)
 		pEnemy = GetEnemy();
 		pEnemyBullet = GetEnemyBullet();
 
-		pBullet->obj.pos += D3DXVECTOR3(sinf(pBullet->fDirection), cosf(pBullet->fDirection), 0.0f) * pBullet->fSpeed;
+		pBullet->obj.pos += D3DXVECTOR3(sinf(pBullet->fAngle), cosf(pBullet->fAngle), 0.0f) * pBullet->fSpeed;
+		pBullet->obj.rot.z = pBullet->fAngle + D3DX_PI;
 
 		if (pBullet->obj.pos.y < 0)
 		{// âÊñ äOÇ…èoÇΩÇÁçÌèú
@@ -139,7 +140,7 @@ void UpdateBullet(void)
 		{
 			if (pEnemy->bUsed && BoxCollision(pBullet->obj, pEnemy->obj))
 			{
-				float fAngleEnemyToBullet = Direction(pEnemy->obj.pos, pBullet->obj.pos);
+				float fAngleEnemyToBullet = Angle(pEnemy->obj.pos, pBullet->obj.pos);
 
 				HitEnemy(pEnemy);
 
@@ -152,7 +153,7 @@ void UpdateBullet(void)
 				SetParticle(
 					info,
 					pBullet->obj.pos,
-					Direction(pEnemy->obj.pos, pBullet->obj.pos),
+					Angle(pEnemy->obj.pos, pBullet->obj.pos),
 					0.3f,
 					1,
 					3
@@ -178,7 +179,7 @@ void UpdateBullet(void)
 				SetParticle(
 					info,
 					pBullet->obj.pos,
-					Direction(pEnemyBullet->obj.pos, pBullet->obj.pos),
+					Angle(pEnemyBullet->obj.pos, pBullet->obj.pos),
 					0.3f,
 					1,
 					3
@@ -246,7 +247,7 @@ BULLET* GetBullet(void)
 //=====================================================================
 // íeÇÃê›íËèàóù
 //=====================================================================
-void SetBullet(D3DXVECTOR3 pos, float fSpeed, float fDirection)
+void SetBullet(D3DXVECTOR3 pos, float fSpeed, float fAngle)
 {
 	BULLET* pBullet = &g_aBullet[0];
 	for (int nCount = 0; nCount < MAX_BULLET; nCount++, pBullet++)
@@ -259,7 +260,7 @@ void SetBullet(D3DXVECTOR3 pos, float fSpeed, float fDirection)
 			pBullet->obj.size = { INIT_SIZE_X, INIT_SIZE_Y, 0.0f };
 			pBullet->obj.color = INIT_COLOR;
 			pBullet->fSpeed = fSpeed;
-			pBullet->fDirection = fDirection;
+			pBullet->fAngle = fAngle;
 			pBullet->fDamage = 1.0f;
 			pBullet->obj.bVisible = true;
 

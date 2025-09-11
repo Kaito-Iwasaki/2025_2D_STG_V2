@@ -176,8 +176,8 @@ void UpdateEnemyBullet(void)
 			pEnemyBullet->fSpeed = 4.0f;
 			if (pEnemyBullet->nCounterState < 60)
 			{
-				float fBulletToPlayer = Direction(pEnemyBullet->obj.pos, pPlayer->obj.pos);
-				float fRotDiff = fBulletToPlayer - pEnemyBullet->fDirection;
+				float fBulletToPlayer = Angle(pEnemyBullet->obj.pos, pPlayer->obj.pos);
+				float fRotDiff = fBulletToPlayer - pEnemyBullet->fAngle;
 
 				if (fRotDiff > D3DX_PI)
 				{
@@ -188,18 +188,18 @@ void UpdateEnemyBullet(void)
 					fRotDiff += D3DX_PI * 2;
 				}
 
-				pEnemyBullet->fDirection += fRotDiff * 0.025f;
+				pEnemyBullet->fAngle += fRotDiff * 0.025f;
 
-				if (pEnemyBullet->fDirection > D3DX_PI)
+				if (pEnemyBullet->fAngle > D3DX_PI)
 				{
-					pEnemyBullet->fDirection -= D3DX_PI * 2;
+					pEnemyBullet->fAngle -= D3DX_PI * 2;
 				}
-				else if (pEnemyBullet->fDirection < -D3DX_PI)
+				else if (pEnemyBullet->fAngle < -D3DX_PI)
 				{
-					pEnemyBullet->fDirection += D3DX_PI * 2;
+					pEnemyBullet->fAngle += D3DX_PI * 2;
 				}
 
-				pEnemyBullet->obj.rot.z = pEnemyBullet->fDirection + D3DX_PI;
+				pEnemyBullet->obj.rot.z = pEnemyBullet->fAngle + D3DX_PI;
 			}
 			break;
 
@@ -207,7 +207,7 @@ void UpdateEnemyBullet(void)
 			break;
 		}
 
-		pEnemyBullet->obj.pos += D3DXVECTOR3(sin(pEnemyBullet->fDirection), cos(pEnemyBullet->fDirection), 0.0f) * pEnemyBullet->fSpeed;
+		pEnemyBullet->obj.pos += D3DXVECTOR3(sin(pEnemyBullet->fAngle), cos(pEnemyBullet->fAngle), 0.0f) * pEnemyBullet->fSpeed;
 	}
 }
 
@@ -273,7 +273,7 @@ ENEMYBULLET* GetEnemyBullet(void)
 //=====================================================================
 // “G’e‚ÌÝ’èˆ—
 //=====================================================================
-bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fDirection, float fLife)
+bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fAngle, float fLife)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	ENEMYBULLET* pEnemyBullet = &g_aEnemyBullet[0];
@@ -289,7 +289,7 @@ bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float 
 			pEnemyBullet->obj.size = INIT_SIZE;
 			pEnemyBullet->obj.color = INIT_COLOR;
 			pEnemyBullet->fSpeed = fSpeed;
-			pEnemyBullet->fDirection = fDirection;
+			pEnemyBullet->fAngle = fAngle;
 			pEnemyBullet->fDamage = 1.0f;
 			pEnemyBullet->fLife = INIT_ENEMYBULLET_LIFE;
 			pEnemyBullet->type = type;

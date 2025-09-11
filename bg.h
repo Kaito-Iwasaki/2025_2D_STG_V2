@@ -22,6 +22,10 @@
 //*********************************************************************
 #define MAX_BACKGROUND		(4)
 
+#define BG_SCROLL_SPEED			(1.0f)
+#define BG_SCROLL_OFFSET		(1.0f)
+#define BG_SCROLL_MOVE_SCALE	(0.005f)
+
 //*********************************************************************
 // 
 // ***** ç\ë¢ëÃ *****
@@ -43,5 +47,6 @@ void UpdateBackground(void);
 void DrawBackground(void);
 BACKGROUND* GetBackground(void);
 void SetBackgroundSpeed(float fSpeed);
+void SetBackgroundSpeedMove(float fSpeed, float fScale);
 
 #endif

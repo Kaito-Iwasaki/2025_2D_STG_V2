@@ -59,10 +59,10 @@ void InitResult(void)
 		D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f)
 	);
 
+	SaveScore(GetScore());
+
 	if (GetPlayer()->fLife > 0)
 	{
-		SaveScore(GetScore());
-
 		sprintf(aMessage, "YOUR SCORE : %d", GetScore());
 
 		SetFont(

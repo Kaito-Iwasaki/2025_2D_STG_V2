@@ -75,8 +75,8 @@ void UpdateParticle(void)
 				pParticle->info.fSpeed,
 				pParticle->info.fRotSpeed,
 				RandRange(
-					(pParticle->fDirection - pParticle->fRange) * 100,
-					(pParticle->fDirection + pParticle->fRange) * 100
+					(pParticle->fAngle - pParticle->fRange) * 100,
+					(pParticle->fAngle + pParticle->fRange) * 100
 				) * 0.01f,
 				pParticle->info.fMaxScale,
 				pParticle->info.nMaxLife,
@@ -91,7 +91,7 @@ void UpdateParticle(void)
 // ***** パーティクル設定処理 *****
 // 
 //=====================================================================
-void SetParticle(EFFECTINFO info, D3DXVECTOR3 pos, float fDirection, float fRange, int nLife, int nNumEffect)
+void SetParticle(EFFECTINFO info, D3DXVECTOR3 pos, float fAngle, float fRange, int nLife, int nNumEffect)
 {
 	PARTICLE* pParticle = &g_aParticle[0];
 
@@ -103,7 +103,7 @@ void SetParticle(EFFECTINFO info, D3DXVECTOR3 pos, float fDirection, float fRang
 
 		pParticle->obj.pos = pos;
 		pParticle->info = info;
-		pParticle->fDirection = fDirection;
+		pParticle->fAngle = fAngle;
 		pParticle->fRange = fRange;
 		pParticle->nLife = nLife;
 		pParticle->nNumEffect = nNumEffect;

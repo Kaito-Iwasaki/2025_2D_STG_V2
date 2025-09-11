@@ -40,7 +40,7 @@ typedef struct
 	BASEOBJECT obj;
 	bool bUsed;
 	EFFECTINFO info;
-	float fDirection;
+	float fAngle;
 	float fRange;
 	int nLife;
 	int nNumEffect;
@@ -54,6 +54,6 @@ typedef struct
 void InitParticle(void);
 void UninitParticle(void);
 void UpdateParticle(void);
-void SetParticle(EFFECTINFO info, D3DXVECTOR3 pos, float fDirection, float fRange, int nLife, int nNumEffect);
+void SetParticle(EFFECTINFO info, D3DXVECTOR3 pos, float fAngle, float fRange, int nLife, int nNumEffect);
 
 #endif

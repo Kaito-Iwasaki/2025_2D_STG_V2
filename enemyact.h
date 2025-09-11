@@ -43,4 +43,17 @@
 //*********************************************************************
 void EnemyAct(ENEMY* pEnemy);
 
+void Enemy000_Act(ENEMY* pEnemy);
+void Enemy001_Act(ENEMY* pEnemy);
+void Enemy002_Act(ENEMY* pEnemy);
+void Enemy003_Act(ENEMY* pEnemy);
+void Enemy004_Act(ENEMY* pEnemy);
+void Enemy005_Act(ENEMY* pEnemy);
+void Enemy006_Act(ENEMY* pEnemy);
+void Enemy007_Act(ENEMY* pEnemy);
+void Enemy008_Act(ENEMY* pEnemy);
+void Boss000_Act(ENEMY* pEnemy);
+
+void Boss000_Died(ENEMY* pEnemy);
+
 #endif

@@ -203,10 +203,11 @@ void UpdatePlayer(void)
 	{// ’eŒ‚‚¿
 		g_player.nCounterShoot = 0;
 		PlaySound(SOUND_LABEL_SE_SHOOT, 0.1f);
-		SetBullet(g_player.obj.pos + D3DXVECTOR3(5, -5, 0), g_player.fShootSpeed, D3DX_PI);
-		SetBullet(g_player.obj.pos + D3DXVECTOR3(-5, -5, 0), g_player.fShootSpeed, D3DX_PI);
-		SetBullet(g_player.obj.pos + D3DXVECTOR3(15, 0, 0), g_player.fShootSpeed, D3DX_PI);
-		SetBullet(g_player.obj.pos + D3DXVECTOR3(-15, 0, 0), g_player.fShootSpeed, D3DX_PI);
+		SetBullet(g_player.obj.pos + D3DXVECTOR3(0, -5, 0), g_player.fShootSpeed, D3DX_PI);
+		SetBullet(g_player.obj.pos + D3DXVECTOR3(5, -2.5f, 0), g_player.fShootSpeed, D3DX_PI - 0.05f);
+		SetBullet(g_player.obj.pos + D3DXVECTOR3(-5, -2.5f, 0), g_player.fShootSpeed, D3DX_PI + 0.05f);
+		SetBullet(g_player.obj.pos + D3DXVECTOR3(10, 0, 0), g_player.fShootSpeed, D3DX_PI - 0.1f);
+		SetBullet(g_player.obj.pos + D3DXVECTOR3(-10, 0, 0), g_player.fShootSpeed, D3DX_PI + 0.1f);
 	}
 }
 

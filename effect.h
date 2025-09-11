@@ -49,7 +49,7 @@ typedef struct
 	BASEOBJECT obj;
 	bool bUsed;
 	EFFECTINFO info;
-	float fDirection;
+	float fAngle;
 	float fScale;
 	int nLife;
 }EFFECT;
@@ -63,6 +63,6 @@ void InitEffect(void);
 void UninitEffect(void);
 void UpdateEffect(void);
 void DrawEffect(void);
-void SetEffect(D3DXVECTOR3 pos, float fSpeed, float fRotSpeed, float fDirection, float fScale, int nLife, D3DXCOLOR col);
+void SetEffect(D3DXVECTOR3 pos, float fSpeed, float fRotSpeed, float fAngle, float fScale, int nLife, D3DXCOLOR col);
 
 #endif

@@ -37,7 +37,7 @@
 // ***** É}ÉNÉçíËã` *****
 // 
 //*********************************************************************
-#define GAME_START		(120)
+#define GAME_START		(160)
 #define FADE_START		(120)
 
 //*********************************************************************
@@ -47,7 +47,7 @@
 //*********************************************************************
 STAGE g_stage;
 SOUND_LABEL g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
-int g_elapsedFrame = 0;
+int g_nElapsedFrame = 0;
 
 //=====================================================================
 // èâä˙âªèàóù
@@ -73,7 +73,7 @@ void InitGame(void)
 	g_stage.nMaxWave = 0;
 	g_stage.state = GAMESTATE_READY;
 	g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
-	g_elapsedFrame = 0;
+	g_nElapsedFrame = 0;
 
 	PlaySound(g_CurrentSound);
 
@@ -84,6 +84,9 @@ void InitGame(void)
 		D3DXVECTOR3_ZERO,
 		D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f)
 	);
+
+	SetBackgroundSpeed(20.0f);
+	SetBackgroundSpeedMove(1.0f, 0.001f);
 
 	LoadStage("data/STAGE/stage01.txt", &g_stage);
 }
@@ -137,10 +140,6 @@ void UpdateGame(void)
 		UpdateHealthbar();
 		UpdateEffect();
 		UpdateParticle();
-
-#if _DEBUG
-		LogKey(g_elapsedFrame);
-#endif
 
 		for (int nCount = 0; nCount < MAX_TIMELINE; nCount++, pTimeline++)
 		{
@@ -202,7 +201,7 @@ void UpdateGame(void)
 			break;
 		}
 
-		g_elapsedFrame++;
+		g_nElapsedFrame++;
 	}
 	else
 	{
@@ -248,7 +247,7 @@ void SetWave(int nWave)
 
 		if (nWave == g_stage.nMaxWave)
 		{
-			SetBackgroundSpeed(10.0f);
+			SetBackgroundSpeedMove(10.0f, BG_SCROLL_MOVE_SCALE);
 			StopSound(g_CurrentSound);
 			g_CurrentSound = SOUND_LABEL_BGM_BOSS00;
 			PlaySound(g_CurrentSound);

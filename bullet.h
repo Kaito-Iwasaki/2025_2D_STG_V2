@@ -32,7 +32,7 @@ typedef struct
 	BASEOBJECT obj;
 	bool bUsed;
 	float fSpeed;
-	float fDirection;
+	float fAngle;
 	float fDamage;
 	D3DXVECTOR3 hitBoxSize;
 }BULLET;
@@ -47,6 +47,6 @@ void UninitBullet(void);
 void UpdateBullet(void);
 void DrawBullet(void);
 BULLET* GetBullet(void);
-void SetBullet(D3DXVECTOR3 pos, float fSpeed, float fDirection);
+void SetBullet(D3DXVECTOR3 pos, float fSpeed, float fAngle);
 
 #endif

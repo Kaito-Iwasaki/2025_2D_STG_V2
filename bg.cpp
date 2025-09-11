@@ -28,9 +28,6 @@
 #define INIT_SIZE_Y				(720 * TEXTURE_NUM)
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 
-#define BG_SCROLL_SPEED			(1.0f)
-#define BG_SCROLL_OFFSET		(1.0f)
-
 //*********************************************************************
 // 
 // ***** グローバル変数 *****
@@ -47,7 +44,9 @@ const char* g_aBackgroundFileName[MAX_BACKGROUND] = {
 	"data\\TEXTURE\\bg002.png",
 };
 
-int g_fGlobalSpeed = BG_SCROLL_SPEED;
+float g_fGlobalSpeed = BG_SCROLL_SPEED;
+float g_fGlobalSpeedMove = BG_SCROLL_SPEED;
+float g_fGlobalSpeedMoveScale = BG_SCROLL_MOVE_SCALE;
 
 //=====================================================================
 // 初期化処理
@@ -78,7 +77,9 @@ void InitBackground(void)
 		);
 	}
 
-	g_fGlobalSpeed = 0;
+	g_fGlobalSpeed = BG_SCROLL_SPEED;
+	g_fGlobalSpeedMove = BG_SCROLL_SPEED;
+	g_fGlobalSpeedMoveScale = BG_SCROLL_MOVE_SCALE;
 
 	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(
@@ -118,9 +119,12 @@ void UninitBackground(void)
 void UpdateBackground(void)
 {
 	BACKGROUND* pBackground = &g_aBackground[0];
+	char aString[256];
 
 	for (int nCount = 0; nCount < MAX_BACKGROUND; nCount++, pBackground++)
 	{
+		g_fGlobalSpeed += (g_fGlobalSpeedMove - g_fGlobalSpeed) * g_fGlobalSpeedMoveScale;
+
 		pBackground->obj.pos.y += g_fGlobalSpeed + (nCount * BG_SCROLL_OFFSET);
 
 		if (pBackground->obj.pos.y >= SCREEN_HEIGHT)
@@ -193,5 +197,12 @@ BACKGROUND* GetBackground(void)
 void SetBackgroundSpeed(float fSpeed)
 {
 	g_fGlobalSpeed = fSpeed;
+	g_fGlobalSpeedMove = fSpeed;
+}
+
+void SetBackgroundSpeedMove(float fSpeed, float fScale)
+{
+	g_fGlobalSpeedMove = fSpeed;
+	g_fGlobalSpeedMoveScale = fScale;
 }
 

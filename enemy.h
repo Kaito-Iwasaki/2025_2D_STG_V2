@@ -47,6 +47,7 @@ typedef enum
 {
 	ENEMYSTATE_NORMAL = 0,
 	ENEMYSTATE_DAMAGED,
+	ENEMYSTATE_DIED,
 	ENEMYSTATE_MAX
 }ENEMYSTATE;
 
@@ -71,6 +72,7 @@ typedef struct ENEMY
 	float fShootSpeed;
 	float fShootRot;
 	int nScore;
+	DWORD disapperFlags;
 
 	int nCounterState;
 	int nCounterShoot;
@@ -86,7 +88,9 @@ typedef struct
 	
 	float fLife;
 	int nShootInterval;
+	int nShootSpeed;
 	int nScore;
+	void (*pfDied)(ENEMY* pEnemy);
 }ENEMYINFO;
 
 

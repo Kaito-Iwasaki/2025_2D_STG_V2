@@ -97,7 +97,7 @@ void UpdateEffect(void)
 			continue;
 		}
 
-		pEffect->obj.pos += D3DXVECTOR3(sinf(pEffect->fDirection), cosf(pEffect->fDirection), 0.0f) * pEffect->info.fSpeed;
+		pEffect->obj.pos += D3DXVECTOR3(sinf(pEffect->fAngle), cosf(pEffect->fAngle), 0.0f) * pEffect->info.fSpeed;
 		pEffect->fScale = pEffect->info.fMaxScale * ((float)pEffect->nLife / (float)pEffect->info.nMaxLife);
 		pEffect->obj.rot.z += pEffect->info.fRotSpeed;
 		pEffect->nLife--;
@@ -161,7 +161,7 @@ void DrawEffect(void)
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
 
-void SetEffect(D3DXVECTOR3 pos, float fSpeed, float fRotSpeed, float fDirection, float fScale, int nLife, D3DXCOLOR col)
+void SetEffect(D3DXVECTOR3 pos, float fSpeed, float fRotSpeed, float fAngle, float fScale, int nLife, D3DXCOLOR col)
 {
 	EFFECT* pEffect = &g_aEffect[0];
 
@@ -175,7 +175,7 @@ void SetEffect(D3DXVECTOR3 pos, float fSpeed, float fRotSpeed, float fDirection,
 
 		pEffect->info.fSpeed = fSpeed;
 		pEffect->info.fRotSpeed = fRotSpeed;
-		pEffect->fDirection = fDirection;
+		pEffect->fAngle = fAngle;
 		pEffect->fScale = fScale;
 		pEffect->info.fMaxScale = fScale;
 		pEffect->nLife = nLife;
