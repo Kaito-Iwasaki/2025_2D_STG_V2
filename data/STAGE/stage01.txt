@@ -3,7 +3,7 @@
 #=============================================================================
 STAGESET
 	WAVE_MAX 13
-	WAVE_START 12
+	WAVE_START 0
 	WAVE_INTERVAL 10
 END_STAGESET
 

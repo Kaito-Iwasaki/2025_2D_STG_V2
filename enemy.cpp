@@ -65,7 +65,7 @@ const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 
 // 敵の情報[サイズ | 移動量 | 体力 | ショット間隔 | ショット速度 | スコア]
 ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
-	{ INIT_SIZE,		{0.0f, 2.0f, 0.0f},		10.0f,	 3,	2.0f, 150},					// 000
+	{ INIT_SIZE,		{0.0f, 2.0f, 0.0f},		10.0f,	 3,	3.0f, 150},					// 000
 	{ INIT_SIZE,		{0.05f, 2.0f, 100.0f},	2.0f,	 0,	2.0f, 100},					// 001
 	{ INIT_SIZE,		{0.0f, 10.0f, 0.0f},	10.0f,	 30,7.0f, 200},					// 002
 	{ INIT_SIZE,		{0.0f, 7.0f, 0.0f},		4.0f,	 00,2.0f, 100},					// 003
@@ -151,7 +151,8 @@ void UpdateEnemy(void)
 			continue;
 		}
 
-		if (BoxCollision(pEnemy->obj.pos, pEnemy->obj.size, pPlayer->obj.pos, pPlayer->hitBoxSize))
+		if (BoxCollision(pEnemy->obj.pos, pEnemy->obj.size, pPlayer->obj.pos, pPlayer->hitBoxSize) &&
+			pEnemy->state != ENEMYSTATE_DIED)
 		{// プレイヤーとの衝突判定
 			HitPlayer();
 		}

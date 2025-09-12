@@ -77,15 +77,15 @@ void Enemy000_Act(ENEMY* pEnemy)
 {
 	pEnemy->obj.pos += pEnemy->move;
 
-	if (pEnemy->nShot > 30) return;
+	if (pEnemy->nShot > 20) return;
 
 	if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
 	{
 		pEnemy->nCounterShoot = 0;
-		pEnemy->fShootRot = RandRange(-100, 100) * 0.01f;
+		pEnemy->fShootRot = RandRange(-30, 30) * 0.01f;
 		if (SetEnemyBullet(
 			ENEMYBULLET_TYPE_003,
-			pEnemy->obj.pos,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 20.0f,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot
 		))
@@ -120,17 +120,17 @@ void Enemy002_Act(ENEMY* pEnemy)
 		pEnemy->fShootRot = Angle(pEnemy->obj.pos, GetPlayer()->obj.pos);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_002,
-			pEnemy->obj.pos,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_002,
-			pEnemy->obj.pos,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot + D3DX_PI / 2);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_002,
-			pEnemy->obj.pos,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot - D3DX_PI / 2);
 		pEnemy->nShot++;
@@ -175,19 +175,19 @@ void Enemy004_Act(ENEMY* pEnemy)
 	case 1:
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_000,
-			pEnemy->obj.pos,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot
 		);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_000,
-			pEnemy->obj.pos,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot + 0.4f
 		);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_000,
-			pEnemy->obj.pos,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot - 0.4f
 		);
@@ -237,7 +237,7 @@ void Enemy005_Act(ENEMY* pEnemy)
 
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_003,
-			pEnemy->obj.pos,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot
 		);
@@ -323,7 +323,7 @@ void Enemy007_Act(ENEMY* pEnemy)
 			pEnemy->fShootRot = Angle(pEnemy->obj.pos, GetPlayer()->obj.pos);
 			SetEnemyBullet(
 				ENEMYBULLET_TYPE_001,
-				pEnemy->obj.pos,
+				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
 				7,
 				pEnemy->fShootRot);
 			pEnemy->nShot++;
@@ -339,7 +339,6 @@ void Enemy007_Act(ENEMY* pEnemy)
 		pEnemy->move.x *= 1.05f;
 		pEnemy->obj.pos.x += pEnemy->move.x;
 		break;
-
 	}
 
 	pEnemy->obj.rot.z += 0.2f;

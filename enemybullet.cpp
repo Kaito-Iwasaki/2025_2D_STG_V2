@@ -55,7 +55,7 @@ ENEMYBULLET_INFO g_aEnemyBulletInfo[ENEMYBULLET_TYPE_MAX] = {
 	{1.0f, 5.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 0},
 	{1.0f, 5.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 0},
 	{1.0f, 5.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 50},
-	{1.0f, 5.0f, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f), 20},
+	{1.0f, 5.0f, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f), 50},
 };
 
 //=====================================================================
