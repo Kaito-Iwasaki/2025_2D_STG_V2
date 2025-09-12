@@ -48,9 +48,15 @@ const char* g_aEnemyBulletFileName[ENEMYBULLET_TYPE_MAX] = {
 	"data\\TEXTURE\\enemybullet000.png",
 	"data\\TEXTURE\\enemybullet001.png",
 	"data\\TEXTURE\\enemybullet002.png",
+	"data\\TEXTURE\\enemybullet001.png",
 };
 
-
+ENEMYBULLET_INFO g_aEnemyBulletInfo[ENEMYBULLET_TYPE_MAX] = {
+	{1.0f, 5.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 0},
+	{1.0f, 5.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 0},
+	{1.0f, 5.0f, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), 50},
+	{1.0f, 5.0f, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f), 20},
+};
 
 //=====================================================================
 // ‰Šú‰»ˆ—
@@ -148,7 +154,7 @@ void UpdateEnemyBullet(void)
 		switch (pEnemyBullet->state)
 		{
 		case ENEMYBULLETSTATE_NORMAL:
-			pEnemyBullet->obj.color = ENEMYBULLET_COLOR_NORMAL;
+			pEnemyBullet->obj.color = g_aEnemyBulletInfo[pEnemyBullet->type].col;
 			break;
 
 		case ENEMYBULLETSTATE_DAMAGED:
@@ -200,6 +206,13 @@ void UpdateEnemyBullet(void)
 				}
 
 				pEnemyBullet->obj.rot.z = pEnemyBullet->fAngle + D3DX_PI;
+			}
+			break;
+
+		case ENEMYBULLET_TYPE_003:
+			if (pEnemyBullet->nCounterState % 2 == 0)
+			{
+				pEnemyBullet->obj.rot.z += D3DX_PI * 0.125f;
 			}
 			break;
 
@@ -287,7 +300,7 @@ bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float 
 			pEnemyBullet->bUsed = true;
 			pEnemyBullet->obj.pos = pos;
 			pEnemyBullet->obj.size = INIT_SIZE;
-			pEnemyBullet->obj.color = INIT_COLOR;
+			pEnemyBullet->obj.color = g_aEnemyBulletInfo[pEnemyBullet->type].col;
 			pEnemyBullet->fSpeed = fSpeed;
 			pEnemyBullet->fAngle = fAngle;
 			pEnemyBullet->fDamage = 1.0f;
@@ -321,12 +334,25 @@ void HitEnemyBullet(ENEMYBULLET* pEnemyBullet)
 	{
 		PlaySound(SOUND_LABEL_SE_HIT00, 0.5f);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.75f);
-		//AddScore(10);
+		AddScore(g_aEnemyBulletInfo[pEnemyBullet->type].nScore);
 		pEnemyBullet->bUsed = false;
 	}
 	else
 	{
 		pEnemyBullet->state = ENEMYBULLETSTATE_DAMAGED;
 		pEnemyBullet->nCounterState = 0;
+	}
+}
+
+void DestroyAllEnemyBullet(void)
+{
+	ENEMYBULLET* pEnemyBullet = &g_aEnemyBullet[0];
+
+	for (int nCount = 0; nCount < MAX_ENEMYBULLET; nCount++, pEnemyBullet++)
+	{
+		if (pEnemyBullet->bUsed == false) continue;
+
+		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.75f);
+		pEnemyBullet->bUsed = false;
 	}
 }

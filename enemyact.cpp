@@ -22,6 +22,13 @@
 
 //*********************************************************************
 // 
+// ***** マクロ定義 *****
+// 
+//*********************************************************************
+
+
+//*********************************************************************
+// 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
@@ -42,14 +49,15 @@ void (*g_aActFunction[ENEMYTYPE_MAX])(ENEMY* pEnemy) = {
 	Enemy006_Act,
 	Enemy007_Act,
 	Enemy008_Act,
+	Enemy009_Act,
 	Boss000_Act,
 }; // 敵の挙動処理関数
 
-//*********************************************************************
+//=====================================================================S
 // 
 // ***** 敵の挙動処理 *****
 // 
-//*********************************************************************
+//=====================================================================
 void EnemyAct(ENEMY* pEnemy)
 {
 	if (g_aActFunction[pEnemy->type] == NULL) return;
@@ -57,11 +65,11 @@ void EnemyAct(ENEMY* pEnemy)
 	g_aActFunction[pEnemy->type](pEnemy);
 }
 
-//*********************************************************************
+//=====================================================================
 // 
 // ***** タイプ別敵の挙動処理 *****
 // 
-//*********************************************************************
+//=====================================================================
 //=====================================================================
 // カニ
 //=====================================================================
@@ -76,7 +84,7 @@ void Enemy000_Act(ENEMY* pEnemy)
 		pEnemy->nCounterShoot = 0;
 		pEnemy->fShootRot = RandRange(-100, 100) * 0.01f;
 		if (SetEnemyBullet(
-			ENEMYBULLET_TYPE_001,
+			ENEMYBULLET_TYPE_003,
 			pEnemy->obj.pos,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot
@@ -228,7 +236,7 @@ void Enemy005_Act(ENEMY* pEnemy)
 		if (pEnemy->nCounterMode % pEnemy->nShootInterval != 0) break;
 
 		SetEnemyBullet(
-			ENEMYBULLET_TYPE_001,
+			ENEMYBULLET_TYPE_003,
 			pEnemy->obj.pos,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot
@@ -283,35 +291,73 @@ void Enemy006_Act(ENEMY* pEnemy)
 
 void Enemy006_Died(ENEMY* pEnemy)
 {
-	pEnemy->obj.pos.y += pEnemy->move.y;
-
-	if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
-	{
-		pEnemy->fShootRot += (D3DX_PI / 12.0f);
-		for (int nCount = 0; nCount < 12; nCount++)
-		{
-			SetEnemyBullet(
-				ENEMYBULLET_TYPE_000,
-				pEnemy->obj.pos,
-				pEnemy->fShootSpeed,
-				pEnemy->fShootRot + (D3DX_PI * 2 / 12.0f) * nCount
-			);
-		}
-	}
-}
-
-//=====================================================================
-// おっさん
-//=====================================================================
-void Enemy007_Act(ENEMY* pEnemy)
-{
-
+	
 }
 
 //=====================================================================
 // さんかく
 //=====================================================================
+void Enemy007_Act(ENEMY* pEnemy)
+{
+	pEnemy->obj.pos.y += pEnemy->move.y;
+
+	switch (pEnemy->nMode)
+	{
+	case 0:
+		pEnemy->obj.pos.x = RandRange(640 - 200, 640 + 200);
+		pEnemy->disapperFlags = OOS_LEFT | OOS_RIGHT;
+		pEnemy->nMode++;
+
+	case 1:
+		if (pEnemy->nCounterState > 60)
+		{
+			pEnemy->nMode++;
+			pEnemy->nCounterShoot = 0;
+		}
+		break;
+
+	case 2:
+		if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
+		{
+			pEnemy->nCounterShoot = 0;
+			pEnemy->fShootRot = Angle(pEnemy->obj.pos, GetPlayer()->obj.pos);
+			SetEnemyBullet(
+				ENEMYBULLET_TYPE_001,
+				pEnemy->obj.pos,
+				7,
+				pEnemy->fShootRot);
+			pEnemy->nShot++;
+
+			if (pEnemy->nShot > 10)
+			{
+				pEnemy->nMode++;
+			}
+		}
+		break;
+
+	case 3:
+		pEnemy->move.x *= 1.05f;
+		pEnemy->obj.pos.x += pEnemy->move.x;
+		break;
+
+	}
+
+	pEnemy->obj.rot.z += 0.2f;
+	pEnemy->move.y += (0.0f - pEnemy->move.y) * 0.05f;
+}
+
+//=====================================================================
+// 砲台
+//=====================================================================
 void Enemy008_Act(ENEMY* pEnemy)
+{
+
+}
+
+//=====================================================================
+// おっさん
+//=====================================================================
+void Enemy009_Act(ENEMY* pEnemy)
 {
 
 }
@@ -361,18 +407,19 @@ void Boss000_Act(ENEMY* pEnemy)
 				30
 			);
 		}
+
 		pEnemy->fShootRot += 0.5f;
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_001,
-			pEnemy->obj.pos,
-			pEnemy->fShootSpeed,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 30.0f,
+			3.0f,
 			pEnemy->fShootRot,
 			15
 		);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_001,
-			pEnemy->obj.pos,
-			pEnemy->fShootSpeed,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot + D3DX_PI) * 30.0f,
+			3.0f,
 			pEnemy->fShootRot + D3DX_PI,
 			15
 		);
@@ -381,8 +428,14 @@ void Boss000_Act(ENEMY* pEnemy)
 
 void Boss000_Died(ENEMY* pEnemy)
 {
+	// 画面上の弾を全て削除
+	DestroyAllEnemyBullet();
+
+	// 爆発エフェクト位置の設定
 	float fRandX = RandRange(-60, 60);
 	float fRandY = RandRange(-60, 60);
+
+	// エフェクト情報の設定
 	EFFECTINFO info;
 	info.fSpeed = 5.0f;
 	info.fRotSpeed = 0.05f;
@@ -390,36 +443,24 @@ void Boss000_Died(ENEMY* pEnemy)
 	info.nMaxLife = 40;
 	info.col = D3DXCOLOR(0.9f, 0.4f, 0.0f, 1.0f);
 
+	// 色を赤色に変更
 	pEnemy->obj.color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 
 	if (pEnemy->nCounterState % 10 == 0)
-	{
+	{// 爆発サウンド再生
 		PlaySound(SOUND_LABEL_SE_HIT02);
 	}
-	
+
+	// 爆発エフェクト
 	SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos + D3DXVECTOR3(fRandX, fRandY, 0.0f), 1.0f);
 
-
-	SetParticle(
-		info,
-		pEnemy->obj.pos,
-		0,
-		D3DX_PI * 2,
-		1,
-		10
-	);
+	// 爆発パーティクル
+	SetParticle(info, pEnemy->obj.pos, 0, D3DX_PI * 2, 1, 10);
 
 	if (pEnemy->nCounterState > 120)
-	{
+	{// 消滅
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 4.0f);
-		SetParticle(
-			info,
-			pEnemy->obj.pos,
-			0,
-			D3DX_PI * 2,
-			1,
-			30
-		);
+		SetParticle(info, pEnemy->obj.pos, 0, D3DX_PI * 2, 1, 30);
 
 		pEnemy->bUsed = false;
 	}

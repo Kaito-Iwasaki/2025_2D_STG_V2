@@ -60,7 +60,7 @@ void InitRanking(void)
 {
 	char aString[MAX_PATH] = {};
 	g_nCountStateRanking = 0;
-	memset(g_apFontNum, 0, sizeof(FONT) * MAX_PLACE);
+	memset(g_apFontNum, 0, sizeof(g_apFontNum));
 
 	InitBackground();
 	InitFont();
@@ -101,7 +101,7 @@ void InitRanking(void)
 void UninitRanking(void)
 {
 	g_nHighlight = -1;
-	memset(g_apFontNum, 0, sizeof(FONT) * MAX_PLACE);
+	memset(g_apFontNum, 0, sizeof(g_apFontNum));
 
 	UninitBackground();
 	UninitFont();

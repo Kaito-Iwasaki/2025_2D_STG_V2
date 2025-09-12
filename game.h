@@ -13,6 +13,7 @@
 // 
 //*********************************************************************
 #include "main.h"
+#include "sound.h"
 
 //*********************************************************************
 // 
@@ -30,9 +31,17 @@ typedef enum
 {
 	GAMESTATE_READY = 0,
 	GAMESTATE_NORMAL,
+	GAMESTATE_CONTINUE,
 	GAMESTATE_END,
 	GAMESTATE_MAX
 }GAMESTATE;
+
+typedef enum
+{
+	STAGETYPE_01 = 0,
+	STAGETYPE_02,
+	STAGETYPE_MAX
+}STAGETYPE;
 
 //*********************************************************************
 // 
@@ -61,10 +70,13 @@ typedef struct
 	int nCurrentWave;
 	int nCountGameState;
 	int nCountTimeline;
+	int nCountElapsed;
 	int nMaxWave;
 	int nWaveInterval;
+	SOUND_LABEL currentMusic;
 	GAMESTATE state;
 	TIMELINE timeline[MAX_TIMELINE];
+	STAGETYPE currentStage;
 }STAGE;
 
 //*********************************************************************
@@ -72,12 +84,13 @@ typedef struct
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitGame(void);
+void InitGame(STAGETYPE stagetype = STAGETYPE_01);
 void UninitGame(void);
 void UpdateGame(void);
 void DrawGame(void);
 void SetWave(int nWave);
 void TogglePause(bool bPause);
 GAMESTATE GetGameState(void);
+void SetGameState(GAMESTATE state);
 
 #endif

@@ -59,6 +59,7 @@ const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 	"data\\TEXTURE\\enemy006.png",
 	"data\\TEXTURE\\enemy007.png",
 	"data\\TEXTURE\\enemy008.png",
+	"data\\TEXTURE\\enemy009.png",
 	"data\\TEXTURE\\boss000.png",
 };
 
@@ -68,11 +69,12 @@ ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
 	{ INIT_SIZE,		{0.05f, 2.0f, 100.0f},	2.0f,	 0,	2.0f, 100},					// 001
 	{ INIT_SIZE,		{0.0f, 10.0f, 0.0f},	10.0f,	 30,7.0f, 200},					// 002
 	{ INIT_SIZE,		{0.0f, 7.0f, 0.0f},		4.0f,	 00,2.0f, 100},					// 003
-	{ INIT_SIZE * 1.2f,	{0.0f, 5.0f, 0.0f},		25.0f,	 0,	4.0f, 1000},					// 004
+	{ INIT_SIZE * 1.2f,	{0.0f, 5.0f, 0.0f},		25.0f,	 0,	4.0f, 1000},				// 004
 	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	7.0f, 300},					// 005
-	{ INIT_SIZE * 2.0f,	{0.0f, 1.5f, 0.0f},		100.0f,	 70,	2.0f, 500},					// 006
-	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	2.0f, 300},					// 007
+	{ INIT_SIZE * 2.0f,	{0.0f, 1.5f, 0.0f},		100.0f,	 70,	2.0f, 500},				// 006
+	{ INIT_SIZE * 1.2f,	{1.0f, 8.0f, 0.0f},	15.0f,	 20,	2.0f, 300},					// 007
 	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	2.0f, 300},					// 008
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	2.0f, 300},					// 009
 	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f}	,	700.0f,	 3,	2.0f, 5000, Boss000_Died},	// boss000
 };
 

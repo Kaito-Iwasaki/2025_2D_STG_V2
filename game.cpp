@@ -46,13 +46,16 @@
 // 
 //*********************************************************************
 STAGE g_stage;
-SOUND_LABEL g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
-int g_nElapsedFrame = 0;
+
+const char* g_aStageFileName[STAGETYPE_MAX] = {
+	"data/STAGE/stage01.txt",
+	"data/STAGE/stage02.txt",
+};
 
 //=====================================================================
 // ‰Šú‰»ˆ—
 //=====================================================================
-void InitGame(void)
+void InitGame(STAGETYPE stagetype)
 {
 	InitPlayer();
 	InitBullet();
@@ -72,10 +75,10 @@ void InitGame(void)
 	g_stage.nCountTimeline = 0;
 	g_stage.nMaxWave = 0;
 	g_stage.state = GAMESTATE_READY;
-	g_CurrentSound = SOUND_LABEL_BGM_STAGE04;
-	g_nElapsedFrame = 0;
+	g_stage.currentMusic = SOUND_LABEL_BGM_STAGE04;
+	g_stage.nCountElapsed = 0;
 
-	PlaySound(g_CurrentSound);
+	PlaySound(g_stage.currentMusic);
 
 	SetDecal(
 		DECAL_LABEL_NULL,
@@ -88,7 +91,7 @@ void InitGame(void)
 	SetBackgroundSpeed(20.0f);
 	SetBackgroundSpeedMove(1.0f, 0.001f);
 
-	LoadStage("data/STAGE/stage01.txt", &g_stage);
+	LoadStage(g_aStageFileName[stagetype], &g_stage);
 }
 
 //=====================================================================
@@ -201,7 +204,7 @@ void UpdateGame(void)
 			break;
 		}
 
-		g_nElapsedFrame++;
+		g_stage.nCountElapsed++;
 	}
 	else
 	{
@@ -248,9 +251,9 @@ void SetWave(int nWave)
 		if (nWave == g_stage.nMaxWave)
 		{
 			SetBackgroundSpeedMove(10.0f, BG_SCROLL_MOVE_SCALE);
-			StopSound(g_CurrentSound);
-			g_CurrentSound = SOUND_LABEL_BGM_BOSS00;
-			PlaySound(g_CurrentSound);
+			StopSound(g_stage.currentMusic);
+			g_stage.currentMusic = SOUND_LABEL_BGM_BOSS00;
+			PlaySound(g_stage.currentMusic);
 		}
 	}
 }
@@ -267,19 +270,28 @@ void TogglePause(bool bPause)
 
 	if (g_stage.bPaused)
 	{
-		PauseSound(g_CurrentSound);
+		PauseSound(g_stage.currentMusic);
 	}
 	else
 	{
-		UnPauseSound(g_CurrentSound);
+		UnPauseSound(g_stage.currentMusic);
 		SetPauseMenuCursor(0);
 	}
 }
 
 //=====================================================================
-// ƒQ[ƒ€ó‘Ôİ’èˆ—
+// ƒQ[ƒ€ó‘Ôæ“¾ˆ—ˆ—
 //=====================================================================
 GAMESTATE GetGameState(void)
 {
 	return g_stage.state;
 }
+
+//=====================================================================
+// ƒQ[ƒ€ó‘Ôæ“¾ˆ—ˆ—
+//=====================================================================
+void SetGameState(GAMESTATE state)
+{
+	g_stage.state = state;
+}
+

@@ -127,7 +127,7 @@ void UpdatePlayer(void)
 	g_player.nCounterState++;
 	switch (g_player.state)
 	{
-	case PLAYERSTATE_NORMAL:
+	case PLAYERSTATE_NORMAL: // 通常状態
 		g_player.obj.bVisible = true;
 		if (g_player.fLife < PLAYER_HEAL_MAX)
 		{
@@ -135,7 +135,14 @@ void UpdatePlayer(void)
 		}
 		break;
 
-	case PLAYERSTATE_BLINK:
+	case PLAYERSTATE_APPEAR:
+		g_player.obj.pos = INIT_POS;
+		g_player.obj.bVisible = true;
+		g_player.fLife = PLAYER_HEAL_MAX;
+		g_player.state = PLAYERSTATE_BLINK;
+		// ブリンク状態へ
+
+	case PLAYERSTATE_BLINK: // 点滅状態
 		if (g_player.nCounterState % 3 == 0)
 		{
 			g_player.obj.bVisible ^= 1;
@@ -147,7 +154,7 @@ void UpdatePlayer(void)
 		}
 		break;
 
-	case PLAYERSTATE_DIED:
+	case PLAYERSTATE_DIED: // 死亡状態
 		g_player.obj.bVisible = false;
 		if (g_player.nCounterState > 120)
 		{
@@ -155,9 +162,12 @@ void UpdatePlayer(void)
 		}
 		return;
 
-	case PLAYERSTATE_END:
+	case PLAYERSTATE_CONTINUE:	// コンティニュー待機
+		break;
+
+	case PLAYERSTATE_END: // 終了状態
 		SetFade(SCENE_RESULT);
-		return;
+		break;
 	}
 
 	// ***** 移動 *****

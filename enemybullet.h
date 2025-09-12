@@ -32,6 +32,7 @@ typedef enum
 	ENEMYBULLET_TYPE_000 = 0,
 	ENEMYBULLET_TYPE_001,
 	ENEMYBULLET_TYPE_002,
+	ENEMYBULLET_TYPE_003,
 	ENEMYBULLET_TYPE_MAX
 }ENEMYBULLET_TYPE;
 
@@ -65,7 +66,8 @@ typedef struct
 {
 	float fDamage;
 	float fLife;
-	ENEMYBULLET_TYPE type;
+	D3DXCOLOR col;
+	int nScore;
 }ENEMYBULLET_INFO;
 
 //*********************************************************************
@@ -80,5 +82,6 @@ void DrawEnemyBullet(void);
 ENEMYBULLET* GetEnemyBullet(void);
 bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float fAngle, float fLife = 0);
 void HitEnemyBullet(ENEMYBULLET* pEnemyBullet);
+void DestroyAllEnemyBullet(void);
 
 #endif

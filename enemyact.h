@@ -52,8 +52,8 @@ void Enemy005_Act(ENEMY* pEnemy);
 void Enemy006_Act(ENEMY* pEnemy);
 void Enemy007_Act(ENEMY* pEnemy);
 void Enemy008_Act(ENEMY* pEnemy);
+void Enemy009_Act(ENEMY* pEnemy);
 void Boss000_Act(ENEMY* pEnemy);
-
 void Boss000_Died(ENEMY* pEnemy);
 
 #endif
