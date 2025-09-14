@@ -25,20 +25,30 @@
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-
-
 //*********************************************************************
-// 
-// ***** プロトタイプ宣言 *****
-// 
+// Enemy000
 //*********************************************************************
-
+#define E000_SHOOT_MAX			(20)			// ショット数
+#define E000_SHOOT_RANGE		(30)			// ショット範囲
+#define E000_SHOOT_OFFSET		(20.0f)			// ショット位置補正値
+//*********************************************************************
+// Enemy001
+//*********************************************************************
+#define E001_ROT_SPEED			(0.1f)			// 回転速度
+//*********************************************************************
+// Enemy002
+//*********************************************************************
+#define E002_MOVE_Y_MIN			(1.0f)			// Y方向の最低移動量
+#define E002_MOVE_Y_DECAY		(0.5f)			// Y方向の移動量減衰率
+#define E002_SHOOT_OFFSET		(10.0f)			// ショット位置補正値
 
 //*********************************************************************
 // 
 // ***** グローバル変数 *****
 // 
 //*********************************************************************
+
+// 敵の挙動処理関数
 void (*g_aActFunction[ENEMYTYPE_MAX])(ENEMY* pEnemy) = {
 	Enemy000_Act,
 	Enemy001_Act,
@@ -51,9 +61,9 @@ void (*g_aActFunction[ENEMYTYPE_MAX])(ENEMY* pEnemy) = {
 	Enemy008_Act,
 	Enemy009_Act,
 	Boss000_Act,
-}; // 敵の挙動処理関数
+}; 
 
-//=====================================================================S
+//=====================================================================
 // 
 // ***** 敵の挙動処理 *****
 // 
@@ -77,15 +87,15 @@ void Enemy000_Act(ENEMY* pEnemy)
 {
 	pEnemy->obj.pos += pEnemy->move;
 
-	if (pEnemy->nShot > 20) return;
+	if (pEnemy->nShot > E000_SHOOT_MAX) return;
 
 	if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
 	{
 		pEnemy->nCounterShoot = 0;
-		pEnemy->fShootRot = RandRange(-30, 30) * 0.01f;
+		pEnemy->fShootRot = RandRange(-E000_SHOOT_RANGE, E000_SHOOT_RANGE) * 0.01f;
 		if (SetEnemyBullet(
 			ENEMYBULLET_TYPE_003,
-			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 20.0f,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E000_SHOOT_OFFSET,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot
 		))
@@ -102,7 +112,7 @@ void Enemy001_Act(ENEMY* pEnemy)
 {
 	pEnemy->obj.pos.x = pEnemy->startPos.x + sin((float)pEnemy->nCounterState * pEnemy->move.x) * pEnemy->move.z;
 	pEnemy->obj.pos.y += pEnemy->move.y;
-	pEnemy->obj.rot.z += 0.1f;
+	pEnemy->obj.rot.z += E001_ROT_SPEED;
 }
 
 //=====================================================================
@@ -110,7 +120,7 @@ void Enemy001_Act(ENEMY* pEnemy)
 //=====================================================================
 void Enemy002_Act(ENEMY* pEnemy)
 {
-	pEnemy->obj.pos.y += pEnemy->move.y + 1.0f;
+	pEnemy->obj.pos.y += pEnemy->move.y + E002_MOVE_Y_MIN;
 
 	if (pEnemy->nShot > 1) return;
 
@@ -120,23 +130,23 @@ void Enemy002_Act(ENEMY* pEnemy)
 		pEnemy->fShootRot = Angle(pEnemy->obj.pos, GetPlayer()->obj.pos);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_002,
-			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E002_SHOOT_OFFSET,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_002,
-			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E002_SHOOT_OFFSET,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot + D3DX_PI / 2);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_002,
-			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E002_SHOOT_OFFSET,
 			pEnemy->fShootSpeed,
 			pEnemy->fShootRot - D3DX_PI / 2);
 		pEnemy->nShot++;
 	}
 
-	pEnemy->move.y += (0.0f - pEnemy->move.y) * 0.05f;
+	pEnemy->move.y += (0.0f - pEnemy->move.y) * E002_MOVE_Y_DECAY;
 }
 
 //=====================================================================
@@ -438,9 +448,9 @@ void Boss000_Died(ENEMY* pEnemy)
 	EFFECTINFO info;
 	info.fSpeed = 5.0f;
 	info.fRotSpeed = 0.05f;
-	info.fMaxScale = 0.5f;
+	info.fMaxScale = 0.3f;
 	info.nMaxLife = 40;
-	info.col = D3DXCOLOR(0.9f, 0.4f, 0.0f, 1.0f);
+	info.col = D3DXCOLOR(0.9f, 0.7f, 0.0f, 1.0f);
 
 	// 色を赤色に変更
 	pEnemy->obj.color = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);

@@ -129,10 +129,9 @@ void UpdatePlayer(void)
 	{
 	case PLAYERSTATE_NORMAL: // í èÌèÛë‘
 		g_player.obj.bVisible = true;
-		if (g_player.fLife < PLAYER_HEAL_MAX)
-		{
-			g_player.fLife += PLAYER_HEAL_SCALE;
-		}
+		g_player.fLife += PLAYER_HEAL_SCALE;
+		Clampf(&g_player.fLife, 0.0f, PLAYER_HEAL_MAX);
+
 		break;
 
 	case PLAYERSTATE_APPEAR:
@@ -148,7 +147,7 @@ void UpdatePlayer(void)
 			g_player.obj.bVisible ^= 1;
 		}
 
-		if (g_player.nCounterState > 120)
+		if (g_player.nCounterState > PLAYER_DAMAGE_INTERVAL)
 		{
 			_SetPlayerState(PLAYERSTATE_NORMAL);
 		}
@@ -284,14 +283,18 @@ void HitPlayer(void)
 	if (g_player.fLife <= 0)
 	{
 		PlaySound(SOUND_LABEL_SE_HIT02);
-		SetVibration(60000, 60000, 50);
+		SetVibration(30000, 30000, 50);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, g_player.obj.pos, 1.5f);
 		_SetPlayerState(PLAYERSTATE_DIED);
 	}
 	else
 	{
+		if (g_player.fLife <= 1.0f)
+		{
+			PlaySound(SOUND_LABEL_SE_ALERT);
+		}
 		PlaySound(SOUND_LABEL_SE_HIT01);
-		SetVibration(40000, 40000, 50);
+		SetVibration(30000, 30000, 50);
 		_SetPlayerState(PLAYERSTATE_BLINK);
 	}
 }

@@ -39,7 +39,7 @@ void LoadStage(const char* aFileName, STAGE* pStage)
 
 	pFile = fopen(aFileName, "r");
 
-	if (pFile == NULL) return;
+	if (pFile == NULL) return;	// ファイルを開けなかったら終了
 
 	while (fscanf(pFile, "%s", &aStrFile[0]) != EOF)
 	{

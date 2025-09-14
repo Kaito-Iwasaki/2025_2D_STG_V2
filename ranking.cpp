@@ -29,7 +29,7 @@
 // ***** É}ÉNÉçíËã` *****
 // 
 //*********************************************************************
-#define RANKING_FILEPATH		"data\\ranking.bin"
+#define FILEPATH_RANKING		"data\\ranking.bin"
 #define MAX_PLACE				(10)
 
 #define INIT_RANKING			{ 10000, 5000, 3000, 2000, 1000 }
@@ -67,7 +67,7 @@ void InitRanking(void)
 
 	PlaySound(SOUND_LABEL_BGM_BGM00);
 
-	LoadBin(RANKING_FILEPATH, &g_aRanking[0], sizeof(int), MAX_PLACE);
+	LoadBin(FILEPATH_RANKING, &g_aRanking[0], sizeof(int), MAX_PLACE);
 
 	qsort(&g_aRanking[0], MAX_PLACE, sizeof(int), compare);
 
@@ -151,7 +151,7 @@ void DrawRanking(void)
 
 void SaveScore(int nScore)
 {
-	LoadBin(RANKING_FILEPATH, &g_aRanking[0], sizeof(int), MAX_PLACE);
+	LoadBin(FILEPATH_RANKING, &g_aRanking[0], sizeof(int), MAX_PLACE);
 
 	qsort(&g_aRanking[0], MAX_PLACE, sizeof(int), compare);
 
@@ -171,7 +171,7 @@ void SaveScore(int nScore)
 		}
 	}
 
-	SaveBin(RANKING_FILEPATH, &g_aRanking[0], sizeof(int), MAX_PLACE);
+	SaveBin(FILEPATH_RANKING, &g_aRanking[0], sizeof(int), MAX_PLACE);
 }
 
 //=====================================================================

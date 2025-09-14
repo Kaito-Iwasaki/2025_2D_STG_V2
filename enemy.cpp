@@ -33,7 +33,6 @@
 #define INIT_SIZE				D3DXVECTOR3(48.0f, 48.0f, 0.0f)
 #define INIT_COLOR				D3DXCOLOR(0.0f, 0.0f, 0.0f,1.0f)
 
-#define INIT_ENEMY_LIFE				(30)
 #define INIT_ENEMY_SHOOT_INTERVAL	(20)
 
 #define ENEMY_COLOR_NORMAL		INIT_COLOR
@@ -75,7 +74,7 @@ ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
 	{ INIT_SIZE * 1.2f,	{1.0f, 8.0f, 0.0f},	15.0f,	 20,	2.0f, 300},					// 007
 	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	2.0f, 300},					// 008
 	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	2.0f, 300},					// 009
-	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f}	,	700.0f,	 3,	2.0f, 5000, Boss000_Died},	// boss000
+	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f}	,	750.0f,	 3,	2.0f, 5000, Boss000_Died},	// boss000
 };
 
 //=====================================================================

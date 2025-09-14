@@ -19,8 +19,11 @@
 #define INIT_POS_X		(GAME_SCREEN_START + 10)
 #define INIT_POS_Y		(SCREEN_HEIGHT - INIT_SIZE_Y - 10)
 
-#define COLOR_REMAIN	D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f)
-#define COLOR_DAMAGE	D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f)
+#define COLOR_REMAIN			D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f)
+#define COLOR_REMAIN_HEAL		D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f)
+#define COLOR_REMAIN_DANGER		D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f)
+#define COLOR_DAMAGE			D3DXCOLOR(0.3f, 0.0f, 0.0f, 1.0f)
+#define COLOR_EMPTY				D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f)
 
 //*********************************************************************
 // 
@@ -29,7 +32,8 @@
 //*********************************************************************
 typedef enum
 {
-	HEALTHBAR_TYPE_DAMAGE = 0,
+	HEALTHBAR_TYPE_EMPTY = 0,
+	HEALTHBAR_TYPE_DAMAGE,
 	HEALTHBAR_TYPE_REMAIN,
 	HEALTHBAR_TYPE_MAX
 }HEALTHBAR_TYPE;
@@ -51,9 +55,14 @@ LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffHealthbar = NULL;		// 頂点バッファへのポインタ
 HEALTHBAR g_aHealthbar[HEALTHBAR_TYPE_MAX];
 
 D3DXCOLOR g_aColorHealthbar[HEALTHBAR_TYPE_MAX] = {
+	COLOR_EMPTY,
 	COLOR_DAMAGE,
 	COLOR_REMAIN
 };
+
+int g_nCounterDamaged = 0;
+float g_fLastRemainSize = INIT_SIZE_X;
+float g_fLastPlayerLife = PLAYER_HEAL_MAX;
 
 //=====================================================================
 // 
@@ -64,6 +73,10 @@ void InitHealthbar(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	HEALTHBAR* pHealthbar = &g_aHealthbar[0];
+
+	g_nCounterDamaged = 0;
+	g_fLastRemainSize = INIT_SIZE_X;
+	g_fLastPlayerLife = GetPlayer()->fLife;
 
 	// 構造体の初期化
 	memset(pHealthbar, 0, sizeof(HEALTHBAR) * HEALTHBAR_TYPE_MAX);
@@ -107,14 +120,76 @@ void UninitHealthbar(void)
 //=====================================================================
 void UpdateHealthbar(void)
 {
-	PLAYER* pPlayer = GetPlayer();
 	HEALTHBAR* pHealthbar = &g_aHealthbar[0];
+	PLAYER* pPlayer = GetPlayer();
+
+	g_nCounterDamaged++;
+	if (pPlayer->fLife - g_fLastPlayerLife < 0)
+	{
+		g_nCounterDamaged = 0;
+	}
+	g_fLastPlayerLife = pPlayer->fLife;
 
 	for (int nCount = 0; nCount < HEALTHBAR_TYPE_MAX; nCount++, pHealthbar++)
 	{
-		if (nCount == HEALTHBAR_TYPE_REMAIN)
+		pHealthbar->nCountTime++;
+
+		switch (nCount)
 		{
-			pHealthbar->obj.size.x = INIT_SIZE_X * (GetPlayer()->fLife / PLAYER_HEAL_MAX);
+		case HEALTHBAR_TYPE_DAMAGE:
+			HEALTHBAR* pHealthBarRemain;
+
+			pHealthBarRemain = &g_aHealthbar[HEALTHBAR_TYPE_REMAIN];
+
+			pHealthbar->obj.pos.x = pHealthBarRemain->obj.pos.x + pHealthBarRemain->obj.size.x;
+
+			if (g_nCounterDamaged < 60)
+			{// 被ダメージ表示
+				pHealthbar->obj.size.x = g_fLastRemainSize - pHealthBarRemain->obj.size.x;
+			}
+			else
+			{// 被ダメージ表示を消していく
+				pHealthbar->obj.size.x -= pHealthbar->obj.size.x * 0.1f;
+				Clampf(&pHealthbar->obj.size.x, 0.0f, pHealthbar->obj.size.x);
+
+				g_fLastRemainSize = pHealthBarRemain->obj.size.x;
+			}
+			break;
+
+		case HEALTHBAR_TYPE_REMAIN:
+			pHealthbar->obj.size.x = INIT_SIZE_X * (pPlayer->fLife / PLAYER_HEAL_MAX);
+			Clampf(&pHealthbar->obj.size.x, 0.0f, pHealthbar->obj.size.x);
+
+			if (pPlayer->state == PLAYERSTATE_NORMAL && pPlayer->fLife < PLAYER_HEAL_MAX)
+			{
+				if (pHealthbar->nCountTime % 3 == 0)
+				{
+					pHealthbar->obj.color = COLOR_REMAIN_HEAL;
+				}
+				else
+				{
+					if (pPlayer->fLife <= 1.0f)
+					{
+						pHealthbar->obj.color = COLOR_REMAIN_DANGER;
+					}
+					else
+					{
+						pHealthbar->obj.color = COLOR_REMAIN;
+					}
+				}
+			}
+			else
+			{
+				if (pPlayer->fLife <= 1.0f)
+				{
+					pHealthbar->obj.color = COLOR_REMAIN_DANGER;
+				}
+				else
+				{
+					pHealthbar->obj.color = COLOR_REMAIN;
+				}
+			}
+			break;
 		}
 	}
 }

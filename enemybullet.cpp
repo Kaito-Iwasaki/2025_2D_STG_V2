@@ -20,6 +20,7 @@
 #include "spriteEffect.h"
 #include "baseScene.h"
 #include "score.h"
+#include "particle.h"
 
 //*********************************************************************
 // 
@@ -126,6 +127,7 @@ void UpdateEnemyBullet(void)
 {
 	ENEMYBULLET* pEnemyBullet = &g_aEnemyBullet[0];
 	PLAYER* pPlayer = GetPlayer();
+	EFFECTINFO info;
 
 	for (int nCount = 0; nCount < MAX_ENEMYBULLET; nCount++, pEnemyBullet++)
 	{
@@ -180,6 +182,22 @@ void UpdateEnemyBullet(void)
 		case ENEMYBULLET_TYPE_002:
 			pEnemyBullet->obj.size = INIT_SIZE * 2;
 			pEnemyBullet->fSpeed = 4.0f;
+
+			info.fSpeed = 2.0f;
+			info.fRotSpeed = 0.05f;
+			info.fMaxScale = 0.3f;
+			info.nMaxLife = 10;
+			info.col = D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.5f);
+
+			SetParticle(
+				info,
+				pEnemyBullet->obj.pos,
+				pEnemyBullet->fAngle + D3DX_PI,
+				0.3f,
+				1,
+				2
+			);
+
 			if (pEnemyBullet->nCounterState < 60)
 			{
 				float fBulletToPlayer = Angle(pEnemyBullet->obj.pos, pPlayer->obj.pos);
