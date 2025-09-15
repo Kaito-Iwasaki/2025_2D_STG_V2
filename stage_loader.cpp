@@ -44,7 +44,7 @@ void LoadStage(const char* aFileName, STAGE* pStage)
 	while (fscanf(pFile, "%s", &aStrFile[0]) != EOF)
 	{
 		if (strstr(&aStrFile[0], "STAGESET") != NULL)
-		{
+		{// ステージ情報読み込み
 			do
 			{
 				if (fscanf(pFile, "%s", &aStrFile[0]) == EOF)
@@ -75,9 +75,15 @@ void LoadStage(const char* aFileName, STAGE* pStage)
 
 			do
 			{
+
+
 				if (fscanf(pFile, "%s", &aStrFile[0]) == EOF)
 				{
 					break;
+				}
+				else if (strstr(&aStrFile[0], "WAVESET") != NULL)
+				{
+					fscanf(pFile, "%d", &timelineTemp.nType);
 				}
 				else if (strncmp(aStrFile, "TYPE", 4) == 0)
 				{
