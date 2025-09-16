@@ -29,6 +29,7 @@
 // Enemy000
 //*********************************************************************
 #define E000_SHOOT_MAX			(20)			// ショット数
+#define E000_SHOOT_SPEED		(3.0f)
 #define E000_SHOOT_RANGE		(30)			// ショット範囲
 #define E000_SHOOT_OFFSET		(20.0f)			// ショット位置補正値
 //*********************************************************************
@@ -40,7 +41,52 @@
 //*********************************************************************
 #define E002_MOVE_Y_MIN			(1.0f)			// Y方向の最低移動量
 #define E002_MOVE_Y_DECAY		(0.05f)			// Y方向の移動量減衰率
+#define E002_SHOOT_SPEED		(2.0f)
 #define E002_SHOOT_OFFSET		(10.0f)			// ショット位置補正値
+#define E003_SHOOT_MAX			(1)
+//*********************************************************************
+// Enemy003
+//*********************************************************************
+#define E003_INIT_POS_X_RANGE	(250)
+#define E003_MOVE_Y_MIN			(0.8f)
+#define E003_MOVE_Y_MAX			(1.2f)
+//*********************************************************************
+// Enemy004
+//*********************************************************************
+#define E004_MOVE_INTERVAL		(60)
+#define E004_SHOOT_SPEED		(2.0f)
+#define E004_SHOOT_OFFSET		(10.0f)			// ショット位置補正値
+#define E004_SHOOT_RANGE		(0.4f)			// ショット範囲
+//*********************************************************************
+// Enemy005
+//*********************************************************************
+#define E005_MOVE_INTERVAL01	(60)
+#define E005_MOVE_INTERVAL02	(60)
+#define E005_MOVE_Y_DECAY		(0.05f)			// Y方向の移動量減衰率
+#define E005_MOVE_SPEED_Y_ADD	(0.1f)			// Y方向の移動量減衰率
+#define E005_SHOOT_SPEED		(10.0f)
+#define E005_SHOOT_OFFSET		(10.0f)			// ショット位置補正値
+#define E005_SHOOT_INTERVAL01	(2)
+#define E005_SHOOT_INTERVAL02	(10)				// ショット範囲
+
+//*********************************************************************
+// Enemy006
+//*********************************************************************
+#define E006_SHOOT_SPEED		(2.0f)
+#define E006_SHOOT_NUM			(12.0f)
+#define E006_SHOOT_INTERVAL		(50)
+
+//*********************************************************************
+// Enemy007
+//*********************************************************************
+
+//*********************************************************************
+// Enemy008
+//*********************************************************************
+
+//*********************************************************************
+// BOSS000
+//*********************************************************************
 
 //*********************************************************************
 // 
@@ -96,7 +142,7 @@ void Enemy000_Act(ENEMY* pEnemy)
 		if (SetEnemyBullet(
 			ENEMYBULLET_TYPE_003,
 			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E000_SHOOT_OFFSET,
-			pEnemy->fShootSpeed,
+			E000_SHOOT_SPEED,
 			pEnemy->fShootRot
 		))
 		{
@@ -131,17 +177,17 @@ void Enemy002_Act(ENEMY* pEnemy)
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_002,
 			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E002_SHOOT_OFFSET,
-			pEnemy->fShootSpeed,
+			E002_SHOOT_SPEED,
 			pEnemy->fShootRot);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_002,
 			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E002_SHOOT_OFFSET,
-			pEnemy->fShootSpeed,
+			E002_SHOOT_SPEED,
 			pEnemy->fShootRot + D3DX_PI / 2);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_002,
 			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E002_SHOOT_OFFSET,
-			pEnemy->fShootSpeed,
+			E002_SHOOT_SPEED,
 			pEnemy->fShootRot - D3DX_PI / 2);
 		pEnemy->nShot++;
 	}
@@ -154,10 +200,16 @@ void Enemy002_Act(ENEMY* pEnemy)
 //=====================================================================
 void Enemy003_Act(ENEMY* pEnemy)
 {
-	if (pEnemy->nCounterState == 1)
+	if (pEnemy->nCounterState == E003_SHOOT_MAX)
 	{
-		pEnemy->obj.pos.x = RandRange(640 - 250, 640 + 250);
-		pEnemy->move.y = RandRange(pEnemy->move.y * 0.8f, pEnemy->move.y * 1.2f);
+		pEnemy->obj.pos.x = RandRange(
+			SCREEN_CENTER - E003_INIT_POS_X_RANGE,
+			SCREEN_CENTER + E003_INIT_POS_X_RANGE
+		);
+		pEnemy->move.y = RandRange(
+			pEnemy->move.y * E003_MOVE_Y_MIN,
+			pEnemy->move.y * E003_MOVE_Y_MAX
+		);
 	}
 
 	pEnemy->obj.pos.y += pEnemy->move.y;
@@ -175,9 +227,9 @@ void Enemy004_Act(ENEMY* pEnemy)
 		pEnemy->obj.pos.x += pEnemy->move.y * sinf(pEnemy->fShootRot);
 		pEnemy->obj.pos.y += pEnemy->move.y * cosf(pEnemy->fShootRot);
 
-		if (pEnemy->nCounterState > 60)
+		if (pEnemy->nCounterState > E004_MOVE_INTERVAL)
 		{
-			pEnemy->nMode = 1;
+			pEnemy->nMode++;
 			pEnemy->nCounterState = 0;
 		}
 		break;
@@ -185,25 +237,25 @@ void Enemy004_Act(ENEMY* pEnemy)
 	case 1:
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_000,
-			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
-			pEnemy->fShootSpeed,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E004_SHOOT_OFFSET,
+			E004_SHOOT_SPEED,
 			pEnemy->fShootRot
 		);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_000,
-			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
-			pEnemy->fShootSpeed,
-			pEnemy->fShootRot + 0.4f
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E004_SHOOT_OFFSET,
+			E004_SHOOT_SPEED,
+			pEnemy->fShootRot + E004_SHOOT_RANGE
 		);
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_000,
-			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
-			pEnemy->fShootSpeed,
-			pEnemy->fShootRot - 0.4f
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E004_SHOOT_OFFSET,
+			E004_SHOOT_SPEED,
+			pEnemy->fShootRot - E004_SHOOT_RANGE
 		);
 		pEnemy->nShot++;
 
-		pEnemy->nMode = 2;
+		pEnemy->nMode++;
 		pEnemy->nCounterState = 0;
 		break;
 
@@ -227,9 +279,9 @@ void Enemy005_Act(ENEMY* pEnemy)
 	{
 	case 0:	// 出現
 		pEnemy->obj.pos.x += pEnemy->move.x;
-		pEnemy->move.x += (0.0f - pEnemy->move.x) * 0.05f;
+		pEnemy->move.x += (0.0f - pEnemy->move.x) * E005_MOVE_Y_DECAY;
 
-		if (pEnemy->nCounterMode > 60)
+		if (pEnemy->nCounterMode > E005_MOVE_INTERVAL01)
 		{
 			pEnemy->nMode++;
 			pEnemy->nCounterMode = 0;
@@ -243,17 +295,17 @@ void Enemy005_Act(ENEMY* pEnemy)
 		pEnemy->nMode++;
 
 	case 2:	// 弾発射
-		if (pEnemy->nCounterMode % pEnemy->nShootInterval != 0) break;
+		if (pEnemy->nCounterMode % E005_SHOOT_INTERVAL01 != 0) break;
 
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_003,
-			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 10.0f,
-			pEnemy->fShootSpeed,
+			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E005_SHOOT_OFFSET,
+			E005_SHOOT_SPEED,
 			pEnemy->fShootRot
 		);
 		pEnemy->nShot++;
 
-		if (pEnemy->nShot % 5 == 0)
+		if (pEnemy->nShot % E005_SHOOT_INTERVAL02 == 0)
 		{
 			pEnemy->nMode++;
 			pEnemy->nCounterMode = 0;
@@ -262,7 +314,7 @@ void Enemy005_Act(ENEMY* pEnemy)
 		break;
 
 	case 3:	// 弾クールダウン
-		if (pEnemy->nCounterMode > 60)
+		if (pEnemy->nCounterMode > E005_MOVE_INTERVAL02)
 		{
 			pEnemy->nMode++;
 			pEnemy->nCounterMode = 0;
@@ -272,7 +324,7 @@ void Enemy005_Act(ENEMY* pEnemy)
 
 	case 4:	// 逃走
 		pEnemy->obj.pos.y += pEnemy->move.y;
-		pEnemy->move.y += 0.1f;
+		pEnemy->move.y += E005_MOVE_SPEED_Y_ADD;
 		break;
 	}
 }
@@ -284,16 +336,16 @@ void Enemy006_Act(ENEMY* pEnemy)
 {
 	pEnemy->obj.pos.y += pEnemy->move.y;
 
-	if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
+	if (pEnemy->nCounterShoot % E006_SHOOT_INTERVAL == 0)
 	{
-		pEnemy->fShootRot += (D3DX_PI / 12.0f);
-		for (int nCount = 0; nCount < 12; nCount++)
+		pEnemy->fShootRot += (D3DX_PI / E006_SHOOT_NUM);
+		for (int nCount = 0; nCount < E006_SHOOT_NUM; nCount++)
 		{
 			SetEnemyBullet(
 				ENEMYBULLET_TYPE_000,
 				pEnemy->obj.pos,
-				pEnemy->fShootSpeed,
-				pEnemy->fShootRot + (D3DX_PI * 2 / 12.0f) * nCount
+				E006_SHOOT_SPEED,
+				pEnemy->fShootRot + (D3DX_PI * 2 / E006_SHOOT_NUM) * nCount
 			);
 		}
 	}
