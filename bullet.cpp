@@ -138,7 +138,7 @@ void UpdateBullet(void)
 		// “G‚Æ‚ÌÕ“Ë”»’è
 		for (int nCountEnemy = 0; nCountEnemy < MAX_ENEMY; nCountEnemy++, pEnemy++)
 		{
-			if (pEnemy->bUsed && BoxCollision(pBullet->obj, pEnemy->obj))
+			if (pEnemy->bUsed && BoxCollision(pBullet->obj, pEnemy->obj) && pEnemy->bDamageEnabled)
 			{
 				float fAngleEnemyToBullet = Angle(pEnemy->obj.pos, pBullet->obj.pos);
 

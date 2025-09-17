@@ -66,6 +66,7 @@ typedef struct ENEMY
 	D3DXVECTOR3 startPos;
 	bool bActEnabled;
 	bool bHitEnabled;
+	bool bDamageEnabled;
 	bool bThroughBullet;
 
 	D3DXVECTOR3 move;

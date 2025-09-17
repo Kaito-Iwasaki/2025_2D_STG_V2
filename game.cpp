@@ -174,8 +174,15 @@ void UpdateGame(void)
 
 				break;
 
-			case EVENTTYPE_SETBOSS:
+			case EVENTTYPE_SETMUSIC:
+				StopSound(g_stage.currentMusic);
+				g_stage.currentMusic = SOUND_LABEL(pTimeline->nType);
+				PlaySound(g_stage.currentMusic);
 
+				break;
+
+			case EVENTTYPE_SETBGSPEED:
+				SetBackgroundSpeedMove(pTimeline->move.y, BG_SCROLL_MOVE_SCALE);
 				break;
 			}
 
@@ -267,13 +274,13 @@ void SetWave(int nWave)
 		g_stage.nCountGameState = 0;
 		g_stage.nCountTimeline = 0;
 
-		if (nWave == g_stage.nMaxWave)
-		{
-			SetBackgroundSpeedMove(10.0f, BG_SCROLL_MOVE_SCALE);
-			StopSound(g_stage.currentMusic);
-			g_stage.currentMusic = SOUND_LABEL_BGM_BOSS00;
-			PlaySound(g_stage.currentMusic);
-		}
+		//if (nWave == g_stage.nMaxWave)
+		//{
+		//	SetBackgroundSpeedMove(10.0f, BG_SCROLL_MOVE_SCALE);
+		//	StopSound(g_stage.currentMusic);
+		//	g_stage.currentMusic = SOUND_LABEL_BGM_BOSS00;
+		//	PlaySound(g_stage.currentMusic);
+		//}
 	}
 }
 

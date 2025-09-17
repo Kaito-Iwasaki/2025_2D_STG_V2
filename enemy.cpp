@@ -289,6 +289,7 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 			pEnemy->bUsed = true;
 			pEnemy->bActEnabled = true;
 			pEnemy->bHitEnabled = true;
+			pEnemy->bDamageEnabled = true;
 			pEnemy->obj.pos = pos;
 			pEnemy->startPos = pos;
 			pEnemy->move = g_aEnemyInfo[type].move;
@@ -315,6 +316,10 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 void HitEnemy(ENEMY* pEnemy, float fDamage)
 {
 	if (IsObjectOutOfScreen(pEnemy->obj) || pEnemy->fLife <= 0.0f)
+	{
+		return;
+	}
+	else if (pEnemy->bDamageEnabled == false)
 	{
 		return;
 	}

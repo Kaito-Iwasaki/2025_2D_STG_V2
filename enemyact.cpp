@@ -560,35 +560,84 @@ void Boss000_Died(ENEMY* pEnemy)
 void Boss010A_Act(ENEMY* pEnemy)
 {
 	static ENEMY* apBossPart[8];
+	static float fGap = 1.0f;
 
-	if (pEnemy->nCounterState == 1)
+	switch (pEnemy->nMode)
 	{
+	case 0:
+		pEnemy->move = { 1.0f, 1.0f, 0.0f };
 		pEnemy->bHitEnabled = false;
 		pEnemy->bThroughBullet = true;
 		pEnemy->obj.bVisible = false;
+		pEnemy->bDamageEnabled = false;
+		fGap = 0.0f;
 
 		for (int nCount = 0; nCount < 8; nCount++)
 		{
-
-
 			apBossPart[nCount] = SetEnemy(
 				ENEMYTYPE_BOSS001B,
 				D3DXVECTOR3(0, -50, 0)
 			);
+			apBossPart[nCount]->bDamageEnabled = false;
+			apBossPart[nCount]->bActEnabled = false;
 		}
+
+		pEnemy->nMode++;
+
+	case 1:
+		pEnemy->obj.pos.y += 3.0f;
+		if (pEnemy->obj.pos.y > 300.0f)
+		{
+			pEnemy->nMode++;
+		}
+		break;
+
+	case 2:
+		fGap += 0.01f;
+		if (fGap >= 1.0f)
+		{
+			fGap = 1.0f;
+			pEnemy->bDamageEnabled = true;
+			pEnemy->startPos = pEnemy->obj.pos;
+
+			for (int nCount = 0; nCount < 8; nCount++)
+			{
+				apBossPart[nCount]->bDamageEnabled = true;
+				apBossPart[nCount]->bActEnabled = true;
+			}
+
+			pEnemy->nMode++;
+			pEnemy->nCounterMode = 0;
+		}
+		break;
+
+	case 3:
+		if (
+			pEnemy->obj.pos.x < SCREEN_CENTER - 150 ||
+			pEnemy->obj.pos.x > SCREEN_CENTER + 150
+			)
+		{
+			pEnemy->move.x *= -1;
+		}
+
+		pEnemy->obj.pos.x += pEnemy->move.x;
+		pEnemy->obj.pos.y = pEnemy->startPos.y + sin((float)pEnemy->nCounterMode * 0.01f) * 100.0f;
+
+		break;
 	}
 
-	pEnemy->obj.pos.y += 1.0f;
+	
 	pEnemy->obj.rot.z += 0.1f;
-
 	for (int nCount = 0; nCount < 8; nCount++)
 	{
-		apBossPart[nCount]->obj.pos = pEnemy->obj.pos + Direction(pEnemy->obj.rot.z + (D3DX_PI * 2.0f / 8.0f * nCount)) * 100.0f;
+		apBossPart[nCount]->fShootRot = Angle(pEnemy->obj.pos, apBossPart[nCount]->obj.pos);
+		apBossPart[nCount]->obj.pos = pEnemy->obj.pos + Direction(pEnemy->obj.rot.z + (D3DX_PI * 2.0f / 8.0f * nCount * fGap)) * 90.0f;
 		if (apBossPart[nCount]->state == ENEMYSTATE_DAMAGED)
 		{
 			HitEnemy(pEnemy);
 		}
 	}
+
 }
 
 void Boss010A_Died(ENEMY* pEnemy)
@@ -605,5 +654,23 @@ void Boss010A_Died(ENEMY* pEnemy)
 
 void Boss010B_Act(ENEMY* pEnemy)
 {
+	if (pEnemy->nCounterShoot % 30 == 0)
+	{
+		pEnemy->nCounterShoot = 0;
 
+		SetEnemyBullet(
+			ENEMYBULLET_TYPE_000,
+			pEnemy->obj.pos,
+			7.0f,
+			pEnemy->fShootRot,
+			3
+		);
+		SetEnemyBullet(
+			ENEMYBULLET_TYPE_001,
+			pEnemy->obj.pos,
+			3.0f,
+			pEnemy->fShootRot,
+			15
+		);
+	}
 }
