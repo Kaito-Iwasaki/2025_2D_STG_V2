@@ -49,6 +49,7 @@ ENEMY g_aEnemy[MAX_ENEMY] = {};
 
 // 敵のテクスチャ
 const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
+	// 通常
 	"data\\TEXTURE\\enemy000.png",
 	"data\\TEXTURE\\enemy001.png",
 	"data\\TEXTURE\\enemy002.png",
@@ -59,22 +60,27 @@ const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 	"data\\TEXTURE\\enemy007.png",
 	"data\\TEXTURE\\enemy008.png",
 	"data\\TEXTURE\\enemy009.png",
+	// ボス
 	"data\\TEXTURE\\boss000.png",
+	"data\\TEXTURE\\boss001.png",	// 001A
+	"data\\TEXTURE\\boss001.png",	// 001B
 };
 
-// 敵の情報[サイズ | 移動量 | 体力 | ショット間隔 | ショット速度 | スコア]
+// 敵の情報[サイズ | 移動量 | 体力 | スコア]
 ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
-	{ INIT_SIZE,		{0.0f, 2.0f, 0.0f},		10.0f,	 3,	3.0f, 150},					// 000
-	{ INIT_SIZE,		{0.05f, 2.0f, 100.0f},	2.0f,	 0,	2.0f, 100},					// 001
-	{ INIT_SIZE,		{0.0f, 10.0f, 0.0f},	10.0f,	 30,7.0f, 200},					// 002
-	{ INIT_SIZE,		{0.0f, 7.0f, 0.0f},		4.0f,	 00,2.0f, 100},					// 003
-	{ INIT_SIZE * 1.2f,	{0.0f, 5.0f, 0.0f},		25.0f,	 0,	4.0f, 1000},				// 004
-	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	7.0f, 300},					// 005
-	{ INIT_SIZE * 2.0f,	{0.0f, 1.5f, 0.0f},		100.0f,	 70,	2.0f, 500},				// 006
-	{ INIT_SIZE * 1.2f,	{1.0f, 8.0f, 0.0f},	15.0f,	 20,	2.0f, 300},					// 007
-	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	2.0f, 300},					// 008
-	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,	 3,	2.0f, 300},					// 009
-	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f}	,	750.0f,	 3,	2.0f, 5000, Boss000_Died},	// boss000
+	{ INIT_SIZE,		{0.0f, 2.0f, 0.0f},		10.0f,		150},					// 000
+	{ INIT_SIZE,		{0.05f, 2.0f, 100.0f},	2.0f,		100},					// 001
+	{ INIT_SIZE,		{0.0f, 10.0f, 0.0f},	10.0f,		200},					// 002
+	{ INIT_SIZE,		{0.0f, 7.0f, 0.0f},		4.0f,		100},					// 003
+	{ INIT_SIZE * 1.2f,	{0.0f, 5.0f, 0.0f},		25.0f,		1000},					// 004
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,		300},					// 005
+	{ INIT_SIZE * 2.0f,	{0.0f, 1.5f, 0.0f},		100.0f,		500},					// 006
+	{ INIT_SIZE * 1.2f,	{1.0f, 8.0f, 0.0f},		15.0f,		300},					// 007
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,		300},					// 008
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,		300},					// 009
+	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f},		750.0f,		5000, Boss000_Died},	// boss000
+	{ INIT_SIZE * 2.0f, {0, 0, 0},				200.0f,		5000, Boss010A_Died},	// boss001A
+	{ INIT_SIZE * 1.5f, {0, 0, 0},				1000000.0f,	0},						// boss001B
 };
 
 //=====================================================================
@@ -150,8 +156,9 @@ void UpdateEnemy(void)
 			continue;
 		}
 
-		if (BoxCollision(pEnemy->obj.pos, pEnemy->obj.size, pPlayer->obj.pos, pPlayer->hitBoxSize) &&
-			pEnemy->state != ENEMYSTATE_DIED)
+		if (BoxCollision(pEnemy->obj.pos, pEnemy->hitboxSize, pPlayer->obj.pos, pPlayer->hitBoxSize) &&
+			pEnemy->state != ENEMYSTATE_DIED && 
+			pEnemy->bHitEnabled == true)
 		{// プレイヤーとの衝突判定
 			HitPlayer();
 		}
@@ -178,7 +185,7 @@ void UpdateEnemy(void)
 		}
 
 		// 敵の行動別処理
-		if (pEnemy->state != ENEMYSTATE_DIED)
+		if (pEnemy->bActEnabled == true)
 		{
 			EnemyAct(pEnemy);
 		}
@@ -248,7 +255,7 @@ ENEMY* GetEnemy(void)
 }
 
 //=====================================================================
-//敵の数取得処理
+// 敵の数取得処理
 //=====================================================================
 int GetEnemyLeft(void)
 {
@@ -280,6 +287,8 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 		{
 			memset(pEnemy, 0, sizeof(ENEMY));
 			pEnemy->bUsed = true;
+			pEnemy->bActEnabled = true;
+			pEnemy->bHitEnabled = true;
 			pEnemy->obj.pos = pos;
 			pEnemy->startPos = pos;
 			pEnemy->move = g_aEnemyInfo[type].move;
@@ -289,13 +298,12 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 			pEnemy->obj.bVisible = true;
 
 			pEnemy->fLife = g_aEnemyInfo[type].fLife;
-			pEnemy->nShootInterval = Clamp(g_aEnemyInfo[type].nShootInterval, 1, g_aEnemyInfo[type].nShootInterval);
-			pEnemy->fShootSpeed = g_aEnemyInfo[type].nShootSpeed;
 			pEnemy->fShootRot = 0;
 			pEnemy->nScore = g_aEnemyInfo[type].nScore;
 			pEnemy->type = type;
 			pEnemy->disapperFlags = OOS_BOTTOM;
 			pEnemy->pfDied = g_aEnemyInfo[type].pfDied;
+			pEnemy->hitboxSize = pEnemy->obj.size;
 
 			return pEnemy;
 		}
@@ -304,14 +312,14 @@ ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos)
 	return NULL;
 }
 
-void HitEnemy(ENEMY* pEnemy)
+void HitEnemy(ENEMY* pEnemy, float fDamage)
 {
 	if (IsObjectOutOfScreen(pEnemy->obj) || pEnemy->fLife <= 0.0f)
 	{
 		return;
 	}
 
-	pEnemy->fLife -= 1;
+	pEnemy->fLife -= fDamage;
 	
 	if (pEnemy->fLife <= 0)
 	{
@@ -321,6 +329,7 @@ void HitEnemy(ENEMY* pEnemy)
 		{
 			pEnemy->state = ENEMYSTATE_DIED;
 			pEnemy->nCounterState = 0;
+			pEnemy->bActEnabled = false;
 			return;
 		}
 
@@ -335,7 +344,14 @@ void HitEnemy(ENEMY* pEnemy)
 	}
 }
 
-void EnemyShoot(ENEMY* pEnemy)
+void DestroyAllEnemy(void)
 {
+	ENEMY* pEnemy = &g_aEnemy[0];
 
+	for (int nCount = 0; nCount < MAX_ENEMYBULLET; nCount++, pEnemy++)
+	{
+		if (pEnemy->bUsed == false) continue;
+
+		HitEnemy(pEnemy, pEnemy->fLife);
+	}
 }

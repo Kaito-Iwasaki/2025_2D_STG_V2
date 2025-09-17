@@ -159,7 +159,10 @@ void UpdateBullet(void)
 					3
 				);
 
-				pBullet->bUsed = false;
+				if (pEnemy->bThroughBullet == false)
+				{
+					pBullet->bUsed = false;
+				}
 			}
 		}
 

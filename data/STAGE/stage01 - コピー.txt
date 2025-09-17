@@ -1,0 +1,301 @@
+#=============================================================================
+# ステージ設定処理
+#=============================================================================
+STAGESET
+	WAVE_MAX 13
+	WAVE_START 0
+	WAVE_INTERVAL 10
+END_STAGESET
+
+#=============================================================================
+# ウェーブ0
+#=============================================================================
+TIMELINESET
+	WAVE 0
+	TYPE 1
+	POS2 540 -50
+	POSOFFSET2 0 5
+	TIME 0
+	TIMEOFFSET 10
+	NUM 10
+	INVERSED TRUE
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ1
+#=============================================================================
+TIMELINESET
+	WAVE 1
+	TYPE 1
+	POS2 740 -50
+	POSOFFSET2 0 5
+	TIME 0
+	TIMEOFFSET 10
+	NUM 10
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ2
+#=============================================================================
+TIMELINESET
+	WAVE 2
+	TYPE 0
+	POS2 540 -50
+	POSOFFSET2 100 0
+	TIME 0
+	TIMEOFFSET 50
+	NUM 3
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ3
+#=============================================================================
+TIMELINESET
+	WAVE 3
+	TYPE 1
+	POS2 540 -50
+	POSOFFSET2 0 5
+	TIME 0
+	TIMEOFFSET 10
+	NUM 10
+END_TIMELINESET
+TIMELINESET
+	WAVE 3
+	TYPE 0
+	POS2 740 -50
+	POSOFFSET2 0 0
+	TIME 10
+	TIMEOFFSET 0
+	NUM 1
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ4
+#=============================================================================
+TIMELINESET
+	WAVE 4
+	TYPE 2
+	POS2 615 -50
+	POSOFFSET2 -50 0
+	TIME 0
+	TIMEOFFSET 20
+	NUM 3
+END_TIMELINESET
+TIMELINESET
+	WAVE 4
+	TYPE 2
+	POS2 665 -50
+	POSOFFSET2 50 0
+	TIME 0
+	TIMEOFFSET 20
+	NUM 3
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ5
+#=============================================================================
+TIMELINESET
+	WAVE 5
+	TYPE 3
+	POS2 540 -50
+	POSOFFSET2 0 -5
+	TIME 0
+	TIMEOFFSET 10
+	NUM 30
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ6
+#=============================================================================
+TIMELINESET
+	WAVE 6
+	TYPE 4
+	POS2 640 -50
+	POSOFFSET2 0 5
+	TIME 0
+	TIMEOFFSET 10
+	NUM 1
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ7
+#=============================================================================
+TIMELINESET
+	WAVE 7
+	TYPE 4
+	POS2 610 -50
+	POSOFFSET2 100 0
+	TIME 0
+	TIMEOFFSET 0
+	NUM 2
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ8
+#=============================================================================
+TIMELINESET
+	WAVE 8
+	TYPE 4
+	POS2 540 -50
+	POSOFFSET2 100 0
+	TIME 0
+	TIMEOFFSET 0
+	NUM 3
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ9
+#=============================================================================
+TIMELINESET
+	WAVE 9
+	TYPE 1
+	POS2 540 -50
+	POSOFFSET2 0 5
+	TIME 0
+	TIMEOFFSET 10
+	NUM 10
+END_TIMELINESET
+TIMELINESET
+	WAVE 9
+	TYPE 1
+	POS2 740 -50
+	POSOFFSET2 0 5
+	TIME 0
+	TIMEOFFSET 10
+	NUM 10
+	INVERSED TRUE
+END_TIMELINESET
+TIMELINESET
+	WAVE 9
+	TYPE 2
+	POS2 540 -50
+	POSOFFSET2 100 0
+	TIME 0
+	TIMEOFFSET 20
+	NUM 3
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ10
+#=============================================================================
+TIMELINESET
+	WAVE 10
+	TYPE 5
+	POS2 350 50
+	POSOFFSET2 -40 -20
+	TIME 0
+	TIMEOFFSET 5
+	NUM 2
+END_TIMELINESET
+
+TIMELINESET
+	WAVE 10
+	TYPE 5
+	POS2 930 50
+	POSOFFSET2 40 -20
+	TIME 5
+	TIMEOFFSET 5
+	NUM 2
+	INVERSED TRUE
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ11
+#=============================================================================
+#四角
+TIMELINESET
+	WAVE 11
+	TYPE 6
+	POS2 640 -50
+	POSOFFSET2 0 0
+	TIME 0
+	TIMEOFFSET 0
+	NUM 1
+END_TIMELINESET
+TIMELINESET
+	WAVE 11
+	TYPE 6
+	POS2 490 -250
+	POSOFFSET2 300 -200
+	TIME 0
+	TIMEOFFSET 0
+	NUM 2
+END_TIMELINESET
+
+#丸
+TIMELINESET
+	WAVE 11
+	TYPE 5
+	POS2 1040 50
+	POSOFFSET2 40 -20
+	TIME 180
+	TIMEOFFSET 0
+	NUM 1
+	INVERSED TRUE
+END_TIMELINESET
+TIMELINESET
+	WAVE 11
+	TYPE 5
+	POS2 240 50
+	POSOFFSET2 -40 -20
+	TIME 360
+	TIMEOFFSET 0
+	NUM 1
+END_TIMELINESET
+TIMELINESET
+	WAVE 11
+	TYPE 5
+	POS2 1090 50
+	POSOFFSET2 40 -20
+	TIME 540
+	TIMEOFFSET 0
+	NUM 1
+	INVERSED TRUE
+END_TIMELINESET
+TIMELINESET
+	WAVE 11
+	TYPE 5
+	POS2 190 50
+	POSOFFSET2 -40 -20
+	TIME 540
+	TIMEOFFSET 0
+	NUM 1
+END_TIMELINESET
+
+#=============================================================================
+#ウェーブ12
+#=============================================================================
+TIMELINESET
+	WAVE 12
+	TYPE 7
+	POS2 640 -50
+	POSOFFSET2 0 -10
+	TIME 0
+	TIMEOFFSET 10
+	NUM 6
+END_TIMELINESET
+
+TIMELINESET
+	WAVE 12
+	TYPE 7
+	POS2 640 -50
+	POSOFFSET2 0 -10
+	TIME 5
+	TIMEOFFSET 10
+	NUM 6
+	INVERSED TRUE
+END_TIMELINESET
+
+
+#=============================================================================
+#ウェーブ13
+#=============================================================================
+TIMELINESET
+	WAVE 13
+	TYPE 10
+	POS2 640 -300
+	POSOFFSET2 100 0
+	TIME 0
+	TIMEOFFSET 0
+	NUM 1
+END_TIMELINESET

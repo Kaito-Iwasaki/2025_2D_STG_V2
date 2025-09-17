@@ -52,6 +52,15 @@
     <Filter Include="ヘッダー ファイル\Component\Enemy">
       <UniqueIdentifier>{6cb0a4b4-b96e-428b-aa98-954a3f36bedc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Component\Enemy">
+      <UniqueIdentifier>{37f85059-dd86-4b78-8fa2-a6ae78e813aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GameObject\Boss">
+      <UniqueIdentifier>{facfb36b-a99e-41e5-a4a1-73d6ce826991}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Boss">
+      <UniqueIdentifier>{79ca0d09-bb65-4cce-ae0d-94ba46da1730}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sound.cpp">
@@ -129,9 +138,6 @@
     <ClCompile Include="tutorial.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="enemyact.cpp">
-      <Filter>ソース ファイル\Component</Filter>
-    </ClCompile>
     <ClCompile Include="effect.cpp">
       <Filter>ソース ファイル\GameObject\Effect</Filter>
     </ClCompile>
@@ -143,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="keylogger.cpp">
       <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyact.cpp">
+      <Filter>ソース ファイル\Component\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="keylogger.h">
       <Filter>ヘッダー ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="boss000.h">
+      <Filter>ヘッダー ファイル\GameObject\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

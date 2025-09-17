@@ -57,6 +57,7 @@ const char* g_aStageFileName[STAGETYPE_MAX] = {
 //=====================================================================
 void InitGame(STAGETYPE stagetype)
 {
+	InitFont();
 	InitPlayer();
 	InitBullet();
 	InitEnemy();
@@ -69,6 +70,7 @@ void InitGame(STAGETYPE stagetype)
 	InitEffect();
 	InitParticle();
 
+	memset(&g_stage, 0, sizeof(g_stage));
 	g_stage.bPaused = false;
 	g_stage.nCountGameState = 0;
 	g_stage.nCurrentWave = 0;
@@ -99,6 +101,7 @@ void InitGame(STAGETYPE stagetype)
 //=====================================================================
 void UninitGame(void)
 {
+	UninitFont();
 	UninitPlayer();
 	UninitBullet();
 	UninitEnemy();
@@ -133,6 +136,7 @@ void UpdateGame(void)
 
 	if (g_stage.bPaused == false)
 	{
+		UpdateFont();
 		UpdatePlayer();
 		UpdateBullet();
 		UpdateEnemy();
@@ -144,6 +148,7 @@ void UpdateGame(void)
 		UpdateEffect();
 		UpdateParticle();
 
+		// É^ÉCÉÄÉâÉCÉìì«Ç›çûÇ›
 		for (int nCount = 0; nCount < MAX_TIMELINE; nCount++, pTimeline++)
 		{
 			if (g_stage.state == GAMESTATE_READY) break;
@@ -151,17 +156,30 @@ void UpdateGame(void)
 			if (pTimeline->nWave != g_stage.nCurrentWave) continue;
 			if (pTimeline->nCountTime != g_stage.nCountTimeline) continue;
 
-			ENEMY* pEnemy;
 
-			pEnemy = SetEnemy(
-				(ENEMYTYPE)pTimeline->nType,
-				D3DXVECTOR3(pTimeline->pos.x, pTimeline->pos.y, 0.0f)
-			);
-
-			if (pTimeline->bInversed == true)
+			switch (pTimeline->eventType)
 			{
-				pEnemy->move.x *= -1;
+			case EVENTTYPE_SETENEMY:
+				ENEMY* pEnemy;
+
+				pEnemy = SetEnemy(
+					(ENEMYTYPE)pTimeline->nType,
+					D3DXVECTOR3(pTimeline->pos.x, pTimeline->pos.y, 0.0f)
+				);
+
+				if (pTimeline->bInversed == true)
+				{
+					pEnemy->move.x *= -1;
+				}
+
+				break;
+
+			case EVENTTYPE_SETBOSS:
+
+				break;
 			}
+
+
 		}
 
 		switch (g_stage.state)
@@ -226,6 +244,7 @@ void DrawGame(void)
 	DrawPlayer();
 	DrawScore();
 	DrawHealthbar();
+	DrawFont();
 
 	if (g_stage.bPaused)
 	{

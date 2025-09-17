@@ -38,6 +38,13 @@ typedef enum
 
 typedef enum
 {
+	EVENTTYPE_SETENEMY = 0,
+	EVENTTYPE_SETBOSS,
+	EVENTTYPE_MAX
+}EVENTTYPE;
+
+typedef enum
+{
 	STAGETYPE_01 = 0,
 	STAGETYPE_02,
 	STAGETYPE_MAX
@@ -51,6 +58,7 @@ typedef enum
 typedef struct
 {
 	bool bSet;
+	EVENTTYPE eventType;
 
 	int nType;
 	int nNumEnemy;

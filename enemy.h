@@ -41,6 +41,8 @@ typedef enum
 	ENEMYTYPE_008,
 	ENEMYTYPE_009,
 	ENEMYTYPE_BOSS000,
+	ENEMYTYPE_BOSS001A,
+	ENEMYTYPE_BOSS001B,
 	ENEMYTYPE_MAX
 }ENEMYTYPE;
 
@@ -62,6 +64,9 @@ typedef struct ENEMY
 	BASEOBJECT obj;
 	bool bUsed;
 	D3DXVECTOR3 startPos;
+	bool bActEnabled;
+	bool bHitEnabled;
+	bool bThroughBullet;
 
 	D3DXVECTOR3 move;
 	ENEMYTYPE type;
@@ -74,6 +79,7 @@ typedef struct ENEMY
 	float fShootRot;
 	int nScore;
 	DWORD disapperFlags;
+	D3DXVECTOR3 hitboxSize;
 
 	int nCounterState;
 	int nCounterShoot;
@@ -88,8 +94,6 @@ typedef struct
 	D3DXVECTOR3 move;
 	
 	float fLife;
-	int nShootInterval;
-	int nShootSpeed;
 	int nScore;
 	void (*pfDied)(ENEMY* pEnemy);
 }ENEMYINFO;
@@ -108,7 +112,7 @@ ENEMY* GetEnemy(void);
 int GetEnemyLeft(void);
 ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos);
 ENEMY* SetEnemy(TIMELINE* pTimeline);
-void HitEnemy(ENEMY* pEnemy);
-void EnemyShoot(ENEMY* pEnemy);
+void HitEnemy(ENEMY* pEnemy, float fDamage = 1.0f);
+void DestroyAllEnemy();
 
 #endif

@@ -29,6 +29,7 @@
 void _Read_STAGESET(FILE *pFile, STAGE *pStage);
 void _Read_WAVESET(FILE* pFile, int nWave, TIMELINE** dpTimeline);
 void _Read_ENEMYSET(FILE* pFile, int nWave, TIMELINE** dpTimeline);
+void _Read_BOSSSET(FILE* pFile, int nWave, TIMELINE** dpTimeline);
 
 //*********************************************************************
 // 
@@ -112,6 +113,10 @@ void _Read_WAVESET(FILE* pFile, int nWave, TIMELINE** dpTimeline)
 		{
 			_Read_ENEMYSET(pFile, nWave, dpTimeline);
 		}
+		else if (strncmp(&g_aStrFile[0], "BOSSSET", 7) == 0)
+		{
+			_Read_BOSSSET(pFile, nWave, dpTimeline);
+		}
 	} while (strstr(&g_aStrFile[0], "END_WAVESET") == NULL);
 }
 
@@ -177,12 +182,44 @@ void _Read_ENEMYSET(FILE* pFile, int nWave, TIMELINE** dpTimeline)
 	for (int nCount = 0; nCount < timelineTemp.nNumEnemy; nCount++, (*dpTimeline)++)
 	{
 		(*dpTimeline)->bSet = true;
+		(*dpTimeline)->eventType = EVENTTYPE_SETENEMY;
 		(*dpTimeline)->nType = timelineTemp.nType;
 		(*dpTimeline)->pos = timelineTemp.pos + timelineTemp.posOffset * nCount;
 		(*dpTimeline)->nCountTime = timelineTemp.nCountTime + (nCount * timelineTemp.nCountTimeOffset);
 		(*dpTimeline)->nWave = timelineTemp.nWave;
 		(*dpTimeline)->bInversed = timelineTemp.bInversed;
 	}
+
+	(*dpTimeline)++;
+}
+
+void _Read_BOSSSET(FILE* pFile, int nWave, TIMELINE** dpTimeline)
+{
+	TIMELINE timelineTemp;
+
+	memset(&timelineTemp, 0, sizeof(TIMELINE));
+	timelineTemp.posOffset = D3DXVECTOR3(0.0f, -50.0f, 0.0f);
+	timelineTemp.nWave = nWave;
+
+	do
+	{
+		if (fscanf(pFile, "%s", &g_aStrFile[0]) == EOF)
+		{
+			break;
+		}
+		else if (strncmp(g_aStrFile, "TYPE", 4) == 0)
+		{
+			fscanf(pFile, "%d", &timelineTemp.nType);
+		}
+	} while (strstr(&g_aStrFile[0], "END_BOSSSET") == NULL);
+
+	Clamp(&timelineTemp.nNumEnemy, 1, MAX_TIMELINE);
+
+	(*dpTimeline)->bSet = true;
+	(*dpTimeline)->eventType = EVENTTYPE_SETBOSS;
+	(*dpTimeline)->nType = timelineTemp.nType;
+	(*dpTimeline)->pos = timelineTemp.pos;
+	(*dpTimeline)->nWave = timelineTemp.nWave;
 
 	(*dpTimeline)++;
 }

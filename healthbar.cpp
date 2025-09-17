@@ -19,6 +19,8 @@
 #define INIT_POS_X		(GAME_SCREEN_START + 10)
 #define INIT_POS_Y		(SCREEN_HEIGHT - INIT_SIZE_Y - 10)
 
+#define BAR_DECAY_START			(80)
+
 #define COLOR_REMAIN			D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f)
 #define COLOR_REMAIN_HEAL		D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f)
 #define COLOR_REMAIN_DANGER		D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f)
@@ -143,7 +145,7 @@ void UpdateHealthbar(void)
 
 			pHealthbar->obj.pos.x = pHealthBarRemain->obj.pos.x + pHealthBarRemain->obj.size.x;
 
-			if (g_nCounterDamaged < 60)
+			if (g_nCounterDamaged < BAR_DECAY_START)
 			{// 被ダメージ表示
 				pHealthbar->obj.size.x = g_fLastRemainSize - pHealthBarRemain->obj.size.x;
 			}

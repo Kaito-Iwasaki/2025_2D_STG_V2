@@ -49,6 +49,7 @@ SOUNDINFO g_aSoundInfo[SOUND_LABEL_MAX] = {
 	{"data\\SE\\hit002.wav", 0},
 	{"data\\SE\\gameover000.wav", 0},
 	{"data\\SE\\alert000.wav", 0},
+	{"data\\SE\\bonus000.wav", 0},
 };
 
 //=============================================================================

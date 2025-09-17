@@ -166,7 +166,7 @@ void UpdatePlayer(void)
 
 	case PLAYERSTATE_END: // I—¹ó‘Ô
 		SetFade(SCENE_RESULT);
-		break;
+		return;
 	}
 
 	// ***** ˆÚ“® *****

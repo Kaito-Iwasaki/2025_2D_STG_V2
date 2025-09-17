@@ -7,6 +7,8 @@
 #include "score.h"
 #include "util.h"
 #include "baseScene.h"
+#include "sound.h"
+#include "font.h"
 
 //*********************************************************************
 // 
@@ -35,6 +37,7 @@
 LPDIRECT3DTEXTURE9 g_pTextureScore = NULL;			// テクスチャへのポインタ
 LPDIRECT3DVERTEXBUFFER9 g_pVtxBuffScore = NULL;		// 頂点バッファへのポインタ
 SCORE g_score;
+FONT* g_pFontBonus = NULL;
 
 //=====================================================================
 // 
@@ -53,6 +56,17 @@ void InitScore(void)
 	g_score.obj.pos = INIT_POS;
 	g_score.obj.size = INIT_SIZE;
 	g_score.obj.color = INIT_COLOR;
+
+	// フォントの初期化
+	g_pFontBonus = SetFont(
+		D3DXVECTOR3(640 - 270, SCREEN_HEIGHT / 2 - 200, 0.0f),
+		D3DXVECTOR3(540, 200, 0.0f),
+		D3DXVECTOR3_ZERO,
+		D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f),
+		"",
+		DT_CENTER
+	);
+	g_pFontBonus->obj.bVisible = false;
 
 	// 頂点バッファの生成
 	pDevice->CreateVertexBuffer(
@@ -98,6 +112,12 @@ void UpdateScore(void)
 	{
 		g_score.aTexPattern[nCntScore] = g_score.nScore % (int)pow(10, (double)NUM_PLACE - nCntScore) / (int)pow(10, (double)NUM_PLACE - 1 - nCntScore);
 	}
+
+	if (g_score.nCounterState > 180)
+	{
+		g_pFontBonus->obj.bVisible = false;
+	}
+	g_score.nCounterState++;
 }
 
 //=====================================================================
@@ -159,6 +179,17 @@ void SetScore(int nScore)
 void AddScore(int nValue)
 {
 	g_score.nScore += nValue;
+}
+
+void BonusScore(int nValue)
+{
+	PlaySound(SOUND_LABEL_SE_BONUS);
+	g_score.nScore += nValue;
+
+	sprintf(&g_pFontBonus->aText[0], "BONUS:%d", nValue);
+
+	g_pFontBonus->obj.bVisible = true;
+	g_score.nCounterState = 0;
 }
 
 int GetScore(void)
