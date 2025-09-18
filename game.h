@@ -86,6 +86,7 @@ typedef struct
 	GAMESTATE state;
 	TIMELINE timeline[MAX_TIMELINE];
 	STAGETYPE currentStage;
+	int nBonus;
 }STAGE;
 
 //*********************************************************************
@@ -99,6 +100,7 @@ void UpdateGame(void);
 void DrawGame(void);
 void SetWave(int nWave);
 void TogglePause(bool bPause);
+STAGE* GetStage(void);
 GAMESTATE GetGameState(void);
 void SetGameState(GAMESTATE state);
 

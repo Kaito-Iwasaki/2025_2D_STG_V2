@@ -79,7 +79,7 @@
 //*********************************************************************
 #define E006_SHOOT_SPEED		(2.0f)
 #define E006_SHOOT_NUM			(12.0f)
-#define E006_SHOOT_INTERVAL		(50)
+#define E006_SHOOT_INTERVAL		(80)
 
 //*********************************************************************
 // Enemy007
@@ -89,7 +89,7 @@
 #define E007_SHOOT_MAX			(20)
 #define E007_SHOOT_OFFSET		(10.0f)
 #define E007_SHOOT_SPEED		(7)
-#define E007_SHOOT_INTERVAL		(10)
+#define E007_SHOOT_INTERVAL		(20)
 
 //*********************************************************************
 // Enemy008
@@ -435,11 +435,43 @@ void Enemy007_Act(ENEMY* pEnemy)
 }
 
 //=====================================================================
-// E008 | 砲台
+// E008 | ボーナスエネミー
 //=====================================================================
 void Enemy008_Act(ENEMY* pEnemy)
 {
+	switch (pEnemy->nMode)
+	{
+	case 0:
+		if (pEnemy->obj.pos.x < SCREEN_CENTER)
+		{
+			pEnemy->disapperFlags = OOS_RIGHT;
+		}
+		else
+		{
+			pEnemy->disapperFlags = OOS_LEFT;
+			pEnemy->move *= -1;
+		}
+		pEnemy->originalColor = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
+		pEnemy->nMode++;
 
+	case 1:
+		pEnemy->obj.pos.x += pEnemy->move.x;
+		pEnemy->obj.rot.z += 0.3f;
+
+		if (pEnemy->nCounterState % 5 == 0)
+		{
+			if (pEnemy->nCounterState % 10 == 0)
+			{
+				pEnemy->originalColor = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
+			}
+			else
+			{
+				pEnemy->originalColor = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
+			}
+		}
+
+		break;
+	}
 }
 
 //=====================================================================
@@ -448,6 +480,18 @@ void Enemy008_Act(ENEMY* pEnemy)
 void Enemy009_Act(ENEMY* pEnemy)
 {
 
+}
+
+void BonusEnemy_Died(ENEMY* pEnemy)
+{
+	STAGE* pStage = GetStage();
+
+	BonusScore(pStage->nBonus);
+	PlaySound(SOUND_LABEL_SE_HIT00);
+	SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 1.0f);
+	pEnemy->bUsed = false;
+
+	pStage->nBonus *= 2;
 }
 
 //=====================================================================
@@ -470,7 +514,7 @@ void Boss000_Act(ENEMY* pEnemy)
 		}
 		pEnemy->obj.pos.x += pEnemy->move.x;
 	}
-
+	pEnemy->obj.rot.z += 0.1f;
 
 	if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL01 == 0)
 	{
@@ -586,14 +630,14 @@ void Boss010A_Act(ENEMY* pEnemy)
 
 	case 1:
 		pEnemy->obj.pos.y += 3.0f;
-		if (pEnemy->obj.pos.y > 300.0f)
+		if (pEnemy->obj.pos.y > 250.0f)
 		{
 			pEnemy->nMode++;
 		}
 		break;
 
 	case 2:
-		fGap += 0.01f;
+		fGap += 0.025f;
 		if (fGap >= 1.0f)
 		{
 			fGap = 1.0f;
@@ -612,6 +656,7 @@ void Boss010A_Act(ENEMY* pEnemy)
 		break;
 
 	case 3:
+		pEnemy->obj.rot.z += 0.1f;
 		if (
 			pEnemy->obj.pos.x < SCREEN_CENTER - 150 ||
 			pEnemy->obj.pos.x > SCREEN_CENTER + 150
@@ -625,9 +670,7 @@ void Boss010A_Act(ENEMY* pEnemy)
 
 		break;
 	}
-
 	
-	pEnemy->obj.rot.z += 0.1f;
 	for (int nCount = 0; nCount < 8; nCount++)
 	{
 		apBossPart[nCount]->fShootRot = Angle(pEnemy->obj.pos, apBossPart[nCount]->obj.pos);
@@ -637,7 +680,6 @@ void Boss010A_Act(ENEMY* pEnemy)
 			HitEnemy(pEnemy);
 		}
 	}
-
 }
 
 void Boss010A_Died(ENEMY* pEnemy)

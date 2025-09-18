@@ -31,6 +31,7 @@
 #include "effect.h"
 #include "particle.h"
 #include "keylogger.h"
+#include "util.h"
 
 //*********************************************************************
 // 
@@ -79,6 +80,7 @@ void InitGame(STAGETYPE stagetype)
 	g_stage.state = GAMESTATE_READY;
 	g_stage.currentMusic = SOUND_LABEL_BGM_STAGE04;
 	g_stage.nCountElapsed = 0;
+	g_stage.nBonus = 500;
 
 	PlaySound(g_stage.currentMusic);
 
@@ -166,6 +168,11 @@ void UpdateGame(void)
 					(ENEMYTYPE)pTimeline->nType,
 					D3DXVECTOR3(pTimeline->pos.x, pTimeline->pos.y, 0.0f)
 				);
+
+				if (Magnitude(pTimeline->move) != 0)
+				{
+					pEnemy->move = pTimeline->move;
+				}
 
 				if (pTimeline->bInversed == true)
 				{
@@ -273,14 +280,6 @@ void SetWave(int nWave)
 		g_stage.nCurrentWave = nWave;
 		g_stage.nCountGameState = 0;
 		g_stage.nCountTimeline = 0;
-
-		//if (nWave == g_stage.nMaxWave)
-		//{
-		//	SetBackgroundSpeedMove(10.0f, BG_SCROLL_MOVE_SCALE);
-		//	StopSound(g_stage.currentMusic);
-		//	g_stage.currentMusic = SOUND_LABEL_BGM_BOSS00;
-		//	PlaySound(g_stage.currentMusic);
-		//}
 	}
 }
 
@@ -303,6 +302,11 @@ void TogglePause(bool bPause)
 		UnPauseSound(g_stage.currentMusic);
 		SetPauseMenuCursor(0);
 	}
+}
+
+STAGE* GetStage(void)
+{
+	return &g_stage;
 }
 
 //=====================================================================

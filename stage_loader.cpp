@@ -131,6 +131,7 @@ void _Read_ENEMYSET(FILE* pFile, int nWave, TIMELINE** dpTimeline)
 
 	memset(&timelineTemp, 0, sizeof(TIMELINE));
 	timelineTemp.posOffset = D3DXVECTOR3(0.0f, -50.0f, 0.0f);
+	timelineTemp.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	timelineTemp.nWave = nWave;
 
 	do
@@ -157,7 +158,7 @@ void _Read_ENEMYSET(FILE* pFile, int nWave, TIMELINE** dpTimeline)
 			fscanf(pFile, "%f", &timelineTemp.posOffset.x);
 			fscanf(pFile, "%f", &timelineTemp.posOffset.y);
 		}
-		else if (strncmp(g_aStrFile, "MOVE3", 4) == 0)
+		else if (strncmp(g_aStrFile, "MOVE2", 5) == 0)
 		{
 			fscanf(pFile, "%f", &timelineTemp.move.x);
 			fscanf(pFile, "%f", &timelineTemp.move.y);
@@ -190,6 +191,7 @@ void _Read_ENEMYSET(FILE* pFile, int nWave, TIMELINE** dpTimeline)
 		(*dpTimeline)->eventType = EVENTTYPE_SETENEMY;
 		(*dpTimeline)->nType = timelineTemp.nType;
 		(*dpTimeline)->pos = timelineTemp.pos + timelineTemp.posOffset * nCount;
+		(*dpTimeline)->move = timelineTemp.move;
 		(*dpTimeline)->nCountTime = timelineTemp.nCountTime + (nCount * timelineTemp.nCountTimeOffset);
 		(*dpTimeline)->nWave = timelineTemp.nWave;
 		(*dpTimeline)->bInversed = timelineTemp.bInversed;

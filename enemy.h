@@ -68,6 +68,7 @@ typedef struct ENEMY
 	bool bHitEnabled;
 	bool bDamageEnabled;
 	bool bThroughBullet;
+	D3DXCOLOR originalColor;
 
 	D3DXVECTOR3 move;
 	ENEMYTYPE type;

@@ -29,6 +29,7 @@ D3DXVECTOR3 Normalize(D3DXVECTOR3 vector);
 D3DXVECTOR3 Direction(D3DXVECTOR3 from, D3DXVECTOR3 to);
 D3DXVECTOR3 Direction(float fAngle);
 float Angle(D3DXVECTOR3 from, D3DXVECTOR3 to);
+float Magnitude(D3DXVECTOR3 vector);
 float Magnitude(D3DXVECTOR3 from, D3DXVECTOR3 to);
 D3DXVECTOR2 Vector3To2(D3DXVECTOR3 source);
 D3DXVECTOR3 Vector2To3(D3DXVECTOR3 source, float fValueZ = 0.0f);
