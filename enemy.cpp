@@ -22,6 +22,7 @@
 #include "spriteEffect.h"
 #include "score.h"
 #include "enemyact.h"
+#include "bg.h"
 
 //*********************************************************************
 // 
@@ -59,7 +60,8 @@ const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 	"data\\TEXTURE\\enemy006.png",
 	"data\\TEXTURE\\enemy007.png",
 	"data\\TEXTURE\\enemy001.png",
-	"data\\TEXTURE\\enemy009.png",
+	"data\\TEXTURE\\enemy001.png",
+	"data\\TEXTURE\\enemy007.png",
 	// ƒ{ƒX
 	"data\\TEXTURE\\boss000.png",
 	"data\\TEXTURE\\boss001.png",	// 001A
@@ -76,11 +78,12 @@ ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
 	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,		300},					// 005
 	{ INIT_SIZE * 2.0f,	{0.0f, 1.5f, 0.0f},		100.0f,		500},					// 006
 	{ INIT_SIZE * 1.2f,	{1.0f, 8.0f, 0.0f},		15.0f,		300},					// 007
-	{ INIT_SIZE,		{3.0f, 0.0f, 0.0f},		30.0f,		0, BonusEnemy_Died},	// 008
-	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,		300},					// 009
-	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f},		750.0f,		5000, Boss000_Died},	// boss000
-	{ INIT_SIZE * 2.0f, {0, 0, 0},				250.0f,		5000, Boss010A_Died},	// boss001A
-	{ INIT_SIZE * 1.5f, {0, 0, 0},				1000000.0f,	0},						// boss001B
+	{ INIT_SIZE,		{3.0f, 0.0f, 0.0f},		30.0f,		0,		BonusEnemy_Died},	// 008
+	{ INIT_SIZE * 1.0f,	{0.0f, 7.0f, 0.0f},		5.0f,		100},							// 009
+	{ INIT_SIZE * 1.5f,	{25.0f, 0.0f, 0.0f},		100.0f,		300},							// 010
+	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f},		750.0f,		10000,	Boss000_Died},		// boss000
+	{ INIT_SIZE * 2.0f, {0, 0, 0},				250.0f,		5000,	Boss010A_Died},		// boss001A
+	{ INIT_SIZE * 1.5f, {0, 0, 0},				1000000.0f,	0},							// boss001B
 };
 
 //=====================================================================
@@ -340,7 +343,7 @@ void HitEnemy(ENEMY* pEnemy, float fDamage)
 		}
 
 		PlaySound(SOUND_LABEL_SE_HIT00);
-		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 1.0f);
+		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 1.0f, 0.0f, GetBackgroundSpeed());
 		pEnemy->bUsed = false;
 	}
 	else

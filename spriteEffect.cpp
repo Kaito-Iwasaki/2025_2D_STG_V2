@@ -123,6 +123,8 @@ void UpdateSpriteEffect(void)
 	{
 		if (pSpriteEffect->bUsed == false) continue;
 
+		pSpriteEffect->obj.pos += Direction(pSpriteEffect->fDirection) * pSpriteEffect->fSpeed;
+
 		pSpriteEffect->nCounterAnim++;
 
 		if (pSpriteEffect->nCounterAnim % pSpriteEffect->nAnimSpeed == 0)
@@ -189,7 +191,7 @@ void DrawSpriteEffect(void)
 // ***** スプライトエフェクト設定処理 *****
 // 
 //=====================================================================
-void SetSpriteEffect(SPRITEEFFECTTYPE type, D3DXVECTOR3 pos, float fScale)
+void SetSpriteEffect(SPRITEEFFECTTYPE type, D3DXVECTOR3 pos, float fScale, float fDirection, float fSpeed)
  {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	SPRITEEFFECT* pSpriteEffect = &g_aSpriteEffect[0];
@@ -207,6 +209,8 @@ void SetSpriteEffect(SPRITEEFFECTTYPE type, D3DXVECTOR3 pos, float fScale)
 		pSpriteEffect->obj.bVisible = true;
 		pSpriteEffect->nMaxPattern = g_aSpriteEffectInfo[type].nMaxPattern;
 		pSpriteEffect->nAnimSpeed = g_aSpriteEffectInfo[type].nAnimSpeed;
+		pSpriteEffect->fDirection = fDirection;
+		pSpriteEffect->fSpeed = fSpeed;
 
 		break;
 	}

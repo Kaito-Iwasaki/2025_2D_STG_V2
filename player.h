@@ -62,6 +62,7 @@ typedef struct
 	float fLife;
 	float fCharge;
 	D3DXVECTOR3 hitBoxSize;
+	int nCountHit;
 
 	int nCounterState;
 	int nCounterShoot;

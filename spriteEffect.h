@@ -47,6 +47,8 @@ typedef struct
 	int nCounterAnim;			// アニメーションカウント
 	int nPatternAnim;		// アニメーションパターンNo
 	int nMaxPattern;
+	float fDirection;
+	float fSpeed;
 }SPRITEEFFECT;
 
 //*********************************************************************
@@ -58,6 +60,6 @@ void InitSpriteEffect(void);
 void UninitSpriteEffect(void);
 void UpdateSpriteEffect(void);
 void DrawSpriteEffect(void);
-void SetSpriteEffect(SPRITEEFFECTTYPE type, D3DXVECTOR3 pos, float fScale);
+void SetSpriteEffect(SPRITEEFFECTTYPE type, D3DXVECTOR3 pos, float fScale, float fDirection, float fSpeed = 0.0f);
 
 #endif

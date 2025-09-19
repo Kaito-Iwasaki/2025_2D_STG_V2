@@ -140,10 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
-    <ClInclude Include="boss000.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="effect.h">
       <SubType>
       </SubType>

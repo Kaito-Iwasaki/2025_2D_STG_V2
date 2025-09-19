@@ -206,3 +206,8 @@ void SetBackgroundSpeedMove(float fSpeed, float fScale)
 	g_fGlobalSpeedMoveScale = fScale;
 }
 
+float GetBackgroundSpeed(void)
+{
+	return g_fGlobalSpeed;
+}
+

@@ -73,6 +73,7 @@ void InitPlayer(void)
 	g_player.fLife = PLAYER_HEAL_MAX;
 	g_player.fCharge = INIT_PLAYER_CHARGE;
 	g_player.hitBoxSize = PLAYER_HITBOX_SIZE;
+	g_player.nCountHit = 0;
 
 	// テクスチャの読み込み
 	if (TEXTURE_FILENAME)
@@ -278,13 +279,14 @@ void HitPlayer(void)
 	if (g_player.state == PLAYERSTATE_END)		return;		// ゲーム終了状態
 	if (GetGameState() == GAMESTATE_END)		return;		// ゲーム終了状態
 
-	g_player.fLife -= 1;
+	g_player.fLife--;
+	g_player.nCountHit++;
 
 	if (g_player.fLife <= 0)
 	{
 		PlaySound(SOUND_LABEL_SE_HIT02);
 		SetVibration(30000, 30000, 50);
-		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, g_player.obj.pos, 1.5f);
+		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, g_player.obj.pos, 1.5f, 0.0f);
 		_SetPlayerState(PLAYERSTATE_DIED);
 	}
 	else

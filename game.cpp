@@ -74,6 +74,7 @@ void InitGame(STAGETYPE stagetype)
 	memset(&g_stage, 0, sizeof(g_stage));
 	g_stage.bPaused = false;
 	g_stage.nCountGameState = 0;
+	g_stage.nCountWaveTime = 0;
 	g_stage.nCurrentWave = 0;
 	g_stage.nCountTimeline = 0;
 	g_stage.nMaxWave = 0;
@@ -220,7 +221,8 @@ void UpdateGame(void)
 
 			g_stage.nCountTimeline++;
 
-			if (g_stage.nCountGameState > g_stage.nWaveInterval)
+			if (g_stage.nCountGameState > g_stage.nWaveInterval &&
+				g_stage.nCountTimeline > 60)
 			{
 				SetWave(g_stage.nCurrentWave + 1);
 			}
@@ -273,6 +275,10 @@ void SetWave(int nWave)
 {
 	if (nWave > g_stage.nMaxWave)
 	{
+		if (GetPlayer()->nCountHit == 0)
+		{
+			BonusScore(5000, "NO HIT BONUS");
+		}
 		g_stage.state = GAMESTATE_END;
 	}
 	else

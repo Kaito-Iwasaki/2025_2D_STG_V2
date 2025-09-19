@@ -55,12 +55,6 @@
     <Filter Include="ソース ファイル\Component\Enemy">
       <UniqueIdentifier>{37f85059-dd86-4b78-8fa2-a6ae78e813aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\GameObject\Boss">
-      <UniqueIdentifier>{facfb36b-a99e-41e5-a4a1-73d6ce826991}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\GameObject\Boss">
-      <UniqueIdentifier>{79ca0d09-bb65-4cce-ae0d-94ba46da1730}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sound.cpp">
@@ -247,9 +241,6 @@
     </ClInclude>
     <ClInclude Include="keylogger.h">
       <Filter>ヘッダー ファイル\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="boss000.h">
-      <Filter>ヘッダー ファイル\GameObject\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

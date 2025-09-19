@@ -48,5 +48,6 @@ void DrawBackground(void);
 BACKGROUND* GetBackground(void);
 void SetBackgroundSpeed(float fSpeed);
 void SetBackgroundSpeedMove(float fSpeed, float fScale);
+float GetBackgroundSpeed(void);
 
 #endif

@@ -47,7 +47,7 @@ void UpdateScore(void);
 void DrawScore(void);
 void SetScore(int nScore);
 void AddScore(int nValue);
-void BonusScore(int nValue);
+void BonusScore(int nValue, const char* pStr = "BONUS");
 int GetScore(void);
 
 #endif

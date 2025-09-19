@@ -181,12 +181,12 @@ void AddScore(int nValue)
 	g_score.nScore += nValue;
 }
 
-void BonusScore(int nValue)
+void BonusScore(int nValue, const char* pStr)
 {
 	PlaySound(SOUND_LABEL_SE_BONUS);
 	g_score.nScore += nValue;
 
-	sprintf(&g_pFontBonus->aText[0], "BONUS:%d", nValue);
+	sprintf(&g_pFontBonus->aText[0], "%s:%d", pStr, nValue);
 
 	g_pFontBonus->obj.bVisible = true;
 	g_score.nCounterState = 0;

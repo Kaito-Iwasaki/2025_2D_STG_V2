@@ -129,6 +129,7 @@ void (*g_aActFunction[ENEMYTYPE_MAX])(ENEMY* pEnemy) = {
 	Enemy007_Act,
 	Enemy008_Act,
 	Enemy009_Act,
+	Enemy010_Act,
 	Boss000_Act,
 	Boss010A_Act,
 	Boss010B_Act,
@@ -474,24 +475,112 @@ void Enemy008_Act(ENEMY* pEnemy)
 	}
 }
 
-//=====================================================================
-// E009 | おっさん
-//=====================================================================
-void Enemy009_Act(ENEMY* pEnemy)
-{
-
-}
-
 void BonusEnemy_Died(ENEMY* pEnemy)
 {
 	STAGE* pStage = GetStage();
 
 	BonusScore(pStage->nBonus);
 	PlaySound(SOUND_LABEL_SE_HIT00);
-	SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 1.0f);
+	SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 1.0f, 0.0f);
 	pEnemy->bUsed = false;
 
 	pStage->nBonus *= 2;
+}
+
+//=====================================================================
+// E009 | 丸2
+//=====================================================================
+void Enemy009_Act(ENEMY* pEnemy)
+{
+	PLAYER* pPlayer = GetPlayer();
+
+	switch (pEnemy->nMode)
+	{
+	case 0:
+		pEnemy->fShootRot = Angle(pEnemy->obj.pos, pPlayer->obj.pos);
+
+		if (Magnitude(pEnemy->obj.pos, pPlayer->obj.pos) < 3.0f);
+		{
+			pEnemy->nMode++;
+		}
+		break;
+
+	case 1:
+		break;
+	}
+
+	pEnemy->obj.pos += Direction(pEnemy->fShootRot) * pEnemy->move.y;
+	pEnemy->obj.rot.z += 0.1f;
+}
+
+//=====================================================================
+// E010 | さんかく２
+//=====================================================================
+void Enemy010_Act(ENEMY* pEnemy)
+{
+	switch (pEnemy->nMode)
+	{
+	case 0:
+		pEnemy->disapperFlags = OOS_LEFT | OOS_RIGHT;
+		if (pEnemy->obj.pos.x < SCREEN_CENTER)
+		{
+			pEnemy->disapperFlags = OOS_RIGHT;
+		}
+		else
+		{
+			pEnemy->disapperFlags = OOS_LEFT;
+		}
+
+		pEnemy->nMode++;
+
+	case 1:	// 出現
+		pEnemy->obj.pos.x += pEnemy->move.x;
+		pEnemy->move.x += (0.0f - pEnemy->move.x) * 0.05f;
+
+		if (pEnemy->nCounterMode > E005_MOVE_INTERVAL01)
+		{
+			pEnemy->nMode++;
+			pEnemy->nCounterMode = 0;
+		}
+
+		break;
+
+	case 2:	// 弾発射
+		if (pEnemy->nCounterShoot % 30 == 0)
+		{
+			pEnemy->nCounterShoot = 0;
+			pEnemy->fShootRot = Angle(pEnemy->obj.pos, GetPlayer()->obj.pos);
+			SetEnemyBullet(
+				ENEMYBULLET_TYPE_001,
+				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E007_SHOOT_OFFSET,
+				5,
+				pEnemy->fShootRot);
+			SetEnemyBullet(
+				ENEMYBULLET_TYPE_001,
+				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E007_SHOOT_OFFSET,
+				5,
+				pEnemy->fShootRot + 0.4f);
+			SetEnemyBullet(
+				ENEMYBULLET_TYPE_001,
+				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E007_SHOOT_OFFSET,
+				5,
+				pEnemy->fShootRot - 0.4f);
+			pEnemy->nShot++;
+
+			if (pEnemy->nShot > 10)
+			{
+				pEnemy->nMode++;
+			}
+		}
+		break;
+
+	case 3:	// 逃走
+		pEnemy->move.x *= 1.05f;
+		pEnemy->obj.pos.x += pEnemy->move.x;
+		break;
+	}
+
+	pEnemy->obj.rot.z += 0.2f;
 }
 
 //=====================================================================
@@ -587,14 +676,14 @@ void Boss000_Died(ENEMY* pEnemy)
 	}
 
 	// 爆発エフェクト
-	SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos + D3DXVECTOR3(fRandX, fRandY, 0.0f), 1.0f);
+	SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos + D3DXVECTOR3(fRandX, fRandY, 0.0f), 1.0f, 0.0f);
 
 	// 爆発パーティクル
 	SetParticle(info, pEnemy->obj.pos, 0, D3DX_PI * 2, 1, 10);
 
 	if (pEnemy->nCounterState > 120)
 	{// 消滅
-		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 4.0f);
+		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 4.0f, 0.0f);
 		SetParticle(info, pEnemy->obj.pos, 0, D3DX_PI * 2, 1, 30);
 
 		pEnemy->bUsed = false;

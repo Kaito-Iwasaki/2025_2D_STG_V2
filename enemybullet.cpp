@@ -21,6 +21,7 @@
 #include "baseScene.h"
 #include "score.h"
 #include "particle.h"
+#include "bg.h"
 
 //*********************************************************************
 // 
@@ -135,7 +136,7 @@ void UpdateEnemyBullet(void)
 
 		if (pEnemyBullet->fLife <= 0)
 		{// ’eŽ€–S
-			SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.8f);
+			SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.8f, 0.0f);
 			pEnemyBullet->bUsed = false;
 			continue;
 		}
@@ -351,7 +352,7 @@ void HitEnemyBullet(ENEMYBULLET* pEnemyBullet)
 	if (pEnemyBullet->fLife <= 0)
 	{
 		PlaySound(SOUND_LABEL_SE_HIT00, 0.5f);
-		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.75f);
+		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.75f, 0.0f, GetBackgroundSpeed());
 		AddScore(g_aEnemyBulletInfo[pEnemyBullet->type].nScore);
 		pEnemyBullet->bUsed = false;
 	}
@@ -370,7 +371,7 @@ void DestroyAllEnemyBullet(void)
 	{
 		if (pEnemyBullet->bUsed == false) continue;
 
-		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.75f);
+		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemyBullet->obj.pos, 0.75f, 0.0f, GetBackgroundSpeed());
 		pEnemyBullet->bUsed = false;
 	}
 }

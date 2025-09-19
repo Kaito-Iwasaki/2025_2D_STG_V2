@@ -78,6 +78,7 @@ typedef struct
 	bool bPaused;
 	int nCurrentWave;
 	int nCountGameState;
+	int nCountWaveTime;
 	int nCountTimeline;
 	int nCountElapsed;
 	int nMaxWave;
