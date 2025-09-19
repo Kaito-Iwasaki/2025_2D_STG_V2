@@ -780,6 +780,7 @@ void Boss010A_Died(ENEMY* pEnemy)
 	if (BoxCollision(pEnemy->obj.pos, pEnemy->hitboxSize, pPlayer->obj.pos, pPlayer->hitBoxSize))
 	{
 		BonusScore(10000);
+		AddScore(-2);
 	}
 }
 
