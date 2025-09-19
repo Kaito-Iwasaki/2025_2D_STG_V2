@@ -291,11 +291,11 @@ void HitPlayer(void)
 	}
 	else
 	{
+		PlaySound(SOUND_LABEL_SE_HIT01);
 		if (g_player.fLife <= 1.0f)
 		{
 			PlaySound(SOUND_LABEL_SE_ALERT);
 		}
-		PlaySound(SOUND_LABEL_SE_HIT01);
 		SetVibration(30000, 30000, 50);
 		_SetPlayerState(PLAYERSTATE_BLINK);
 	}

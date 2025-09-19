@@ -32,7 +32,7 @@
 #define FILEPATH_RANKING		"data\\ranking.bin"
 #define MAX_PLACE				(10)
 
-#define INIT_RANKING			{ 10000, 5000, 3000, 2000, 1000 }
+#define INIT_RANKING			{ 30000, 20000, 10000, 7500, 5000 }
 
 #define FADE_START				(600)
 
