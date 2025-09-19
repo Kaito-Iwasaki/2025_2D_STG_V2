@@ -138,7 +138,7 @@ FONT* GetFont(void)
 //=====================================================================
 // ‰æ‘œ‚ÌÝ’èˆ—
 //=====================================================================
-FONT* SetFont(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, const char* aText, UINT format)
+FONT* SetFont(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, int nScale, const char* aText, UINT format)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -158,7 +158,7 @@ FONT* SetFont(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col,
 			strcpy(&pFont->aText[0], aText);
 
 			D3DXFONT_DESC fontDesc = {
-				40,								// Height
+				nScale,								// Height
 				0,								// Width (0 = Ž©“®)
 				FW_NORMAL,						// Weight
 				1,								// MipLevels

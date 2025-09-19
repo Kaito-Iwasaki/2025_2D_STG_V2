@@ -546,7 +546,7 @@ void Enemy010_Act(ENEMY* pEnemy)
 		break;
 
 	case 2:	// ’e”­ŽË
-		if (pEnemy->nCounterShoot % 30 == 0)
+		if (pEnemy->nCounterShoot % 40 == 0)
 		{
 			pEnemy->nCounterShoot = 0;
 			pEnemy->fShootRot = Angle(pEnemy->obj.pos, GetPlayer()->obj.pos);

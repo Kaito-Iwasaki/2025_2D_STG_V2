@@ -61,7 +61,7 @@ void UninitFont(void);
 void UpdateFont(void);
 void DrawFont(void);
 FONT* GetFont(void);
-FONT* SetFont(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, const char* aText, UINT format);
+FONT* SetFont(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, int nScale, const char* aText, UINT format);
 void DeleteFont(int nID);
 void DeleteFont(void);
 

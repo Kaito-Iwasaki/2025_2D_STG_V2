@@ -63,6 +63,7 @@ void InitScore(void)
 		D3DXVECTOR3(540, 200, 0.0f),
 		D3DXVECTOR3_ZERO,
 		D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f),
+		40,
 		"",
 		DT_CENTER
 	);

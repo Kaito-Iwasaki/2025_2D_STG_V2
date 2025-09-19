@@ -70,17 +70,17 @@ const char* g_aEnemyFileName[ENEMYTYPE_MAX] = {
 
 // 敵の情報[サイズ | 移動量 | 体力 | スコア]
 ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
-	{ INIT_SIZE,		{0.0f, 2.0f, 0.0f},		10.0f,		150},					// 000
-	{ INIT_SIZE,		{0.05f, 2.0f, 100.0f},	2.0f,		100},					// 001
-	{ INIT_SIZE,		{0.0f, 10.0f, 0.0f},	10.0f,		200},					// 002
-	{ INIT_SIZE,		{0.0f, 7.0f, 0.0f},		4.0f,		100},					// 003
-	{ INIT_SIZE * 1.2f,	{0.0f, 5.0f, 0.0f},		25.0f,		1000},					// 004
-	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,		300},					// 005
-	{ INIT_SIZE * 2.0f,	{0.0f, 1.5f, 0.0f},		100.0f,		500},					// 006
-	{ INIT_SIZE * 1.2f,	{1.0f, 8.0f, 0.0f},		15.0f,		300},					// 007
-	{ INIT_SIZE,		{3.0f, 0.0f, 0.0f},		30.0f,		0,		BonusEnemy_Died},	// 008
-	{ INIT_SIZE * 1.0f,	{0.0f, 7.0f, 0.0f},		5.0f,		100},							// 009
-	{ INIT_SIZE * 1.5f,	{25.0f, 0.0f, 0.0f},		100.0f,		300},							// 010
+	{ INIT_SIZE,		{0.0f, 2.0f, 0.0f},		10.0f,		200},						// 000
+	{ INIT_SIZE,		{0.05f, 2.0f, 100.0f},	2.0f,		100},						// 001
+	{ INIT_SIZE,		{0.0f, 10.0f, 0.0f},	10.0f,		200},						// 002
+	{ INIT_SIZE,		{0.0f, 7.0f, 0.0f},		4.0f,		100},						// 003
+	{ INIT_SIZE * 1.2f,	{0.0f, 5.0f, 0.0f},		25.0f,		1000},						// 004
+	{ INIT_SIZE * 1.2f,	{10.0f, 0.0f, 0.0f},	30.0f,		500},						// 005
+	{ INIT_SIZE * 2.0f,	{0.0f, 1.5f, 0.0f},		100.0f,		800},						// 006
+	{ INIT_SIZE * 1.2f,	{1.0f, 8.0f, 0.0f},		15.0f,		300},						// 007
+	{ INIT_SIZE,		{3.0f, 0.0f, 0.0f},		15.0f,		0,		BonusEnemy_Died},	// 008
+	{ INIT_SIZE * 1.0f,	{0.0f, 7.0f, 0.0f},		5.0f,		100},						// 009
+	{ INIT_SIZE * 1.5f,	{25.0f, 0.0f, 0.0f},	80.0f,		1500},						// 010
 	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f},		750.0f,		10000,	Boss000_Died},		// boss000
 	{ INIT_SIZE * 2.0f, {0, 0, 0},				250.0f,		5000,	Boss010A_Died},		// boss001A
 	{ INIT_SIZE * 1.5f, {0, 0, 0},				1000000.0f,	0},							// boss001B

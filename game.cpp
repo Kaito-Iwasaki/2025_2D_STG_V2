@@ -277,7 +277,7 @@ void SetWave(int nWave)
 	{
 		if (GetPlayer()->nCountHit == 0)
 		{
-			BonusScore(5000, "NO HIT BONUS");
+			BonusScore(10000, "NO HIT BONUS");
 		}
 		g_stage.state = GAMESTATE_END;
 	}

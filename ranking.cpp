@@ -76,19 +76,21 @@ void InitRanking(void)
 		D3DXVECTOR3(GAME_SCREEN_WIDTH, 100.0f, 0.0f),
 		D3DXVECTOR3_ZERO,
 		D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
+		40,
 		"RANKING",
 		DT_CENTER
 	);
 
 	for (int nCount = 0; nCount < MAX_PLACE; nCount++)
 	{
-		sprintf(&aString[0], "%2d, %08d", nCount + 1, g_aRanking[nCount]);
+		sprintf(&aString[0], "%2d, %06d", nCount + 1, g_aRanking[nCount]);
 
 		g_apFontNum[nCount] = SetFont(
 			D3DXVECTOR3(GAME_SCREEN_START, 125.0f + (nCount * 50.0f), 0.0f),
 			D3DXVECTOR3(GAME_SCREEN_WIDTH, 100.0f, 0.0f),
 			D3DXVECTOR3_ZERO,
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			40,
 			&aString[0],
 			DT_CENTER
 		);
@@ -151,26 +153,36 @@ void DrawRanking(void)
 
 void SaveScore(int nScore)
 {
+	// ファイルからランキングを読み込み
 	LoadBin(FILEPATH_RANKING, &g_aRanking[0], sizeof(int), MAX_PLACE);
 
+	// 並び変える
 	qsort(&g_aRanking[0], MAX_PLACE, sizeof(int), compare);
 
 	if (g_aRanking[MAX_PLACE - 1] < nScore)
-	{
+	{// 一番低いスコアより現在のスコアの方が高かったら置き換える
 		g_aRanking[MAX_PLACE - 1] = nScore;
 	}
+	else
+	{// そうでなければ保存しない
+		return;
+	}
 
+	// 並び変える
 	qsort(&g_aRanking[0], MAX_PLACE, sizeof(int), compare);
 
+	// 点滅情報の設定
 	for (int nCount = MAX_PLACE - 1; nCount >= 0; nCount--)
-	{
+	{// ランキングを下から確認していく
 		if (g_aRanking[nCount] == nScore)
 		{
+			// 同じだったら点滅情報を設定
 			g_nHighlight = nCount;
 			break;
 		}
 	}
 
+	// ファイルにランキングを書き出し
 	SaveBin(FILEPATH_RANKING, &g_aRanking[0], sizeof(int), MAX_PLACE);
 }
 

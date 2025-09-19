@@ -70,6 +70,7 @@ void InitResult(void)
 			D3DXVECTOR3(540, 200, 0.0f),
 			D3DXVECTOR3_ZERO,
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			40,
 			"GAME CLEAR",
 			DT_CENTER
 		);
@@ -78,6 +79,7 @@ void InitResult(void)
 			D3DXVECTOR3(540, 200, 0.0f),
 			D3DXVECTOR3_ZERO,
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			40,
 			&aMessage[0],
 			DT_CENTER
 		);
@@ -89,6 +91,7 @@ void InitResult(void)
 			D3DXVECTOR3(540, 200, 0.0f),
 			D3DXVECTOR3_ZERO,
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			40,
 			"GAME OVER",
 			DT_CENTER
 		);

@@ -66,6 +66,7 @@ void InitTutorial(void)
 		D3DXVECTOR3(GAME_SCREEN_WIDTH, 400.0f, 0.0f),
 		D3DXVECTOR3_ZERO,
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		40,
 		"PRESS ENTER\nOR\nPRESS START",
 		DT_CENTER
 	);

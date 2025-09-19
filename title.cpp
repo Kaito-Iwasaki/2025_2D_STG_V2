@@ -48,6 +48,7 @@ TITLESTATE g_stateTitle = TITLESTATE_INTRO;
 DECAL* g_DecalPlayer;
 DECAL* g_DecalLogo;
 FONT* g_FontStart;
+FONT* g_FontCredit;
 
 //=====================================================================
 // ‰Šú‰»ˆ—
@@ -86,10 +87,22 @@ void InitTitle(void)
 		D3DXVECTOR3(GAME_SCREEN_WIDTH, 400.0f, 0.0f),
 		D3DXVECTOR3_ZERO,
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		40,
 		"PRESS ENTER\nOR\nPRESS START",
 		DT_CENTER
 	);
 	g_FontStart->obj.bVisible = false;
+
+	g_FontCredit = SetFont(
+		D3DXVECTOR3(GAME_SCREEN_START, 690.0f, 0.0f),
+		D3DXVECTOR3(GAME_SCREEN_WIDTH, 400.0f, 0.0f),
+		D3DXVECTOR3_ZERO,
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		25,
+		"(C) 2025 KAITO IWASAKI ",
+		DT_CENTER
+	);
+	g_FontCredit->obj.bVisible = false;
 }
 
 //=====================================================================
@@ -132,6 +145,7 @@ void UpdateTitle(void)
 			g_nCountStateTitle = 0;
 			g_stateTitle = TITLESTATE_NORMAL;
 			g_FontStart->obj.bVisible = true;
+			g_FontCredit->obj.bVisible = true;
 		}
 		break;
 
