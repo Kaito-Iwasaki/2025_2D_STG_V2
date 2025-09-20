@@ -76,6 +76,7 @@ typedef struct ENEMY
 	ENEMYSTATE state;
 	int nMode;
 	float fLife;
+	float fMaxLife;
 	int nShot;
 	int nShootInterval;
 	float fShootSpeed;

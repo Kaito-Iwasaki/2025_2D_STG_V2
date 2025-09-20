@@ -323,7 +323,7 @@ bool SetEnemyBullet(ENEMYBULLET_TYPE type, D3DXVECTOR3 pos, float fSpeed, float 
 			pEnemyBullet->fSpeed = fSpeed;
 			pEnemyBullet->fAngle = fAngle;
 			pEnemyBullet->fDamage = 1.0f;
-			pEnemyBullet->fLife = INIT_ENEMYBULLET_LIFE;
+			pEnemyBullet->fLife = g_aEnemyBulletInfo[type].fLife;
 			pEnemyBullet->type = type;
 			pEnemyBullet->state = ENEMYBULLETSTATE_NORMAL;
 			pEnemyBullet->obj.bVisible = true;

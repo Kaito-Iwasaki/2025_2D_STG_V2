@@ -21,6 +21,7 @@
 #include "particle.h"
 #include "collision.h"
 #include "score.h"
+#include "baseScene.h"
 
 //*********************************************************************
 // 
@@ -80,6 +81,7 @@
 #define E006_SHOOT_SPEED		(2.0f)
 #define E006_SHOOT_NUM			(12.0f)
 #define E006_SHOOT_INTERVAL		(80)
+#define E006_SHOOT_ENABLE		(480)
 
 //*********************************************************************
 // Enemy007
@@ -362,7 +364,7 @@ void Enemy006_Act(ENEMY* pEnemy)
 {
 	pEnemy->obj.pos.y += pEnemy->move.y;
 
-	if (pEnemy->nCounterShoot % E006_SHOOT_INTERVAL == 0)
+	if (pEnemy->nCounterShoot % E006_SHOOT_INTERVAL == 0 && pEnemy->obj.pos.y < E006_SHOOT_ENABLE)
 	{
 		pEnemy->fShootRot += (D3DX_PI / E006_SHOOT_NUM);
 		for (int nCount = 0; nCount < E006_SHOOT_NUM; nCount++)
@@ -546,7 +548,7 @@ void Enemy010_Act(ENEMY* pEnemy)
 		break;
 
 	case 2:	// ’e”­ŽË
-		if (pEnemy->nCounterShoot % 40 == 0)
+		if (pEnemy->nCounterShoot % 50 == 0)
 		{
 			pEnemy->nCounterShoot = 0;
 			pEnemy->fShootRot = Angle(pEnemy->obj.pos, GetPlayer()->obj.pos);
@@ -588,66 +590,150 @@ void Enemy010_Act(ENEMY* pEnemy)
 //=====================================================================
 void Boss000_Act(ENEMY* pEnemy)
 {
-	if (pEnemy->obj.pos.y < BOSS000_MOVE_APPEAR)
+	switch (pEnemy->nMode)
 	{
+	case 0:
+		pEnemy->move.x = 1.0f;
+		pEnemy->bDamageEnabled = false;
+		pEnemy->nMode++;
+
+	case 1:
 		pEnemy->obj.pos.y += pEnemy->move.y;
-	}
-	else
-	{
+		if (pEnemy->obj.pos.y > BOSS000_MOVE_APPEAR)
+		{
+			pEnemy->bDamageEnabled = true;
+			pEnemy->nMode++;
+		}
+		break;
+
+	case 2:
+		if (pEnemy->fLife < pEnemy->fMaxLife / 2)
+		{
+			pEnemy->nMode++;
+			break;
+		}
+
 		if (
-			pEnemy->obj.pos.x < SCREEN_CENTER - BOSS000_MOVE_RANGE ||
-			pEnemy->obj.pos.x > SCREEN_CENTER + BOSS000_MOVE_RANGE
+			pEnemy->obj.pos.x < GAME_SCREEN_START + pEnemy->obj.size.x / 2 ||
+			pEnemy->obj.pos.x > GAME_SCREEN_END - pEnemy->obj.size.x / 2
 			)
 		{
-			pEnemy->move *= -1;
+			pEnemy->move.x *= -1;
 		}
 		pEnemy->obj.pos.x += pEnemy->move.x;
-	}
-	pEnemy->obj.rot.z += 0.1f;
 
-	if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL01 == 0)
-	{
-		if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL02 == 0)
-		{// Ž©‹@‘_‚¢
+		if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL01 == 0)
+		{
+			if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL02 == 0)
+			{// Ž©‹@‘_‚¢
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_000,
+					pEnemy->obj.pos,
+					BOSS000_SHOOT_SPEED01,
+					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos),
+					25
+				);
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_000,
+					pEnemy->obj.pos,
+					BOSS000_SHOOT_SPEED01,
+					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) + 0.4f,
+					25
+				);
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_000,
+					pEnemy->obj.pos,
+					BOSS000_SHOOT_SPEED01,
+					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) - 0.4f,
+					25
+				);
+			}
+
+			pEnemy->fShootRot += 0.6f;
 			SetEnemyBullet(
-				ENEMYBULLET_TYPE_000,
-				pEnemy->obj.pos,
-				BOSS000_SHOOT_SPEED01,
-				Angle(pEnemy->obj.pos, GetPlayer()->obj.pos),
-				30
+				ENEMYBULLET_TYPE_001,
+				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 30.0f,
+				BOSS000_SHOOT_SPEED02,
+				pEnemy->fShootRot,
+				15
 			);
 			SetEnemyBullet(
-				ENEMYBULLET_TYPE_000,
-				pEnemy->obj.pos,
-				BOSS000_SHOOT_SPEED01,
-				Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) + 0.4f,
-				30
-			);
-			SetEnemyBullet(
-				ENEMYBULLET_TYPE_000,
-				pEnemy->obj.pos,
-				BOSS000_SHOOT_SPEED01,
-				Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) - 0.4f,
-				30
+				ENEMYBULLET_TYPE_001,
+				pEnemy->obj.pos + Direction(pEnemy->fShootRot + D3DX_PI) * 30.0f,
+				BOSS000_SHOOT_SPEED02,
+				pEnemy->fShootRot + D3DX_PI,
+				15
 			);
 		}
 
-		pEnemy->fShootRot += 0.6f;
-		SetEnemyBullet(
-			ENEMYBULLET_TYPE_001,
-			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 30.0f,
-			BOSS000_SHOOT_SPEED02,
-			pEnemy->fShootRot,
-			15
-		);
-		SetEnemyBullet(
-			ENEMYBULLET_TYPE_001,
-			pEnemy->obj.pos + Direction(pEnemy->fShootRot + D3DX_PI) * 30.0f,
-			BOSS000_SHOOT_SPEED02,
-			pEnemy->fShootRot + D3DX_PI,
-			15
-		);
+
+		break;	
+
+	case 3:
+		if (
+			pEnemy->obj.pos.x < GAME_SCREEN_START + pEnemy->obj.size.x / 2 ||
+			pEnemy->obj.pos.x > GAME_SCREEN_END - pEnemy->obj.size.x / 2
+			)
+		{
+			pEnemy->move.x *= -1;
+		}
+		if (
+			pEnemy->obj.pos.y < 0 + pEnemy->obj.size.y / 2 ||
+			pEnemy->obj.pos.y > SCREEN_HEIGHT - pEnemy->obj.size.y / 2
+			)
+		{
+			pEnemy->move.y *= -1;
+		}
+		pEnemy->obj.pos.x += pEnemy->move.x;
+
+		if (pEnemy->nCounterShoot % 2 == 0)
+		{
+			if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL02 == 0)
+			{// Ž©‹@‘_‚¢
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_000,
+					pEnemy->obj.pos,
+					BOSS000_SHOOT_SPEED01,
+					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos),
+					25
+				);
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_000,
+					pEnemy->obj.pos,
+					BOSS000_SHOOT_SPEED01,
+					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) + 0.4f,
+					25
+				);
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_000,
+					pEnemy->obj.pos,
+					BOSS000_SHOOT_SPEED01,
+					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) - 0.4f,
+					25
+				);
+			}
+
+			pEnemy->fShootRot += 0.6f;
+			SetEnemyBullet(
+				ENEMYBULLET_TYPE_001,
+				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 30.0f,
+				BOSS000_SHOOT_SPEED02,
+				pEnemy->fShootRot,
+				15
+			);
+			SetEnemyBullet(
+				ENEMYBULLET_TYPE_001,
+				pEnemy->obj.pos + Direction(pEnemy->fShootRot + D3DX_PI) * 30.0f,
+				BOSS000_SHOOT_SPEED02,
+				pEnemy->fShootRot + D3DX_PI,
+				15
+			);
+		}
+
+		break;
 	}
+
+	pEnemy->obj.rot.z += 0.1f;
 }
 
 void Boss000_Died(ENEMY* pEnemy)

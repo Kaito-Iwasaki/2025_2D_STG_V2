@@ -94,7 +94,7 @@ void InitGame(STAGETYPE stagetype)
 	);
 
 	SetBackgroundSpeed(20.0f);
-	SetBackgroundSpeedMove(1.0f, 0.001f);
+	SetBackgroundSpeedMove(3.0f, 0.001f);
 
 	LoadStage(g_aStageFileName[stagetype], &g_stage);
 }
