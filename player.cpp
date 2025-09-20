@@ -232,7 +232,6 @@ void UpdatePlayer(void)
 	if (GetKeyboardPress(DIK_D) || GetJoypadPress(JOYKEY_RIGHT) || GetJoystickPress(JOYSTICK_L_RIGHT))
 	{// âE
 		direction.x += 1;
-		//g_player.obj.bInversed = false;
 	}
 	if (GetKeyboardPress(DIK_W) || GetJoypadPress(JOYKEY_UP) || GetJoystickPress(JOYSTICK_L_UP))
 	{// è„

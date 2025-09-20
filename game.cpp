@@ -137,7 +137,6 @@ void UpdateGame(void)
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START))
 	{
 		if (g_stage.state == GAMESTATE_RESULT) return;
-		if (g_stage.state == GAMESTATE_END) return;
 
 		TogglePause(g_stage.bPaused ^ 1);
 	}

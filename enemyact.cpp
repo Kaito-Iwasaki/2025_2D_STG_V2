@@ -570,7 +570,7 @@ void Enemy010_Act(ENEMY* pEnemy)
 				pEnemy->fShootRot - 0.4f);
 			pEnemy->nShot++;
 
-			if (pEnemy->nShot > 7)
+			if (pEnemy->nShot > 8)
 			{
 				pEnemy->nMode++;
 			}
