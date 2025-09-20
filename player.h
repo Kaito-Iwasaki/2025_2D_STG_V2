@@ -36,8 +36,10 @@
 //*********************************************************************
 typedef enum
 {
-	PLAYERSTATE_NORMAL = 0,
+	PLAYERSTATE_INIT = 0,
+	PLAYERSTATE_NORMAL,
 	PLAYERSTATE_APPEAR,
+	PLAYERSTATE_DISAPPEAR,
 	PLAYERSTATE_BLINK,
 	PLAYERSTATE_DIED,
 	PLAYERSTATE_CONTINUE,
@@ -63,6 +65,7 @@ typedef struct
 	float fCharge;
 	D3DXVECTOR3 hitBoxSize;
 	int nCountHit;
+	D3DXVECTOR3 move;
 
 	int nCounterState;
 	int nCounterShoot;
@@ -80,5 +83,6 @@ void UpdatePlayer(void);
 void DrawPlayer(void);
 PLAYER* GetPlayer(void);
 void HitPlayer(void);
+void SetPlayerState(PLAYERSTATE state);
 
 #endif

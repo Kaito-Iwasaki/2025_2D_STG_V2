@@ -22,6 +22,8 @@
 #include "spriteEffect.h"
 #include "fade.h"
 #include "game.h"
+#include "effect.h"
+#include "particle.h"
 
 //*********************************************************************
 // 
@@ -31,7 +33,7 @@
 #define TEXTURE_FILENAME		"data\\TEXTURE\\player000.png"
 #define NUM_TEXTURE				(2)
 
-#define INIT_POS				{SCREEN_WIDTH / 2, SCREEN_HEIGHT/ 2 + 200, 0.0f}
+#define INIT_POS				{SCREEN_WIDTH / 2, SCREEN_HEIGHT + 50, 0.0f}
 #define INIT_SIZE				{64.0f, 64.0f, 0.0f}
 #define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
 
@@ -42,7 +44,6 @@
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void _SetPlayerState(PLAYERSTATE state);
 
 //*********************************************************************
 // 
@@ -67,7 +68,7 @@ void InitPlayer(void)
 	g_player.obj.color = INIT_COLOR;
 	g_player.obj.bVisible = true;
 
-	g_player.state = PLAYERSTATE_BLINK;
+	g_player.state = PLAYERSTATE_INIT;
 	g_player.fSpeed = PLAYER_SPEED;
 	g_player.fShootSpeed = PLAYER_SHOOT_SPEED;
 	g_player.fLife = PLAYER_HEAL_MAX;
@@ -123,11 +124,24 @@ void UpdatePlayer(void)
 	D3DXVECTOR3 direction = D3DXVECTOR3_ZERO;
 	float fMagnitude;
 	XINPUT_GAMEPAD* pGamepad = &GetJoypad()->Gamepad;
+	EFFECTINFO info;
 
 	// ***** 状態別処理 *****
 	g_player.nCounterState++;
 	switch (g_player.state)
 	{
+	case PLAYERSTATE_INIT:
+		g_player.obj.pos = INIT_POS;
+			;
+		g_player.obj.bVisible = true;
+		g_player.fLife = PLAYER_HEAL_MAX;
+		g_player.move.y = -15;
+		PlaySound(SOUND_LABEL_SE_HIT02);
+		SetVibration(30000, 30000, 40);
+		SetPlayerState(PLAYERSTATE_APPEAR);
+
+		return;
+
 	case PLAYERSTATE_NORMAL: // 通常状態
 		g_player.obj.bVisible = true;
 		g_player.fLife += PLAYER_HEAL_SCALE;
@@ -136,11 +150,50 @@ void UpdatePlayer(void)
 		break;
 
 	case PLAYERSTATE_APPEAR:
-		g_player.obj.pos = INIT_POS;
-		g_player.obj.bVisible = true;
-		g_player.fLife = PLAYER_HEAL_MAX;
-		g_player.state = PLAYERSTATE_BLINK;
-		// ブリンク状態へ
+		g_player.obj.pos += g_player.move;
+		g_player.move.y += (0 - g_player.move.y) * 0.075f;
+		
+		info.fSpeed = 4.0f;
+		info.fRotSpeed = 0.05f;
+		info.fMaxScale = 0.25f;
+		info.nMaxLife = 180;
+		info.col = D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f);
+
+		SetParticle(
+			info,
+			g_player.obj.pos,
+			0,
+			0.4f,
+			1,
+			3
+		);
+
+		if (g_player.nCounterState > 50)
+		{
+			SetPlayerState(PLAYERSTATE_BLINK);
+		}
+		return;
+
+	case PLAYERSTATE_DISAPPEAR:
+		g_player.obj.pos.y -= 15.0f;
+		g_player.nTexPattern = 0;
+
+		info.fSpeed = 4.0f;
+		info.fRotSpeed = 0.05f;
+		info.fMaxScale = 0.25f;
+		info.nMaxLife = 180;
+		info.col = D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f);
+
+		SetParticle(
+			info,
+			g_player.obj.pos,
+			0,
+			0.4f,
+			1,
+			3
+		);
+
+		return;
 
 	case PLAYERSTATE_BLINK: // 点滅状態
 		if (g_player.nCounterState % 3 == 0)
@@ -150,7 +203,7 @@ void UpdatePlayer(void)
 
 		if (g_player.nCounterState > PLAYER_DAMAGE_INTERVAL)
 		{
-			_SetPlayerState(PLAYERSTATE_NORMAL);
+			SetPlayerState(PLAYERSTATE_NORMAL);
 		}
 		break;
 
@@ -158,7 +211,7 @@ void UpdatePlayer(void)
 		g_player.obj.bVisible = false;
 		if (g_player.nCounterState > 120)
 		{
-			_SetPlayerState(PLAYERSTATE_END);
+			SetPlayerState(PLAYERSTATE_END);
 		}
 		return;
 
@@ -287,7 +340,7 @@ void HitPlayer(void)
 		PlaySound(SOUND_LABEL_SE_HIT02);
 		SetVibration(30000, 30000, 50);
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, g_player.obj.pos, 1.5f, 0.0f);
-		_SetPlayerState(PLAYERSTATE_DIED);
+		SetPlayerState(PLAYERSTATE_DIED);
 	}
 	else
 	{
@@ -297,14 +350,14 @@ void HitPlayer(void)
 			PlaySound(SOUND_LABEL_SE_ALERT);
 		}
 		SetVibration(30000, 30000, 50);
-		_SetPlayerState(PLAYERSTATE_BLINK);
+		SetPlayerState(PLAYERSTATE_BLINK);
 	}
 }
 
 //=====================================================================
 // プレイヤー状態の設定処理
 //=====================================================================
-void _SetPlayerState(PLAYERSTATE state)
+void SetPlayerState(PLAYERSTATE state)
 {
 	g_player.state = state;
 	g_player.nCounterState = 0;

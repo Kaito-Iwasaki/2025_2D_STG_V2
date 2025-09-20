@@ -61,42 +61,27 @@ void InitResult(void)
 
 	SaveScore(GetScore());
 
-	if (GetPlayer()->fLife > 0)
-	{
-		sprintf(aMessage, "YOUR SCORE : %d", GetScore());
+	SetFont(
+		D3DXVECTOR3(640 - 270, SCREEN_HEIGHT / 2 - 50, 0.0f),
+		D3DXVECTOR3(540, 200, 0.0f),
+		D3DXVECTOR3_ZERO,
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		40,
+		"GAME OVER",
+		DT_CENTER
+	);
 
-		SetFont(
-			D3DXVECTOR3(640 - 270, SCREEN_HEIGHT / 2 - 50, 0.0f),
-			D3DXVECTOR3(540, 200, 0.0f),
-			D3DXVECTOR3_ZERO,
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-			40,
-			"GAME CLEAR",
-			DT_CENTER
-		);
-		SetFont(
-			D3DXVECTOR3(640 - 270, SCREEN_HEIGHT / 2, 0.0f),
-			D3DXVECTOR3(540, 200, 0.0f),
-			D3DXVECTOR3_ZERO,
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-			40,
-			&aMessage[0],
-			DT_CENTER
-		);
-	}
-	else
-	{
-		SetFont(
-			D3DXVECTOR3(640 - 270, SCREEN_HEIGHT / 2 - 50, 0.0f),
-			D3DXVECTOR3(540, 200, 0.0f),
-			D3DXVECTOR3_ZERO,
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
-			40,
-			"GAME OVER",
-			DT_CENTER
-		);
-	}
+	sprintf(&aMessage[0], "YOUR SCORE : %d", GetScore());
 
+	SetFont(
+		D3DXVECTOR3(640 - 270, SCREEN_HEIGHT / 2, 0.0f),
+		D3DXVECTOR3(540, 200, 0.0f),
+		D3DXVECTOR3_ZERO,
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		40,
+		&aMessage[0],
+		DT_CENTER
+	);
 
 	PlaySound(SOUND_LABEL_SE_GAMEOVER);
 }

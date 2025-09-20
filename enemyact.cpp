@@ -22,6 +22,7 @@
 #include "collision.h"
 #include "score.h"
 #include "baseScene.h"
+#include "input.h"
 
 //*********************************************************************
 // 
@@ -569,7 +570,7 @@ void Enemy010_Act(ENEMY* pEnemy)
 				pEnemy->fShootRot - 0.4f);
 			pEnemy->nShot++;
 
-			if (pEnemy->nShot > 10)
+			if (pEnemy->nShot > 7)
 			{
 				pEnemy->nMode++;
 			}
@@ -713,7 +714,7 @@ void Boss000_Act(ENEMY* pEnemy)
 				);
 			}
 
-			pEnemy->fShootRot += 0.6f;
+			pEnemy->fShootRot -= 0.6f;
 			SetEnemyBullet(
 				ENEMYBULLET_TYPE_001,
 				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 30.0f,
@@ -771,6 +772,7 @@ void Boss000_Died(ENEMY* pEnemy)
 	{// Á–Å
 		SetSpriteEffect(SPRITEEFFECTYPE_EXPLOSION, pEnemy->obj.pos, 4.0f, 0.0f);
 		SetParticle(info, pEnemy->obj.pos, 0, D3DX_PI * 2, 1, 30);
+		SetVibration(30000, 30000, 60);
 
 		pEnemy->bUsed = false;
 	}

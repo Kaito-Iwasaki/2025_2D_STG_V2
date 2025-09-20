@@ -32,6 +32,7 @@
 #include "particle.h"
 #include "keylogger.h"
 #include "util.h"
+#include "ranking.h"
 
 //*********************************************************************
 // 
@@ -39,7 +40,7 @@
 // 
 //*********************************************************************
 #define GAME_START		(160)
-#define FADE_START		(200)
+#define FADE_START		(240)
 
 //*********************************************************************
 // 
@@ -124,6 +125,7 @@ void UninitGame(void)
 void UpdateGame(void)
 {
 	TIMELINE* pTimeline = &g_stage.timeline[0];
+	char aMessage[MAX_PATH];
 
 #if _DEBUG
 	if (GetKeyboardTrigger(DIK_F1))
@@ -134,6 +136,9 @@ void UpdateGame(void)
 
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START))
 	{
+		if (g_stage.state == GAMESTATE_RESULT) return;
+		if (g_stage.state == GAMESTATE_END) return;
+
 		TogglePause(g_stage.bPaused ^ 1);
 	}
 
@@ -197,10 +202,10 @@ void UpdateGame(void)
 
 		}
 
+		g_stage.nCountGameState++;
 		switch (g_stage.state)
 		{
 		case GAMESTATE_READY:
-			g_stage.nCountGameState++;
 			if (g_stage.nCountGameState > GAME_START)
 			{
 				g_stage.state = GAMESTATE_NORMAL;
@@ -210,11 +215,7 @@ void UpdateGame(void)
 			break;
 
 		case GAMESTATE_NORMAL:
-			if (GetEnemyLeft() < 1)
-			{
-				g_stage.nCountGameState++;
-			}
-			else
+			if (GetEnemyLeft() > 0)
 			{
 				g_stage.nCountGameState = 0;
 			}
@@ -229,13 +230,50 @@ void UpdateGame(void)
 			break;
 
 		case GAMESTATE_END:
-			g_stage.nCountGameState++;
-
 			if (g_stage.nCountGameState > FADE_START)
 			{
-				SetFade(SCENE_RESULT);
+				g_stage.nCountGameState = 0;
+				g_stage.state = GAMESTATE_RESULT;
+
+				sprintf(&aMessage[0], "YOUR SCORE : %d", GetScore());
+
+				StopSound(g_stage.currentMusic);
+				PlaySound(SOUND_LABEL_SE_GAMEOVER);
+
+				SetFont(
+					D3DXVECTOR3(640 - 270, SCREEN_HEIGHT / 2 - 50, 0.0f),
+					D3DXVECTOR3(540, 200, 0.0f),
+					D3DXVECTOR3_ZERO,
+					D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+					40,
+					"GAME CLEAR",
+					DT_CENTER
+				);
+				SetFont(
+					D3DXVECTOR3(640 - 270, SCREEN_HEIGHT / 2, 0.0f),
+					D3DXVECTOR3(540, 200, 0.0f),
+					D3DXVECTOR3_ZERO,
+					D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+					40,
+					&aMessage[0],
+					DT_CENTER
+				);
 			}
 			break;
+
+		case GAMESTATE_RESULT:
+			if (g_stage.nCountGameState == 240)
+			{
+				PlaySound(SOUND_LABEL_SE_HIT02);
+				SetPlayerState(PLAYERSTATE_DISAPPEAR);
+				SetVibration(30000, 30000, 60);
+			}
+
+			if (g_stage.nCountGameState == 300)
+			{
+				SetFade(SCENE_RANKING);
+				SaveScore(GetScore());
+			}
 		}
 
 		g_stage.nCountElapsed++;

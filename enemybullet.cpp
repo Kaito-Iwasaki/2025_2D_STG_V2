@@ -147,7 +147,8 @@ void UpdateEnemyBullet(void)
 			continue;
 		}
 
-		if (BoxCollision(pEnemyBullet->obj.pos, pEnemyBullet->obj.size, pPlayer->obj.pos, pPlayer->hitBoxSize))
+		if (BoxCollision(pEnemyBullet->obj.pos, pEnemyBullet->obj.size, pPlayer->obj.pos, pPlayer->hitBoxSize) &&
+			pPlayer->fLife > 0)
 		{// ƒvƒŒƒCƒ„[‚Æ‚ÌÕ“Ë”»’è
 			HitPlayer();
 			pEnemyBullet->bUsed = false;

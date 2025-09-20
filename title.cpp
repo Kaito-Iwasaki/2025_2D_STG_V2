@@ -23,6 +23,8 @@
 #include "util.h"
 #include "bg.h"
 #include "font.h"
+#include "effect.h"
+#include "particle.h"
 
 //*********************************************************************
 // 
@@ -58,6 +60,8 @@ void InitTitle(void)
 	InitDecal();
 	InitBackground();
 	InitFont();
+	InitEffect();
+	InitParticle();
 
 	g_nCountStateTitle = 0;
 	g_stateTitle = TITLESTATE_INTRO;
@@ -113,6 +117,8 @@ void UninitTitle(void)
 	UninitDecal();
 	UninitBackground();
 	UninitFont();
+	UninitEffect();
+	UninitParticle();
 }
 
 //=====================================================================
@@ -123,7 +129,10 @@ void UpdateTitle(void)
 	UpdateBackground();
 	UpdateFont();
 	UpdateDecal();
+	UpdateEffect();
+	UpdateParticle();
 
+	EFFECTINFO info;
 
 	switch (g_stateTitle)
 	{
@@ -186,6 +195,21 @@ void UpdateTitle(void)
 
 		g_DecalPlayer->obj.pos.y -= 15.0f;
 
+		info.fSpeed = 4.0f;
+		info.fRotSpeed = 0.05f;
+		info.fMaxScale = 0.25f;
+		info.nMaxLife = 180;
+		info.col = D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f);
+
+		SetParticle(
+			info,
+			g_DecalPlayer->obj.pos,
+			0,
+			0.4f,
+			1,
+			3
+		);
+
 		break;
 	}
 	g_nCountStateTitle++;
@@ -197,6 +221,7 @@ void UpdateTitle(void)
 void DrawTitle(void)
 {
 	DrawBackground();
+	DrawEffect();
 	DrawDecal();
 	DrawFont();
 }
