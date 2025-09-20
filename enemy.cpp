@@ -357,7 +357,7 @@ void DestroyAllEnemy(void)
 {
 	ENEMY* pEnemy = &g_aEnemy[0];
 
-	for (int nCount = 0; nCount < MAX_ENEMYBULLET; nCount++, pEnemy++)
+	for (int nCount = 0; nCount < MAX_ENEMY; nCount++, pEnemy++)
 	{
 		if (pEnemy->bUsed == false) continue;
 
