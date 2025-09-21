@@ -161,6 +161,7 @@
     <ClInclude Include="enemybullet.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="healthbar.h" />
+    <ClInclude Include="item.h" />
     <ClInclude Include="keylogger.h">
       <SubType>
       </SubType>
@@ -200,6 +201,7 @@
     </ClCompile>
     <ClCompile Include="enemyact.cpp" />
     <ClCompile Include="healthbar.cpp" />
+    <ClCompile Include="item.cpp" />
     <ClCompile Include="keylogger.cpp">
       <SubType>
       </SubType>

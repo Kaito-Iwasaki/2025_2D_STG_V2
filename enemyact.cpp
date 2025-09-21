@@ -23,6 +23,7 @@
 #include "score.h"
 #include "baseScene.h"
 #include "input.h"
+#include "item.h"
 
 //*********************************************************************
 // 
@@ -81,8 +82,8 @@
 //*********************************************************************
 #define E006_SHOOT_SPEED		(2.0f)
 #define E006_SHOOT_NUM			(12.0f)
-#define E006_SHOOT_INTERVAL		(80)
-#define E006_SHOOT_ENABLE		(480)
+#define E006_SHOOT_INTERVAL		(90)
+#define E006_SHOOT_ENABLE		(440)
 
 //*********************************************************************
 // Enemy007
@@ -107,7 +108,7 @@
 //*********************************************************************
 // BOSS000
 //*********************************************************************
-#define BOSS000_MOVE_APPEAR				(80)
+#define BOSS000_MOVE_APPEAR				(100)
 #define BOSS000_MOVE_RANGE				(200)
 #define BOSS000_SHOOT_SPEED01			(5)			// Ž©‹@‘_‚¢
 #define BOSS000_SHOOT_SPEED02			(3)
@@ -602,7 +603,7 @@ void Boss000_Act(ENEMY* pEnemy)
 		pEnemy->nMode++;
 
 	case 1:
-		if (pEnemy->nCounterMode > 50)
+		if (pEnemy->nCounterMode > 30)
 		{
 			pEnemy->obj.bVisible = true;
 			pEnemy->nMode++;
@@ -611,9 +612,9 @@ void Boss000_Act(ENEMY* pEnemy)
 		return;
 
 	case 2:
-		if (pEnemy->nCounterMode % 7 == 0)
+		if (pEnemy->nCounterMode % 10 == 0)
 		{
-			pEnemy->originalColor.a += (float)pEnemy->nCounterMode / (float)BOSS000_MOVE_APPEAR;
+			pEnemy->originalColor.a += 0.1f;
 			Clampf(&pEnemy->originalColor.a, 0.0f, 1.0f);
 		}
 
@@ -884,6 +885,7 @@ void Boss010A_Died(ENEMY* pEnemy)
 
 	pEnemy->bUsed = false;
 	DestroyAllEnemy();
+	SetItem(ITEMTYPE_000, pEnemy->obj.pos);
 	if (BoxCollision(pEnemy->obj.pos, pEnemy->hitboxSize, pPlayer->obj.pos, pPlayer->hitBoxSize))
 	{
 		BonusScore(10000);

@@ -1,11 +1,11 @@
 //=====================================================================
 //
-// player.cppのヘッダファイル [player.h]
+// item.cppのヘッダファイル [item.h]
 // Author : Kaito Iwasaki
 // 
 //=====================================================================
-#ifndef _PLAYER_H_
-#define _PLAYER_H_
+#ifndef _ITEM_H_
+#define _ITEM_H_
 
 //*********************************************************************
 // 
@@ -14,20 +14,14 @@
 //*********************************************************************
 #include "baseObject.h"
 #include "main.h"
+#include "game.h"
 
 //*********************************************************************
 // 
 // ***** マクロ定義 *****
 // 
 //*********************************************************************
-#define PLAYER_SPEED			(8.0f)
-#define PLAYER_SHOOT_SPEED		(35.0f)
-#define PLAYER_SHOOT_INTERVAL	(6)
-#define PLAYER_DAMAGE_INTERVAL	(60)
-#define PLAYER_HEAL_MAX			(3.5f)
-#define PLAYER_HEAL_SCALE		(0.0006f)
-#define PLAYER_HITBOX_SIZE		D3DXVECTOR3(24.0f, 24.0f, 0.0f)
-
+#define MAX_ITEM		(16)
 
 //*********************************************************************
 // 
@@ -36,53 +30,40 @@
 //*********************************************************************
 typedef enum
 {
-	PLAYERSTATE_INIT = 0,
-	PLAYERSTATE_NORMAL,
-	PLAYERSTATE_APPEAR,
-	PLAYERSTATE_DISAPPEAR,
-	PLAYERSTATE_BLINK,
-	PLAYERSTATE_DIED,
-	PLAYERSTATE_CONTINUE,
-	PLAYERSTATE_END,
-	PLAYERSTATE_MAX
-}PLAYERSTATE;
+	ITEMTYPE_000 = 0,
+	ITEMTYPE_MAX
+}ITEMTYPE;
 
 //*********************************************************************
 // 
 // ***** 構造体 *****
 // 
 //*********************************************************************
-typedef struct
+typedef struct ITEM
 {
 	BASEOBJECT obj;
-	int nTexPattern;
-	int nCounterPattern;
-	
-	PLAYERSTATE state;
-	float fSpeed;
-	float fShootSpeed;
-	float fLife;
-	float fCharge;
-	D3DXVECTOR3 hitBoxSize;
-	int nCountHit;
-	D3DXVECTOR3 move;
+	bool bUsed;
+	D3DXVECTOR3 startPos;
+
+	int nMode;
+	ITEMTYPE type;
+	DWORD disapperFlags;
+	D3DXVECTOR3 hitboxSize;
 
 	int nCounterState;
-	int nCounterShoot;
+}ITEM;
 
-}PLAYER;
 
 //*********************************************************************
 // 
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitPlayer(void);
-void UninitPlayer(void);
-void UpdatePlayer(void);
-void DrawPlayer(void);
-PLAYER* GetPlayer(void);
-void HitPlayer(void);
-void SetPlayerState(PLAYERSTATE state);
+void InitItem(void);
+void UninitItem(void);
+void UpdateItem(void);
+void DrawItem(void);
+ITEM* GetItem(void);
+ITEM* SetItem(ITEMTYPE type, D3DXVECTOR3 pos);
 
 #endif

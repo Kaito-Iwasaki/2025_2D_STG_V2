@@ -81,7 +81,7 @@ ENEMYINFO g_aEnemyInfo[ENEMYTYPE_MAX] = {
 	{ INIT_SIZE,		{3.0f, 0.0f, 0.0f},		14.0f,		0,		BonusEnemy_Died},	// 008
 	{ INIT_SIZE * 1.0f,	{0.0f, 7.0f, 0.0f},		5.0f,		100},						// 009
 	{ INIT_SIZE * 1.5f,	{25.0f, 0.0f, 0.0f},	80.0f,		1500},						// 010
-	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f},		850.0f,		10000,	Boss000_Died},		// boss000
+	{ INIT_SIZE * 3.0f, {2.0f, 3.0f, 0.0f},		950.0f,		10000,	Boss000_Died},		// boss000
 	{ INIT_SIZE * 2.0f, {0, 0, 0},				250.0f,		5000,	Boss010A_Died},		// boss001A
 	{ INIT_SIZE * 1.5f, {0, 0, 0},				1000000.0f,	0},							// boss001B
 };

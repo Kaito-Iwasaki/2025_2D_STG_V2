@@ -33,6 +33,7 @@
 #include "keylogger.h"
 #include "util.h"
 #include "ranking.h"
+#include "item.h"
 
 //*********************************************************************
 // 
@@ -71,6 +72,7 @@ void InitGame(STAGETYPE stagetype)
 	InitHealthbar();
 	InitEffect();
 	InitParticle();
+	InitItem();
 
 	memset(&g_stage, 0, sizeof(g_stage));
 	g_stage.bPaused = false;
@@ -117,6 +119,7 @@ void UninitGame(void)
 	UninitHealthbar();
 	UninitEffect();
 	UninitParticle();
+	UninitItem();
 }
 
 //=====================================================================
@@ -154,6 +157,7 @@ void UpdateGame(void)
 		UpdateHealthbar();
 		UpdateEffect();
 		UpdateParticle();
+		UpdateItem();
 
 		// É^ÉCÉÄÉâÉCÉìì«Ç›çûÇ›
 		for (int nCount = 0; nCount < MAX_TIMELINE; nCount++, pTimeline++)
@@ -293,6 +297,7 @@ void DrawGame(void)
 	DrawSpriteEffect();
 	DrawEnemyBullet();
 	DrawBullet();
+	DrawItem();
 	DrawEffect();
 	DrawPlayer();
 	DrawScore();
