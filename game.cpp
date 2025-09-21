@@ -268,7 +268,7 @@ void UpdateGame(void)
 				SetVibration(30000, 30000, 60);
 			}
 
-			if (g_stage.nCountGameState == 300)
+			if (g_stage.nCountGameState == 330)
 			{
 				SetFade(SCENE_RANKING);
 				SaveScore(GetScore());

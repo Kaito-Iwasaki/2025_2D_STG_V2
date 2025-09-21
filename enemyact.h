@@ -63,7 +63,8 @@ void Boss000_Died(ENEMY* pEnemy);
 
 void Boss010A_Act(ENEMY* pEnemy);
 void Boss010A_Died(ENEMY* pEnemy);
-
 void Boss010B_Act(ENEMY* pEnemy);
+
+void Item000_Act(ENEMY* pEnemy);
 
 #endif

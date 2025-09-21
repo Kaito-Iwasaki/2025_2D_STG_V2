@@ -178,19 +178,19 @@ void UpdatePlayer(void)
 		g_player.obj.pos.y -= 15.0f;
 		g_player.nTexPattern = 0;
 
-		info.fSpeed = 4.0f;
+		info.fSpeed = 1.0f;
 		info.fRotSpeed = 0.05f;
-		info.fMaxScale = 0.25f;
-		info.nMaxLife = 180;
+		info.fMaxScale = 0.3f;
+		info.nMaxLife = 300;
 		info.col = D3DXCOLOR(0.5f, 0.5f, 1.0f, 1.0f);
 
 		SetParticle(
 			info,
 			g_player.obj.pos,
 			0,
-			0.4f,
+			0.8f,
 			1,
-			3
+			6
 		);
 
 		return;

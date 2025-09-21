@@ -107,7 +107,7 @@
 //*********************************************************************
 // BOSS000
 //*********************************************************************
-#define BOSS000_MOVE_APPEAR				(100)
+#define BOSS000_MOVE_APPEAR				(80)
 #define BOSS000_MOVE_RANGE				(200)
 #define BOSS000_SHOOT_SPEED01			(5)			// Ž©‹@‘_‚¢
 #define BOSS000_SHOOT_SPEED02			(3)
@@ -594,20 +594,39 @@ void Boss000_Act(ENEMY* pEnemy)
 	switch (pEnemy->nMode)
 	{
 	case 0:
+		pEnemy->obj.bVisible = false;
 		pEnemy->move.x = 1.0f;
 		pEnemy->bDamageEnabled = false;
+		pEnemy->originalColor.a = 0.0f;
+		pEnemy->obj.pos.y = 100;
 		pEnemy->nMode++;
 
 	case 1:
-		pEnemy->obj.pos.y += pEnemy->move.y;
-		if (pEnemy->obj.pos.y > BOSS000_MOVE_APPEAR)
+		if (pEnemy->nCounterMode > 50)
 		{
-			pEnemy->bDamageEnabled = true;
+			pEnemy->obj.bVisible = true;
 			pEnemy->nMode++;
+			pEnemy->nCounterMode = 0;
 		}
-		break;
+		return;
 
 	case 2:
+		if (pEnemy->nCounterMode % 7 == 0)
+		{
+			pEnemy->originalColor.a += (float)pEnemy->nCounterMode / (float)BOSS000_MOVE_APPEAR;
+			Clampf(&pEnemy->originalColor.a, 0.0f, 1.0f);
+		}
+
+		if (pEnemy->nCounterMode > BOSS000_MOVE_APPEAR)
+		{
+			pEnemy->bDamageEnabled = true;
+			pEnemy->originalColor.a = 1.0f;
+			pEnemy->nMode++;
+			pEnemy->nCounterMode = 0;
+		}
+		return;
+
+	case 3:
 		if (pEnemy->fLife < pEnemy->fMaxLife / 2)
 		{
 			pEnemy->nMode++;
@@ -670,7 +689,7 @@ void Boss000_Act(ENEMY* pEnemy)
 
 		break;	
 
-	case 3:
+	case 4:
 		if (
 			pEnemy->obj.pos.x < GAME_SCREEN_START + pEnemy->obj.size.x / 2 ||
 			pEnemy->obj.pos.x > GAME_SCREEN_END - pEnemy->obj.size.x / 2
