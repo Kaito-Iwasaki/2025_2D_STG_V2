@@ -95,7 +95,7 @@ void UpdateTutorial(void)
 
 			g_stateTutorial = TUTORIALSTATE_START;
 			g_FontStartTutorial->obj.bVisible = true;
-			PlaySound(SOUND_LABEL_SE_HIT02);
+			PlaySound(SOUND_LABEL_SE_DECISION);
 
 			SetFade(SCENE_GAME);
 
