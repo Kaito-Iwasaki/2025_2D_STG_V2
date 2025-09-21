@@ -200,7 +200,7 @@ void UpdateEnemyBullet(void)
 				2
 			);
 
-			if (pEnemyBullet->nCounterState < 60)
+			if (pEnemyBullet->nCounterElapsed < 60)
 			{
 				float fBulletToPlayer = Angle(pEnemyBullet->obj.pos, pPlayer->obj.pos);
 				float fRotDiff = fBulletToPlayer - pEnemyBullet->fAngle;
@@ -235,12 +235,11 @@ void UpdateEnemyBullet(void)
 				pEnemyBullet->obj.rot.z += D3DX_PI * 0.125f;
 			}
 			break;
-
-		default:
-			break;
 		}
 
 		pEnemyBullet->obj.pos += D3DXVECTOR3(sin(pEnemyBullet->fAngle), cos(pEnemyBullet->fAngle), 0.0f) * pEnemyBullet->fSpeed;
+		
+		pEnemyBullet->nCounterElapsed++;
 	}
 }
 

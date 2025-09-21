@@ -60,6 +60,7 @@ typedef struct
 	ENEMYBULLETSTATE state;
 
 	int nCounterState;
+	int nCounterElapsed;
 }ENEMYBULLET;
 
 typedef struct
