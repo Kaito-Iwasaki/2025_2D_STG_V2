@@ -26,7 +26,7 @@
 #define INIT_POS_Y				(SCREEN_HEIGHT/ 2)
 #define INIT_SIZE_X				(540 * TEXTURE_NUM)
 #define INIT_SIZE_Y				(720 * TEXTURE_NUM)
-#define INIT_COLOR				D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+#define INIT_COLOR				D3DXCOLOR(0.6f, 0.6f, 0.6f, 1.0f)
 
 //*********************************************************************
 // 
