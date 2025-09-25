@@ -116,6 +116,11 @@
 #define BOSS000_SHOOT_INTERVAL02		(60)
 
 //*********************************************************************
+// BOSS001
+//*********************************************************************
+
+
+//*********************************************************************
 // 
 // ***** ƒOƒ[ƒoƒ‹•Ï” *****
 // 
@@ -885,7 +890,6 @@ void Boss010A_Died(ENEMY* pEnemy)
 
 	pEnemy->bUsed = false;
 	DestroyAllEnemy();
-	SetItem(ITEMTYPE_000, pEnemy->obj.pos);
 	if (BoxCollision(pEnemy->obj.pos, pEnemy->hitboxSize, pPlayer->obj.pos, pPlayer->hitBoxSize))
 	{
 		BonusScore(10000);

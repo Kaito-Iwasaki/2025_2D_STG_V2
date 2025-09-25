@@ -47,6 +47,7 @@ ITEM g_aItem[MAX_ITEM] = {};
 // 敵のテクスチャ
 const char* g_aItemFileName[ITEMTYPE_MAX] = {
 	// 通常
+	NULL,
 	"data\\TEXTURE\\item000.png",
 };
 
@@ -127,7 +128,7 @@ void UpdateItem(void)
 
 		switch (pItem->type)
 		{
-		case ITEMTYPE_000:
+		case ITEMTYPE_00:
 			switch (pItem->nMode)
 			{
 			case 0:
@@ -234,8 +235,13 @@ ITEM* GetItem(void)
 ITEM* SetItem(ITEMTYPE type, D3DXVECTOR3 pos)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
 	ITEM* pItem = &g_aItem[0];
+
+	if (type == ITEMTYPE_NULL)
+	{
+		return NULL;
+	}
+
 	for (int nCount = 0; nCount < MAX_ITEM; nCount++, pItem++)
 	{
 		if (pItem->bUsed == false)

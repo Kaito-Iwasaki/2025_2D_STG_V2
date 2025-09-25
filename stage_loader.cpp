@@ -181,6 +181,11 @@ void _Read_ENEMYSET(FILE* pFile, int nWave, TIMELINE** dpTimeline)
 
 			timelineTemp.bInversed = (strncmp(g_aStrFile, "TRUE", 4) == 0);
 		}
+
+		else if (strncmp(g_aStrFile, "ITEM", 4) == 0)
+		{
+			fscanf(pFile, "%d", &timelineTemp.item);
+		}
 	} while (strstr(&g_aStrFile[0], "END_ENEMYSET") == NULL);
 
 	Clamp(&timelineTemp.nNumEnemy, 1, MAX_TIMELINE);
@@ -195,6 +200,7 @@ void _Read_ENEMYSET(FILE* pFile, int nWave, TIMELINE** dpTimeline)
 		(*dpTimeline)->nCountTime = timelineTemp.nCountTime + (nCount * timelineTemp.nCountTimeOffset);
 		(*dpTimeline)->nWave = timelineTemp.nWave;
 		(*dpTimeline)->bInversed = timelineTemp.bInversed;
+		(*dpTimeline)->item = timelineTemp.item;
 	}
 
 	(*dpTimeline)++;

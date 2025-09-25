@@ -13,6 +13,7 @@
 // 
 //*********************************************************************
 #include "main.h"
+#include "game.h"
 
 //*********************************************************************
 // 
@@ -36,5 +37,6 @@ void InitTitle(void);
 void UninitTitle(void);
 void UpdateTitle(void);
 void DrawTitle(void);
+DIFFCULITY GetDiffculity(void);
 
 #endif

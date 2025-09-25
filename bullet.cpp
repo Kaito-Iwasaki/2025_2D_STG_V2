@@ -129,7 +129,7 @@ void UpdateBullet(void)
 		pBullet->obj.pos += D3DXVECTOR3(sinf(pBullet->fAngle), cosf(pBullet->fAngle), 0.0f) * pBullet->fSpeed;
 		pBullet->obj.rot.z = pBullet->fAngle + D3DX_PI;
 
-		if (pBullet->obj.pos.y < 0)
+		if (IsObjectOutOfScreen(pBullet->obj))
 		{// ‰æ–ÊŠO‚Éo‚½‚çíœ
 			pBullet->bUsed = false;
 			continue;

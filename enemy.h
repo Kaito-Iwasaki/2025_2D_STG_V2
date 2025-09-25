@@ -15,6 +15,7 @@
 #include "baseObject.h"
 #include "main.h"
 #include "game.h"
+#include "item.h"
 
 //*********************************************************************
 // 
@@ -84,6 +85,7 @@ typedef struct ENEMY
 	int nScore;
 	DWORD disapperFlags;
 	D3DXVECTOR3 hitboxSize;
+	ITEMTYPE itemDrop;
 
 	int nCounterState;
 	int nCounterShoot;

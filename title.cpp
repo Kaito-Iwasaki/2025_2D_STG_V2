@@ -25,6 +25,7 @@
 #include "font.h"
 #include "effect.h"
 #include "particle.h"
+#include "game.h"
 
 //*********************************************************************
 // 
@@ -39,18 +40,25 @@
 #define LOGO_START_Y		(-200)
 #define LOGO_GOAL_Y			(100)
 
+#define COLOR_SELECTED		D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f)
+#define COLOR_DESELECTED	D3DXCOLOR(0.4f, 0.4f, 0.4f, 1.0f)
+
 //*********************************************************************
 // 
 // ***** ƒOƒ[ƒoƒ‹•Ï” *****
 // 
 //*********************************************************************
 int g_nCountStateTitle = 0;
+int g_nCounterTitle = 0;
 TITLESTATE g_stateTitle = TITLESTATE_INTRO;
+int nDifSelect = DIFFCULITY_EASY;
 
 DECAL* g_DecalPlayer;
 DECAL* g_DecalLogo;
 FONT* g_FontStart;
 FONT* g_FontCredit;
+FONT* g_FontEasy;
+FONT* g_FontNormal;
 
 //=====================================================================
 // ‰Šú‰»ˆ—
@@ -63,6 +71,7 @@ void InitTitle(void)
 	InitEffect();
 	InitParticle();
 
+	g_nCounterTitle = 0;
 	g_nCountStateTitle = 0;
 	g_stateTitle = TITLESTATE_INTRO;
 
@@ -107,6 +116,28 @@ void InitTitle(void)
 		DT_CENTER
 	);
 	g_FontCredit->obj.bVisible = false;
+
+	g_FontEasy = SetFont(
+		D3DXVECTOR3(SCREEN_CENTER - 150.0f, 645.0f, 0.0f),
+		D3DXVECTOR3(150.0f, 400.0f, 0.0f),
+		D3DXVECTOR3_ZERO,
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		35,
+		"EASY",
+		DT_CENTER
+	);
+	g_FontEasy->obj.bVisible = false;
+
+	g_FontNormal = SetFont(
+		D3DXVECTOR3(SCREEN_CENTER, 645.0f, 0.0f),
+		D3DXVECTOR3(150.0f, 400.0f, 0.0f),
+		D3DXVECTOR3_ZERO,
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+		35,
+		"NORMAL",
+		DT_CENTER
+	);
+	g_FontNormal->obj.bVisible = false;
 }
 
 //=====================================================================
@@ -134,6 +165,18 @@ void UpdateTitle(void)
 
 	EFFECTINFO info;
 
+	g_FontEasy->obj.color = COLOR_DESELECTED;
+	g_FontNormal->obj.color = COLOR_DESELECTED;
+
+	if (nDifSelect == DIFFCULITY_EASY)
+	{
+		g_FontEasy->obj.color = COLOR_SELECTED;
+	}
+	else if (nDifSelect == DIFFCULITY_NORMAL)
+	{
+		g_FontNormal->obj.color = COLOR_SELECTED;
+	}
+
 	switch (g_stateTitle)
 	{
 	case TITLESTATE_INTRO:
@@ -155,6 +198,8 @@ void UpdateTitle(void)
 			g_stateTitle = TITLESTATE_NORMAL;
 			g_FontStart->obj.bVisible = true;
 			g_FontCredit->obj.bVisible = true;
+			g_FontEasy->obj.bVisible = true;
+			g_FontNormal->obj.bVisible = true;
 		}
 		break;
 
@@ -167,7 +212,9 @@ void UpdateTitle(void)
 			g_FontStart->obj.bVisible ^= 1;
 		}
 
-		if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START) && GetFade() == FADE_NONE)
+		if (GetFade() != FADE_NONE) break;
+
+		if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START))
 		{
 			PlaySound(SOUND_LABEL_SE_HIT02);
 			g_nCountStateTitle = 0;
@@ -175,10 +222,31 @@ void UpdateTitle(void)
 			SetVibration(30000, 30000, 60);
 		}
 
-		if (g_nCountStateTitle > FADE_START)
+		if (
+			GetKeyboardRepeat(DIK_A) ||
+			GetKeyboardRepeat(DIK_D) ||
+			GetKeyboardRepeat(DIK_SPACE) || 
+			GetKeyboardRepeat(DIK_LEFT) || 
+			GetKeyboardRepeat(DIK_RIGHT) ||
+			GetJoypadRepeat(JOYKEY_A) ||
+			GetJoypadRepeat(JOYKEY_BACK) ||
+			GetJoypadRepeat(JOYKEY_LEFT) ||
+			GetJoypadRepeat(JOYKEY_RIGHT) ||
+			GetJoystickRepeat(JOYSTICK_L_LEFT) ||
+			GetJoystickRepeat(JOYSTICK_L_RIGHT)
+			)
+		{
+			nDifSelect = (nDifSelect + 1) % DIFFCULITY_MAX;
+			PlaySound(SOUND_LABEL_SE_DECISION);
+			g_nCounterTitle = 0;
+		}
+
+		if (g_nCounterTitle > FADE_START)
 		{
 			SetFade(SCENE_RANKING);
 		}
+
+		g_nCounterTitle++;
 
 		break;
 
@@ -224,4 +292,9 @@ void DrawTitle(void)
 	DrawEffect();
 	DrawDecal();
 	DrawFont();
+}
+
+DIFFCULITY GetDiffculity(void)
+{
+	return (DIFFCULITY)nDifSelect;
 }

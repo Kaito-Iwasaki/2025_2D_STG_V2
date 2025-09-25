@@ -14,6 +14,7 @@
 //*********************************************************************
 #include "main.h"
 #include "sound.h"
+#include "item.h"
 
 //*********************************************************************
 // 
@@ -47,10 +48,17 @@ typedef enum
 
 typedef enum
 {
-	STAGETYPE_01 = 0,
-	STAGETYPE_02,
+	STAGETYPE_01_EASY = 0,
+	STAGETYPE_01_NORMAL,
 	STAGETYPE_MAX
 }STAGETYPE;
+
+typedef enum
+{
+	DIFFCULITY_EASY = 0,
+	DIFFCULITY_NORMAL,
+	DIFFCULITY_MAX
+}DIFFCULITY;
 
 //*********************************************************************
 // 
@@ -72,6 +80,7 @@ typedef struct
 	int nCountTime;
 	int nCountTimeOffset;
 	bool bInversed;
+	ITEMTYPE item;
 }TIMELINE;
 
 typedef struct
@@ -89,6 +98,7 @@ typedef struct
 	TIMELINE timeline[MAX_TIMELINE];
 	STAGETYPE currentStage;
 	int nBonus;
+	DIFFCULITY diffculity;
 }STAGE;
 
 //*********************************************************************
@@ -96,7 +106,7 @@ typedef struct
 // ***** プロトタイプ宣言 *****
 // 
 //*********************************************************************
-void InitGame(STAGETYPE stagetype = STAGETYPE_01);
+void InitGame(void);
 void UninitGame(void);
 void UpdateGame(void);
 void DrawGame(void);
@@ -105,5 +115,6 @@ void TogglePause(bool bPause);
 STAGE* GetStage(void);
 GAMESTATE GetGameState(void);
 void SetGameState(GAMESTATE state);
+void SetGameStage(STAGETYPE stagetype,  DIFFCULITY diffculity);
 
 #endif

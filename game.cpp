@@ -34,6 +34,7 @@
 #include "util.h"
 #include "ranking.h"
 #include "item.h"
+#include "title.h"
 
 //*********************************************************************
 // 
@@ -49,17 +50,20 @@
 // 
 //*********************************************************************
 STAGE g_stage;
+FONT* g_pFontDiffculity = NULL;
 
 const char* g_aStageFileName[STAGETYPE_MAX] = {
-	"data/STAGE/stage01.txt",
-	"data/STAGE/stage02.txt",
+	"data/STAGE/stage01_easy.txt",
+	"data/STAGE/stage01_normal.txt",
 };
 
 //=====================================================================
 // ‰Šú‰»ˆ—
 //=====================================================================
-void InitGame(STAGETYPE stagetype)
+void InitGame(void)
 {
+	char aDiffculity[MAX_PATH] = {};
+
 	InitFont();
 	InitPlayer();
 	InitBullet();
@@ -99,7 +103,28 @@ void InitGame(STAGETYPE stagetype)
 	SetBackgroundSpeed(20.0f);
 	SetBackgroundSpeedMove(3.0f, 0.001f);
 
-	LoadStage(g_aStageFileName[stagetype], &g_stage);
+	switch (GetDiffculity())
+	{
+	case DIFFCULITY_EASY:
+		strcpy(&aDiffculity[0], "EASY");
+		SetGameStage(STAGETYPE_01_EASY, DIFFCULITY_EASY);
+		break;
+
+	case DIFFCULITY_NORMAL:
+		strcpy(&aDiffculity[0], "NORMAL");
+		SetGameStage(STAGETYPE_01_NORMAL, DIFFCULITY_NORMAL);
+		break;
+	}
+
+	g_pFontDiffculity = SetFont(
+		D3DXVECTOR3(GAME_SCREEN_START, 0.0f, 0.0f),
+		D3DXVECTOR3(GAME_SCREEN_WIDTH, 400.0f, 0.0f),
+		D3DXVECTOR3_ZERO,
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f),
+		25,
+		&aDiffculity[0],
+		DT_CENTER
+	);
 }
 
 //=====================================================================
@@ -187,6 +212,8 @@ void UpdateGame(void)
 				{
 					pEnemy->move.x *= -1;
 				}
+
+				pEnemy->itemDrop = pTimeline->item;
 
 				break;
 
@@ -371,5 +398,11 @@ GAMESTATE GetGameState(void)
 void SetGameState(GAMESTATE state)
 {
 	g_stage.state = state;
+}
+
+void SetGameStage(STAGETYPE stagetype, DIFFCULITY diffculity)
+{
+	LoadStage(g_aStageFileName[stagetype], &g_stage);
+	g_stage.diffculity = diffculity;
 }
 

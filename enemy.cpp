@@ -334,6 +334,7 @@ void HitEnemy(ENEMY* pEnemy, float fDamage)
 	if (pEnemy->fLife <= 0)
 	{
 		AddScore(pEnemy->nScore);
+		SetItem(pEnemy->itemDrop, pEnemy->obj.pos);
 
 		if (pEnemy->pfDied != NULL)
 		{
