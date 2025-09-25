@@ -220,6 +220,8 @@ void UpdateTitle(void)
 			g_nCountStateTitle = 0;
 			g_stateTitle = TITLESTATE_START;
 			SetVibration(30000, 30000, 60);
+			g_FontEasy->obj.bVisible = false;
+			g_FontNormal->obj.bVisible = false;
 		}
 
 		if (
@@ -254,6 +256,17 @@ void UpdateTitle(void)
 		if (g_nCountStateTitle % 3 == 0)
 		{
 			g_FontStart->obj.bVisible ^= 1;
+
+			switch (nDifSelect)
+			{
+			case DIFFCULITY_EASY:
+				g_FontEasy->obj.bVisible ^= 1;
+				break;
+
+			case DIFFCULITY_NORMAL:
+				g_FontNormal->obj.bVisible ^= 1;
+				break;
+			}
 		}
 
 		if (g_nCountStateTitle > 60)
