@@ -24,6 +24,7 @@
 #include "baseScene.h"
 #include "input.h"
 #include "item.h"
+#include "title.h"
 
 //*********************************************************************
 // 
@@ -316,6 +317,16 @@ void Enemy005_Act(ENEMY* pEnemy)
 		pEnemy->obj.pos.x += pEnemy->move.x;
 		pEnemy->move.x += (0.0f - pEnemy->move.x) * E005_MOVE_Y_DECAY;
 
+		switch (GetDifficulity())
+		{
+		case DIFFCULITY_EASY:
+			pEnemy->fShootSpeed = 4.0f;
+			break;
+
+		default:
+			pEnemy->fShootSpeed = E005_SHOOT_SPEED;
+		}
+
 		if (pEnemy->nCounterMode > E005_MOVE_INTERVAL01)
 		{
 			pEnemy->nMode++;
@@ -335,7 +346,7 @@ void Enemy005_Act(ENEMY* pEnemy)
 		SetEnemyBullet(
 			ENEMYBULLET_TYPE_003,
 			pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E005_SHOOT_OFFSET,
-			E005_SHOOT_SPEED,
+			pEnemy->fShootSpeed,
 			pEnemy->fShootRot
 		);
 		pEnemy->nShot++;
@@ -406,6 +417,18 @@ void Enemy007_Act(ENEMY* pEnemy)
 		pEnemy->disapperFlags = OOS_LEFT | OOS_RIGHT;
 		pEnemy->nMode++;
 
+		switch (GetDifficulity())
+		{
+		case DIFFCULITY_EASY:
+			pEnemy->fShootSpeed = 4.0f;
+			pEnemy->nShootInterval = 40;
+			break;
+
+		default:
+			pEnemy->fShootSpeed = E007_SHOOT_SPEED;
+			pEnemy->nShootInterval = E007_SHOOT_INTERVAL;
+		}
+
 	case 1:	// ‘Ò‹@
 		if (pEnemy->nCounterState > E007_MOVE_INTERVAL)
 		{
@@ -415,14 +438,14 @@ void Enemy007_Act(ENEMY* pEnemy)
 		break;
 
 	case 2:	// ’e”­ŽË
-		if (pEnemy->nCounterShoot % E007_SHOOT_INTERVAL == 0)
+		if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
 		{
 			pEnemy->nCounterShoot = 0;
 			pEnemy->fShootRot = Angle(pEnemy->obj.pos, GetPlayer()->obj.pos);
 			SetEnemyBullet(
 				ENEMYBULLET_TYPE_001,
 				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E007_SHOOT_OFFSET,
-				E007_SHOOT_SPEED,
+				pEnemy->fShootSpeed,
 				pEnemy->fShootRot);
 			pEnemy->nShot++;
 
@@ -540,6 +563,18 @@ void Enemy010_Act(ENEMY* pEnemy)
 			pEnemy->disapperFlags = OOS_LEFT;
 		}
 
+		switch (GetDifficulity())
+		{
+		case DIFFCULITY_EASY:
+			pEnemy->fShootSpeed = 4;
+			pEnemy->nShootInterval = 110;
+			break;
+
+		default:
+			pEnemy->fShootSpeed = 5;
+			pEnemy->nShootInterval = 50;
+		}
+
 		pEnemy->nMode++;
 
 	case 1:	// oŒ»
@@ -555,24 +590,24 @@ void Enemy010_Act(ENEMY* pEnemy)
 		break;
 
 	case 2:	// ’e”­ŽË
-		if (pEnemy->nCounterShoot % 50 == 0)
+		if (pEnemy->nCounterShoot % pEnemy->nShootInterval == 0)
 		{
 			pEnemy->nCounterShoot = 0;
 			pEnemy->fShootRot = Angle(pEnemy->obj.pos, GetPlayer()->obj.pos);
 			SetEnemyBullet(
 				ENEMYBULLET_TYPE_001,
 				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E007_SHOOT_OFFSET,
-				5,
+				pEnemy->fShootSpeed,
 				pEnemy->fShootRot);
 			SetEnemyBullet(
 				ENEMYBULLET_TYPE_001,
 				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E007_SHOOT_OFFSET,
-				5,
+				pEnemy->fShootSpeed,
 				pEnemy->fShootRot + 0.4f);
 			SetEnemyBullet(
 				ENEMYBULLET_TYPE_001,
 				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * E007_SHOOT_OFFSET,
-				5,
+				pEnemy->fShootSpeed,
 				pEnemy->fShootRot - 0.4f);
 			pEnemy->nShot++;
 
@@ -648,50 +683,99 @@ void Boss000_Act(ENEMY* pEnemy)
 		}
 		pEnemy->obj.pos.x += pEnemy->move.x;
 
-		if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL01 == 0)
+		switch (GetDifficulity())
 		{
-			if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL02 == 0)
-			{// Ž©‹@‘_‚¢
+		case DIFFCULITY_EASY:
+			if (pEnemy->nCounterShoot % 10 == 0)
+			{
+				if (pEnemy->nCounterShoot % 120 == 0)
+				{// Ž©‹@‘_‚¢
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos),
+						25
+					);
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) + 0.4f,
+						25
+					);
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) - 0.4f,
+						25
+					);
+				}
+
+				pEnemy->fShootRot += 0.6f;
 				SetEnemyBullet(
-					ENEMYBULLET_TYPE_000,
-					pEnemy->obj.pos,
-					BOSS000_SHOOT_SPEED01,
-					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos),
-					25
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 30.0f,
+					BOSS000_SHOOT_SPEED02,
+					pEnemy->fShootRot,
+					15
 				);
 				SetEnemyBullet(
-					ENEMYBULLET_TYPE_000,
-					pEnemy->obj.pos,
-					BOSS000_SHOOT_SPEED01,
-					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) + 0.4f,
-					25
-				);
-				SetEnemyBullet(
-					ENEMYBULLET_TYPE_000,
-					pEnemy->obj.pos,
-					BOSS000_SHOOT_SPEED01,
-					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) - 0.4f,
-					25
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos + Direction(pEnemy->fShootRot + D3DX_PI) * 30.0f,
+					BOSS000_SHOOT_SPEED02,
+					pEnemy->fShootRot + D3DX_PI,
+					15
 				);
 			}
+			break;
 
-			pEnemy->fShootRot += 0.6f;
-			SetEnemyBullet(
-				ENEMYBULLET_TYPE_001,
-				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 30.0f,
-				BOSS000_SHOOT_SPEED02,
-				pEnemy->fShootRot,
-				15
-			);
-			SetEnemyBullet(
-				ENEMYBULLET_TYPE_001,
-				pEnemy->obj.pos + Direction(pEnemy->fShootRot + D3DX_PI) * 30.0f,
-				BOSS000_SHOOT_SPEED02,
-				pEnemy->fShootRot + D3DX_PI,
-				15
-			);
+		default:
+			if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL01 == 0)
+			{
+				if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL02 == 0)
+				{// Ž©‹@‘_‚¢
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos),
+						25
+					);
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) + 0.4f,
+						25
+					);
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) - 0.4f,
+						25
+					);
+				}
+
+				pEnemy->fShootRot += 0.6f;
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 30.0f,
+					BOSS000_SHOOT_SPEED02,
+					pEnemy->fShootRot,
+					15
+				);
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos + Direction(pEnemy->fShootRot + D3DX_PI) * 30.0f,
+					BOSS000_SHOOT_SPEED02,
+					pEnemy->fShootRot + D3DX_PI,
+					15
+				);
+			}
 		}
-
 
 		break;	
 
@@ -712,48 +796,98 @@ void Boss000_Act(ENEMY* pEnemy)
 		}
 		pEnemy->obj.pos.x += pEnemy->move.x;
 
-		if (pEnemy->nCounterShoot % 2 == 0)
+		switch (GetDifficulity())
 		{
-			if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL02 == 0)
-			{// Ž©‹@‘_‚¢
+		case DIFFCULITY_EASY:
+			if (pEnemy->nCounterShoot % 5 == 0)
+			{
+				if (pEnemy->nCounterShoot % 120 == 0)
+				{// Ž©‹@‘_‚¢
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos),
+						25
+					);
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) + 0.4f,
+						25
+					);
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) - 0.4f,
+						25
+					);
+				}
+
+				pEnemy->fShootRot -= 0.6f;
 				SetEnemyBullet(
-					ENEMYBULLET_TYPE_000,
-					pEnemy->obj.pos,
-					BOSS000_SHOOT_SPEED01,
-					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos),
-					25
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 30.0f,
+					BOSS000_SHOOT_SPEED02,
+					pEnemy->fShootRot,
+					15
 				);
 				SetEnemyBullet(
-					ENEMYBULLET_TYPE_000,
-					pEnemy->obj.pos,
-					BOSS000_SHOOT_SPEED01,
-					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) + 0.4f,
-					25
-				);
-				SetEnemyBullet(
-					ENEMYBULLET_TYPE_000,
-					pEnemy->obj.pos,
-					BOSS000_SHOOT_SPEED01,
-					Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) - 0.4f,
-					25
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos + Direction(pEnemy->fShootRot + D3DX_PI) * 30.0f,
+					BOSS000_SHOOT_SPEED02,
+					pEnemy->fShootRot + D3DX_PI,
+					15
 				);
 			}
+			break;
 
-			pEnemy->fShootRot -= 0.6f;
-			SetEnemyBullet(
-				ENEMYBULLET_TYPE_001,
-				pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 30.0f,
-				BOSS000_SHOOT_SPEED02,
-				pEnemy->fShootRot,
-				15
-			);
-			SetEnemyBullet(
-				ENEMYBULLET_TYPE_001,
-				pEnemy->obj.pos + Direction(pEnemy->fShootRot + D3DX_PI) * 30.0f,
-				BOSS000_SHOOT_SPEED02,
-				pEnemy->fShootRot + D3DX_PI,
-				15
-			);
+		default:
+			if (pEnemy->nCounterShoot % 2 == 0)
+			{
+				if (pEnemy->nCounterShoot % BOSS000_SHOOT_INTERVAL02 == 0)
+				{// Ž©‹@‘_‚¢
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos),
+						25
+					);
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) + 0.4f,
+						25
+					);
+					SetEnemyBullet(
+						ENEMYBULLET_TYPE_000,
+						pEnemy->obj.pos,
+						BOSS000_SHOOT_SPEED01,
+						Angle(pEnemy->obj.pos, GetPlayer()->obj.pos) - 0.4f,
+						25
+					);
+				}
+
+				pEnemy->fShootRot -= 0.6f;
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos + Direction(pEnemy->fShootRot) * 30.0f,
+					BOSS000_SHOOT_SPEED02,
+					pEnemy->fShootRot,
+					15
+				);
+				SetEnemyBullet(
+					ENEMYBULLET_TYPE_001,
+					pEnemy->obj.pos + Direction(pEnemy->fShootRot + D3DX_PI) * 30.0f,
+					BOSS000_SHOOT_SPEED02,
+					pEnemy->fShootRot + D3DX_PI,
+					15
+				);
+			}
 		}
 
 		break;
@@ -898,23 +1032,44 @@ void Boss010A_Died(ENEMY* pEnemy)
 
 void Boss010B_Act(ENEMY* pEnemy)
 {
-	if (pEnemy->nCounterShoot % 30 == 0)
+	switch (GetDifficulity())
 	{
-		pEnemy->nCounterShoot = 0;
+	case DIFFCULITY_EASY:
+		if (pEnemy->nCounterShoot % 50 == 0)
+		{
+			pEnemy->nCounterShoot = 0;
 
-		SetEnemyBullet(
-			ENEMYBULLET_TYPE_000,
-			pEnemy->obj.pos,
-			7.0f,
-			pEnemy->fShootRot,
-			3
-		);
-		SetEnemyBullet(
-			ENEMYBULLET_TYPE_001,
-			pEnemy->obj.pos,
-			3.0f,
-			pEnemy->fShootRot,
-			15
-		);
+			SetEnemyBullet(
+				ENEMYBULLET_TYPE_001,
+				pEnemy->obj.pos,
+				3.0f,
+				pEnemy->fShootRot,
+				15
+			);
+		}
+		break;
+
+	default:
+		if (pEnemy->nCounterShoot % 30 == 0)
+		{
+			pEnemy->nCounterShoot = 0;
+
+			SetEnemyBullet(
+				ENEMYBULLET_TYPE_000,
+				pEnemy->obj.pos,
+				7.0f,
+				pEnemy->fShootRot,
+				3
+			);
+			SetEnemyBullet(
+				ENEMYBULLET_TYPE_001,
+				pEnemy->obj.pos,
+				3.0f,
+				pEnemy->fShootRot,
+				15
+			);
+		}
+		break;
 	}
+
 }

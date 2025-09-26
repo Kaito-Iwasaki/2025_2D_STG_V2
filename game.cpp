@@ -103,7 +103,7 @@ void InitGame(void)
 	SetBackgroundSpeed(20.0f);
 	SetBackgroundSpeedMove(3.0f, 0.001f);
 
-	switch (GetDiffculity())
+	switch (GetDifficulity())
 	{
 	case DIFFCULITY_EASY:
 		strcpy(&aDiffculity[0], "EASY");

@@ -117,7 +117,6 @@ void DrawEnemy(void);
 ENEMY* GetEnemy(void);
 int GetEnemyLeft(void);
 ENEMY* SetEnemy(ENEMYTYPE type, D3DXVECTOR3 pos);
-ENEMY* SetEnemy(TIMELINE* pTimeline);
 void HitEnemy(ENEMY* pEnemy, float fDamage = 1.0f);
 void DestroyAllEnemy();
 

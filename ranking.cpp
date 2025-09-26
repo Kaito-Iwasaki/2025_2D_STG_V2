@@ -23,6 +23,7 @@
 
 #include "util.h"
 #include "bg.h"
+#include "title.h"
 
 //*********************************************************************
 // 
@@ -30,9 +31,11 @@
 // 
 //*********************************************************************
 #define FILEPATH_RANKING		"data\\ranking.bin"
+#define FILEPATH_RANKING_EASY	"data\\ranking_easy.bin"
 #define MAX_PLACE				(10)
 
 #define INIT_RANKING			{ 50000, 40000, 30000, 20000, 10000 }
+#define INIT_RANKING_EASY		{ 30000, 25000, 20000, 15000, 10000 }
 
 #define FADE_START				(600)
 
@@ -49,9 +52,11 @@ int compare(const void* arg1, const void* arg2);
 // 
 //*********************************************************************
 int g_aRanking[MAX_PLACE] = INIT_RANKING;
+int g_aRankingEasy[MAX_PLACE] = INIT_RANKING_EASY;
 int g_nCountStateRanking = 0;
 int g_nHighlight = -1;
 FONT* g_apFontNum[MAX_PLACE] = {};
+FONT* g_apFontNumEasy[MAX_PLACE] = {};
 
 //=====================================================================
 // 初期化処理
@@ -81,13 +86,45 @@ void InitRanking(void)
 		DT_CENTER
 	);
 
+	SetFont(
+		D3DXVECTOR3(GAME_SCREEN_START, 125.0f, 0.0f),
+		D3DXVECTOR3(GAME_SCREEN_WIDTH / 2, 100.0f, 0.0f),
+		D3DXVECTOR3_ZERO,
+		D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f),
+		40,
+		"EASY",
+		DT_CENTER
+	);
+
+	SetFont(
+		D3DXVECTOR3(SCREEN_CENTER, 125.0f, 0.0f),
+		D3DXVECTOR3(GAME_SCREEN_WIDTH / 2, 100.0f, 0.0f),
+		D3DXVECTOR3_ZERO,
+		D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f),
+		40,
+		"NORMAL",
+		DT_CENTER
+	);
+
 	for (int nCount = 0; nCount < MAX_PLACE; nCount++)
 	{
+		sprintf(&aString[0], "%2d, %06d", nCount + 1, g_aRankingEasy[nCount]);
+
+		g_apFontNumEasy[nCount] = SetFont(
+			D3DXVECTOR3(GAME_SCREEN_START, 175.0f + (nCount * 50.0f), 0.0f),
+			D3DXVECTOR3(GAME_SCREEN_WIDTH / 2, 100.0f, 0.0f),
+			D3DXVECTOR3_ZERO,
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+			40,
+			&aString[0],
+			DT_CENTER
+		);
+
 		sprintf(&aString[0], "%2d, %06d", nCount + 1, g_aRanking[nCount]);
 
 		g_apFontNum[nCount] = SetFont(
-			D3DXVECTOR3(GAME_SCREEN_START, 125.0f + (nCount * 50.0f), 0.0f),
-			D3DXVECTOR3(GAME_SCREEN_WIDTH, 100.0f, 0.0f),
+			D3DXVECTOR3(SCREEN_CENTER, 175.0f + (nCount * 50.0f), 0.0f),
+			D3DXVECTOR3(GAME_SCREEN_WIDTH / 2, 100.0f, 0.0f),
 			D3DXVECTOR3_ZERO,
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 			40,
@@ -119,14 +156,33 @@ void UpdateRanking(void)
 
 	if (g_nHighlight != -1 && g_nCountStateRanking % 5 == 0)
 	{
-		if (g_nCountStateRanking % 10 == 0)
+		switch (GetDifficulity())
 		{
-			g_apFontNum[g_nHighlight]->obj.color = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
+		case DIFFCULITY_EASY:
+			if (g_nCountStateRanking % 10 == 0)
+			{
+				g_apFontNumEasy[g_nHighlight]->obj.color = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
+			}
+			else
+			{
+				g_apFontNumEasy[g_nHighlight]->obj.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			}
+			break;
+
+		default:
+			if (g_nCountStateRanking % 10 == 0)
+			{
+				g_apFontNum[g_nHighlight]->obj.color = D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f);
+			}
+			else
+			{
+				g_apFontNum[g_nHighlight]->obj.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			}
+			break;
 		}
-		else
-		{
-			g_apFontNum[g_nHighlight]->obj.color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		}
+
+
+
 	}
 
 	if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START))
@@ -153,15 +209,31 @@ void DrawRanking(void)
 
 void SaveScore(int nScore)
 {
+	int* pRanking;
+	char pFilename[MAX_PATH];
+
+	switch (GetDifficulity())
+	{
+	case DIFFCULITY_EASY:
+		pRanking = &g_aRankingEasy[0];
+		strcpy(pFilename, FILEPATH_RANKING_EASY);
+		break;
+
+	default:
+		pRanking = &g_aRanking[0];
+		strcpy(pFilename, FILEPATH_RANKING);
+		break;
+	}
+
 	// ファイルからランキングを読み込み
-	LoadBin(FILEPATH_RANKING, &g_aRanking[0], sizeof(int), MAX_PLACE);
+	LoadBin(pFilename, pRanking, sizeof(int), MAX_PLACE);
 
 	// 並び変える
-	qsort(&g_aRanking[0], MAX_PLACE, sizeof(int), compare);
+	qsort(pRanking, MAX_PLACE, sizeof(int), compare);
 
-	if (g_aRanking[MAX_PLACE - 1] < nScore)
+	if (pRanking[MAX_PLACE - 1] < nScore)
 	{// 一番低いスコアより現在のスコアの方が高かったら置き換える
-		g_aRanking[MAX_PLACE - 1] = nScore;
+		pRanking[MAX_PLACE - 1] = nScore;
 	}
 	else
 	{// そうでなければ保存しない
@@ -169,12 +241,12 @@ void SaveScore(int nScore)
 	}
 
 	// 並び変える
-	qsort(&g_aRanking[0], MAX_PLACE, sizeof(int), compare);
+	qsort(pRanking, MAX_PLACE, sizeof(int), compare);
 
 	// 点滅情報の設定
 	for (int nCount = MAX_PLACE - 1; nCount >= 0; nCount--)
 	{// ランキングを下から確認していく
-		if (g_aRanking[nCount] == nScore)
+		if (pRanking[nCount] == nScore)
 		{
 			// 同じだったら点滅情報を設定
 			g_nHighlight = nCount;
@@ -183,7 +255,7 @@ void SaveScore(int nScore)
 	}
 
 	// ファイルにランキングを書き出し
-	SaveBin(FILEPATH_RANKING, &g_aRanking[0], sizeof(int), MAX_PLACE);
+	SaveBin(pFilename, pRanking, sizeof(int), MAX_PLACE);
 }
 
 //=====================================================================

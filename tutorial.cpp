@@ -67,7 +67,7 @@ void InitTutorial(void)
 		D3DXVECTOR3_ZERO,
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		40,
-		"PRESS ENTER\nOR\nPRESS START",
+		"PRESS [ ENTER ], [ SPACE ]\nOR\nPRESS [ START ], [ A ]",
 		DT_CENTER
 	);
 }
@@ -89,7 +89,10 @@ void UpdateTutorial(void)
 	switch (g_stateTutorial)
 	{
 	case TUTORIALSTATE_NORMAL:
-		if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START))
+		if (GetKeyboardTrigger(DIK_RETURN) ||
+			GetKeyboardTrigger(DIK_SPACE) ||
+			GetJoypadTrigger(JOYKEY_START) ||
+			GetJoypadTrigger(JOYKEY_A))
 		{
 			if (GetFade() != FADE_NONE) break;
 

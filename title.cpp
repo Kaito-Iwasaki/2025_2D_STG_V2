@@ -101,7 +101,7 @@ void InitTitle(void)
 		D3DXVECTOR3_ZERO,
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
 		40,
-		"PRESS ENTER\nOR\nPRESS START",
+		"PRESS [ ENTER ], [ SPACE ]\nOR\nPRESS [ START ], [ A ]",
 		DT_CENTER
 	);
 	g_FontStart->obj.bVisible = false;
@@ -192,7 +192,12 @@ void UpdateTitle(void)
 			g_DecalLogo->obj.pos.y = LOGO_GOAL_Y;
 		}
 
-		if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START) || g_nCountStateTitle > INTRO_END)
+		// イントロスキップ
+		if (GetKeyboardTrigger(DIK_RETURN) ||
+			GetKeyboardTrigger(DIK_SPACE) ||
+			GetJoypadTrigger(JOYKEY_START) ||
+			GetJoypadTrigger(JOYKEY_A) ||
+			g_nCountStateTitle > INTRO_END)
 		{
 			g_nCountStateTitle = 0;
 			g_stateTitle = TITLESTATE_NORMAL;
@@ -214,23 +219,26 @@ void UpdateTitle(void)
 
 		if (GetFade() != FADE_NONE) break;
 
-		if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START))
+		// ゲームスタート
+		if (GetKeyboardTrigger(DIK_RETURN) ||
+			GetKeyboardTrigger(DIK_SPACE) ||
+			GetJoypadTrigger(JOYKEY_START) ||
+			GetJoypadTrigger(JOYKEY_A))
 		{
 			PlaySound(SOUND_LABEL_SE_HIT02);
 			g_nCountStateTitle = 0;
 			g_stateTitle = TITLESTATE_START;
-			SetVibration(30000, 30000, 60);
+			SetVibration(25000, 25000, 60);
 			g_FontEasy->obj.bVisible = false;
 			g_FontNormal->obj.bVisible = false;
 		}
 
+		// 難易度選択
 		if (
 			GetKeyboardRepeat(DIK_A) ||
 			GetKeyboardRepeat(DIK_D) ||
-			GetKeyboardRepeat(DIK_SPACE) || 
 			GetKeyboardRepeat(DIK_LEFT) || 
 			GetKeyboardRepeat(DIK_RIGHT) ||
-			GetJoypadRepeat(JOYKEY_A) ||
 			GetJoypadRepeat(JOYKEY_BACK) ||
 			GetJoypadRepeat(JOYKEY_LEFT) ||
 			GetJoypadRepeat(JOYKEY_RIGHT) ||
@@ -307,7 +315,7 @@ void DrawTitle(void)
 	DrawFont();
 }
 
-DIFFCULITY GetDiffculity(void)
+DIFFCULITY GetDifficulity(void)
 {
 	return (DIFFCULITY)nDifSelect;
 }
