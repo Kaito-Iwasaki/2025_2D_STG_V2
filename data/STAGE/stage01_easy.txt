@@ -2,7 +2,7 @@
 # ステージ設定処理
 #=============================================================================
 STAGESET
-	WAVE_MAX 20
+	WAVE_MAX 21
 	WAVE_START 0
 	WAVE_INTERVAL 10
 END_STAGESET
@@ -259,12 +259,14 @@ TIMELINESET
 			TIMEOFFSET 5
 			NUM 2
 		END_ENEMYSET
-		
+	END_WAVESET
+	
+	WAVESET
 		ENEMYSET
 			TYPE 5
 			POS2 1140 100
 			POSOFFSET2 40 -20
-			TIME 150
+			TIME 0
 			TIMEOFFSET 5
 			NUM 2
 			INVERSED TRUE
